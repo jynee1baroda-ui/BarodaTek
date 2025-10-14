@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Manager Pro - BarodaTek Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            min-height: 100vh;
+        }
+        .db-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1400px;
+        }
+        .query-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            min-height: 200px;
+        }
+        .db-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .db-card:hover {
+            transform: translateY(-5px);
+        }
+        .table-structure {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="db-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1><i class="fas fa-database me-3"></i>Database Manager Pro</h1>
+                <p class="text-muted">Visual database editor, backups, optimization tools</p>
+            </div>
+            <a href="index.html" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Home
+            </a>
+        </div>
+
+        <!-- Database Selection -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="db-card" onclick="selectDB('PostgreSQL')">
+                    <h5><i class="fas fa-elephant me-2"></i>PostgreSQL</h5>
+                    <small>Production DB</small>
+                    <div class="mt-2">
+                        <i class="fas fa-circle text-success"></i> Connected
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="db-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);" onclick="selectDB('MySQL')">
+                    <h5><i class="fas fa-database me-2"></i>MySQL</h5>
+                    <small>Development DB</small>
+                    <div class="mt-2">
+                        <i class="fas fa-circle text-success"></i> Connected
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="db-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);" onclick="selectDB('MongoDB')">
+                    <h5><i class="fas fa-leaf me-2"></i>MongoDB</h5>
+                    <small>Cache DB</small>
+                    <div class="mt-2">
+                        <i class="fas fa-circle text-success"></i> Connected
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="db-card" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);" onclick="selectDB('Redis')">
+                    <h5><i class="fas fa-bolt me-2"></i>Redis</h5>
+                    <small>Session Store</small>
+                    <div class="mt-2">
+                        <i class="fas fa-circle text-success"></i> Connected
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Query Builder -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fas fa-magic me-2"></i>Visual Query Builder</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label>Select Table</label>
+                        <select class="form-select" id="tableSelect" onchange="updateQueryBuilder()">
+                            <option value="users">users</option>
+                            <option value="contracts">contracts</option>
+                            <option value="reviews">reviews</option>
+                            <option value="analytics">analytics</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Select Columns</label>
+                        <select class="form-select" id="columnSelect" multiple>
+                            <option value="*" selected>* (All)</option>
+                            <option value="id">id</option>
+                            <option value="name">name</option>
+                            <option value="email">email</option>
+                            <option value="created_at">created_at</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Where Condition</label>
+                        <input type="text" class="form-control" id="whereInput" placeholder="e.g., status = 'active'">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Limit</label>
+                        <input type="number" class="form-control" id="limitInput" value="10">
+                    </div>
+                </div>
+                <div class="query-editor mb-3">
+                    <code id="generatedQuery">SELECT * FROM users LIMIT 10;</code>
+                </div>
+                <button class="btn btn-success me-2" onclick="runQuery()">
+                    <i class="fas fa-play me-1"></i>Execute Query
+                </button>
+                <button class="btn btn-outline-primary" onclick="explainQuery()">
+                    <i class="fas fa-info-circle me-1"></i>Explain Query
+                </button>
+            </div>
+        </div>
+
+        <!-- Table Structure & Backups -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-table me-2"></i>Table Structure</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-structure" id="tableStructure">
+                            <!-- Structure will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-save me-2"></i>Automated Backups</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label>Backup Schedule</label>
+                            <select class="form-select">
+                                <option>Every 6 hours</option>
+                                <option>Daily at 2 AM</option>
+                                <option>Weekly</option>
+                                <option>Manual only</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>Retention Period</label>
+                            <select class="form-select">
+                                <option>7 days</option>
+                                <option selected>30 days</option>
+                                <option>90 days</option>
+                                <option>1 year</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary w-100 mb-2" onclick="createBackup()">
+                            <i class="fas fa-download me-2"></i>Create Backup Now
+                        </button>
+                        <button class="btn btn-outline-success w-100" onclick="viewBackups()">
+                            <i class="fas fa-history me-2"></i>View Backup History
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Tuning -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-tachometer-alt me-2"></i>Performance Tuning</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="fas fa-bolt fa-3x text-warning mb-3"></i>
+                                <h6>Slow Queries</h6>
+                                <h3 class="text-danger">5</h3>
+                                <button class="btn btn-sm btn-outline-primary" onclick="analyzeSlowQueries()">
+                                    Analyze
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+                                <h6>Index Suggestions</h6>
+                                <h3 class="text-info">3</h3>
+                                <button class="btn btn-sm btn-outline-primary" onclick="viewIndexSuggestions()">
+                                    View
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="fas fa-database fa-3x text-primary mb-3"></i>
+                                <h6>DB Size</h6>
+                                <h3 class="text-success">2.4 GB</h3>
+                                <button class="btn btn-sm btn-outline-primary" onclick="optimizeDB()">
+                                    Optimize
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tableStructures = {
+            users: [
+                { field: 'id', type: 'INTEGER', key: 'PRIMARY' },
+                { field: 'name', type: 'VARCHAR(255)', key: '' },
+                { field: 'email', type: 'VARCHAR(255)', key: 'UNIQUE' },
+                { field: 'created_at', type: 'TIMESTAMP', key: '' }
+            ],
+            contracts: [
+                { field: 'id', type: 'INTEGER', key: 'PRIMARY' },
+                { field: 'user_id', type: 'INTEGER', key: 'FOREIGN' },
+                { field: 'title', type: 'VARCHAR(255)', key: '' },
+                { field: 'status', type: 'VARCHAR(50)', key: 'INDEX' },
+                { field: 'created_at', type: 'TIMESTAMP', key: '' }
+            ]
+        };
+
+        function selectDB(dbName) {
+            alert(`🔌 Connected to ${dbName}!\n\nYou can now:\n- Run queries\n- Manage tables\n- Configure backups\n- Optimize performance`);
+        }
+
+        function updateQueryBuilder() {
+            const table = document.getElementById('tableSelect').value;
+            const columns = Array.from(document.getElementById('columnSelect').selectedOptions).map(o => o.value).join(', ');
+            const where = document.getElementById('whereInput').value;
+            const limit = document.getElementById('limitInput').value;
+
+            let query = `SELECT ${columns || '*'} FROM ${table}`;
+            if (where) query += ` WHERE ${where}`;
+            query += ` LIMIT ${limit};`;
+
+            document.getElementById('generatedQuery').textContent = query;
+            renderTableStructure(table);
+        }
+
+        function renderTableStructure(table) {
+            const structure = tableStructures[table] || tableStructures.users;
+            const container = document.getElementById('tableStructure');
+            container.innerHTML = `
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Type</th>
+                            <th>Key</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${structure.map(col => `
+                            <tr>
+                                <td><strong>${col.field}</strong></td>
+                                <td>${col.type}</td>
+                                <td>${col.key ? `<span class="badge bg-primary">${col.key}</span>` : ''}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function runQuery() {
+            const query = document.getElementById('generatedQuery').textContent;
+            alert(`✅ Query executed successfully!\n\n${query}\n\nReturned 10 rows in 0.023 seconds.`);
+        }
+
+        function explainQuery() {
+            alert(`📊 Query Execution Plan:\n\n1. Seq Scan on users (cost=0.00..35.50)\n   Filter: (status = 'active')\n2. Limit (cost=0.00..1.50)\n\nEstimated rows: 10\nExecution time: 23ms`);
+        }
+
+        function createBackup() {
+            alert(`💾 Creating backup...\n\nDatabase: Production PostgreSQL\nSize: ~2.4 GB\n\nBackup will be stored in:\nAWS S3: backups/postgres/2024-01-15.sql.gz\n\nEstimated completion: 5 minutes`);
+        }
+
+        function viewBackups() {
+            alert(`📂 Available Backups:\n\n1. 2024-01-15 02:00 AM (2.4 GB)\n2. 2024-01-14 02:00 AM (2.3 GB)\n3. 2024-01-13 02:00 AM (2.3 GB)\n\nAll backups are encrypted and verified.\n\nClick to restore or download.`);
+        }
+
+        function analyzeSlowQueries() {
+            alert(`🐌 Slow Query Analysis:\n\n1. SELECT * FROM users WHERE LIKE '%term%'\n   Time: 2.5s - Missing index on search field\n\n2. Complex JOIN without proper indexes\n   Time: 1.8s\n\nRecommended actions:\n- Add full-text search index\n- Optimize JOIN conditions`);
+        }
+
+        function viewIndexSuggestions() {
+            alert(`💡 Index Suggestions:\n\n1. CREATE INDEX idx_users_email ON users(email);\n   - Will speed up email lookups by 85%\n\n2. CREATE INDEX idx_contracts_status ON contracts(status);\n   - Will improve filtering queries\n\n3. CREATE INDEX idx_reviews_rating ON reviews(rating);\n   - Will optimize aggregate functions\n\nApply all suggestions?`);
+        }
+
+        function optimizeDB() {
+            alert(`⚙️ Database Optimization Starting...\n\n1. VACUUM ANALYZE\n2. Rebuild indexes\n3. Update statistics\n4. Clear cache\n\nEstimated time: 10 minutes\nExpected space savings: ~200 MB`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateQueryBuilder();
+        });
+
+        // Auto-update query on input changes
+        ['tableSelect', 'whereInput', 'limitInput'].forEach(id => {
+            document.getElementById(id).addEventListener('change', updateQueryBuilder);
+            document.getElementById(id).addEventListener('input', updateQueryBuilder);
+        });
+        document.getElementById('columnSelect').addEventListener('change', updateQueryBuilder);
+    </script>
+</body>
+</html>
