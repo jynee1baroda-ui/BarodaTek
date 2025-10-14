@@ -297,7 +297,7 @@ Examples:
 - [ ] Pricing page accessible
 - [ ] All downloads work
 - [ ] No "example.com" or "yourusername" placeholders
-- [ ] Contact email is `jbaroda@barodatek.com`
+- [ ] Contact email is `barodatek.services@gmail.com`
 - [ ] GitHub Actions deploying automatically (if set up)
 
 ### Test Commands:
@@ -386,4 +386,4 @@ Any questions? Check the troubleshooting section or open an issue on GitHub.
 **Created by**: JBaroda  
 **Project**: BarodaTek API Platform  
 **License**: MIT  
-**Contact**: jbaroda@barodatek.com
+**Contact**: barodatek.services@gmail.com

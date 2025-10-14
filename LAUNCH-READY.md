@@ -152,7 +152,7 @@ Paid services = Revenue & business model
 
 **Option A: Start Simple (Email)**
 - List prices on pricing page ✅ (Already done!)
-- Add email contact ✅ (Already done: jbaroda@barodatek.com)
+- Add email contact ✅ (Already done: barodatek.services@gmail.com)
 - Send invoices manually via PayPal/Venmo
 - Process payment before work starts
 
@@ -273,7 +273,7 @@ app.post('/api/create-checkout', async (req, res) => {
 - [ ] Update email signature with site link
 
 ### This Week
-- [ ] Set up professional email (jbaroda@barodatek.com with custom domain)
+- [ ] Set up professional email (barodatek.services@gmail.com with custom domain)
 - [ ] Create Terms of Service page
 - [ ] Create Privacy Policy page
 - [ ] Add footer links to legal pages

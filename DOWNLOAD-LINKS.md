@@ -308,7 +308,7 @@ New page created: `public/pricing.html`
 
 ## 📞 Contact for Paid Services
 
-**Email**: jbaroda@barodatek.com
+**Email**: barodatek.services@gmail.com
 
 **Available Services**:
 1. Implementation: $500 - $10,000

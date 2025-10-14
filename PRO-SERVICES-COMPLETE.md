@@ -247,4 +247,4 @@ Each tool teaches users about:
 **Need a permanent URL?**
 Buy `barodatek.com` for $12/year and set it up in 5 minutes!
 
-**Contact:** jbaroda@barodatek.com
+**Contact:** barodatek.services@gmail.com

@@ -44,7 +44,7 @@ Scroll to "Meet JBaroda" section!3. See Cash App card with $baroda98
 
 |-----|-----|**What:** Fixed game interaction - all cards are now clickable
 
-| `jbaroda@example.com` | `jbaroda@barodatek.com` |**Location:** mini-game.html
+| `jbaroda@example.com` | `barodatek.services@gmail.com` |**Location:** mini-game.html
 
 | `yourusername/api-mock-contract` | `jynee1baroda/barodatek-api-platform` |**Fix:** Changed from inline onclick to proper DOM event binding
 
@@ -258,7 +258,7 @@ Disable ALL protection → Save → Test in incognito- [ ] See Cash App card wit
 
 **All updated to**:- [ ] Scroll to Developer Tools section
 
-- Email: `jbaroda@barodatek.com`- [ ] See rocket (🚀) in game board
+- Email: `barodatek.services@gmail.com`- [ ] See rocket (🚀) in game board
 
 - GitHub: `github.com/jynee1baroda`- [ ] Click "Launch Mission"
 

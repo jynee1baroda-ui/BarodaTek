@@ -3552,7 +3552,7 @@ SELECT * FROM users WHERE age > 25;
 
 -- Insert data
 INSERT INTO users (name, email) 
-VALUES ('JBaroda', 'jbaroda@barodatek.com');
+VALUES ('JBaroda', 'barodatek.services@gmail.com');
 
 -- Update data
 UPDATE users SET age = 27 WHERE name = 'JBaroda';

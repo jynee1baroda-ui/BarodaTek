@@ -340,7 +340,7 @@ Your site now has:
 
 ## 📞 Contact & Support
 
-**Email:** jbaroda@barodatek.com
+**Email:** barodatek.services@gmail.com
 **GitHub:** https://github.com/jynee1baroda/barodatek-api-platform
 **Live Site:** https://barodatek-api-platform.vercel.app
 

@@ -156,7 +156,7 @@ Check Vercel dashboard for your stable project domain!
 **Namecheap Help:**
 - https://www.namecheap.com/support/knowledgebase/article.aspx/9837/46/how-to-connect-a-domain-to-vercel/
 
-**Contact:** jbaroda@barodatek.com
+**Contact:** barodatek.services@gmail.com
 
 ---
 
