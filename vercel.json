@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "alias": ["barodatek.vercel.app", "barodatek-api.vercel.app"],
   "builds": [
     {
       "src": "server.js",
