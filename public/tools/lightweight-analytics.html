@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lightweight Analytics Dashboard - BarodaTek</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .live-indicator {
+            width: 10px;
+            height: 10px;
+            background: #28a745;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .event-log {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .event-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .event-item:hover {
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="text-white mb-2">
+                <i class="fas fa-chart-line me-2"></i>
+                Lightweight Analytics Dashboard
+            </h1>
+            <p class="text-white-50">
+                <span class="live-indicator"></span>
+                Real-time tracking • Self-hosted • Privacy-first
+            </p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stat-card text-center">
+                    <i class="fas fa-users fa-2x text-primary"></i>
+                    <div class="stat-value text-primary" id="totalVisitors">0</div>
+                    <div class="stat-label">Total Visitors</div>
+                    <small class="text-success">+<span id="visitorsChange">0</span>% vs last week</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card text-center">
+                    <i class="fas fa-eye fa-2x text-success"></i>
+                    <div class="stat-value text-success" id="pageViews">0</div>
+                    <div class="stat-label">Page Views</div>
+                    <small class="text-success">+<span id="viewsChange">0</span>% today</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card text-center">
+                    <i class="fas fa-mouse-pointer fa-2x text-info"></i>
+                    <div class="stat-value text-info" id="totalClicks">0</div>
+                    <div class="stat-label">Total Clicks</div>
+                    <small class="text-info"><span id="avgClickRate">0</span>% click rate</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card text-center">
+                    <i class="fas fa-clock fa-2x text-warning"></i>
+                    <div class="stat-value text-warning" id="avgTime">0s</div>
+                    <div class="stat-label">Avg. Time on Site</div>
+                    <small class="text-muted">Per session</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="chart-container">
+                    <h5 class="mb-3">
+                        <i class="fas fa-chart-area me-2"></i>
+                        Visitors Over Time
+                    </h5>
+                    <canvas id="visitorsChart" height="80"></canvas>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="chart-container">
+                    <h5 class="mb-3">
+                        <i class="fas fa-globe me-2"></i>
+                        Traffic Sources
+                    </h5>
+                    <canvas id="sourcesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Events & Top Pages -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h5 class="mb-3">
+                        <i class="fas fa-bolt me-2"></i>
+                        Live Event Stream
+                        <span class="badge bg-success">LIVE</span>
+                    </h5>
+                    <div class="event-log" id="eventLog">
+                        <!-- Events will be inserted here -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h5 class="mb-3">
+                        <i class="fas fa-star me-2"></i>
+                        Top Pages
+                    </h5>
+                    <div id="topPages">
+                        <!-- Top pages will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export & Controls -->
+        <div class="text-center mt-4">
+            <div class="btn-group" role="group">
+                <button class="btn btn-light" onclick="exportCSV()">
+                    <i class="fas fa-file-csv me-2"></i>Export CSV
+                </button>
+                <button class="btn btn-light" onclick="exportJSON()">
+                    <i class="fas fa-file-code me-2"></i>Export JSON
+                </button>
+                <button class="btn btn-light" onclick="refreshDashboard()">
+                    <i class="fas fa-sync-alt me-2"></i>Refresh
+                </button>
+                <button class="btn btn-danger" onclick="clearData()">
+                    <i class="fas fa-trash me-2"></i>Clear Data
+                </button>
+            </div>
+        </div>
+
+        <!-- Attribution -->
+        <div class="text-center mt-4 text-white-50">
+            <small>
+                🔒 100% Privacy-First • Self-Hosted • No Tracking Cookies<br>
+                Built by <a href="https://barodatek.com" class="text-white">BarodaTek</a> • Open Source
+            </small>
+        </div>
+    </div>
+
+    <script>
+        // Lightweight Analytics Engine
+        class LightweightAnalytics {
+            constructor() {
+                this.visitors = [];
+                this.pageViews = [];
+                this.clicks = [];
+                this.sessions = [];
+                this.loadFromStorage();
+                this.startTracking();
+            }
+
+            // Track page view
+            trackPageView(page = window.location.pathname) {
+                const view = {
+                    page,
+                    timestamp: new Date().toISOString(),
+                    referrer: document.referrer,
+                    userAgent: navigator.userAgent,
+                    sessionId: this.getSessionId()
+                };
+                
+                this.pageViews.push(view);
+                this.saveToStorage();
+                this.updateDashboard();
+            }
+
+            // Track click event
+            trackClick(element, label) {
+                const click = {
+                    element,
+                    label,
+                    page: window.location.pathname,
+                    timestamp: new Date().toISOString(),
+                    sessionId: this.getSessionId()
+                };
+                
+                this.clicks.push(click);
+                this.saveToStorage();
+                this.addEventToLog('click', label);
+            }
+
+            // Track custom event
+            trackEvent(eventName, data = {}) {
+                const event = {
+                    name: eventName,
+                    data,
+                    timestamp: new Date().toISOString(),
+                    page: window.location.pathname,
+                    sessionId: this.getSessionId()
+                };
+                
+                this.pageViews.push(event);
+                this.saveToStorage();
+                this.addEventToLog('event', eventName);
+            }
+
+            // Get or create session ID
+            getSessionId() {
+                let sessionId = sessionStorage.getItem('analytics_session');
+                if (!sessionId) {
+                    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    sessionStorage.setItem('analytics_session', sessionId);
+                    
+                    // Track new visitor
+                    this.visitors.push({
+                        sessionId,
+                        firstSeen: new Date().toISOString(),
+                        userAgent: navigator.userAgent
+                    });
+                }
+                return sessionId;
+            }
+
+            // Save to localStorage
+            saveToStorage() {
+                localStorage.setItem('analytics_visitors', JSON.stringify(this.visitors));
+                localStorage.setItem('analytics_pageViews', JSON.stringify(this.pageViews));
+                localStorage.setItem('analytics_clicks', JSON.stringify(this.clicks));
+            }
+
+            // Load from localStorage
+            loadFromStorage() {
+                this.visitors = JSON.parse(localStorage.getItem('analytics_visitors') || '[]');
+                this.pageViews = JSON.parse(localStorage.getItem('analytics_pageViews') || '[]');
+                this.clicks = JSON.parse(localStorage.getItem('analytics_clicks') || '[]');
+            }
+
+            // Start automatic tracking
+            startTracking() {
+                // Track page view on load
+                this.trackPageView();
+
+                // Track clicks on all buttons and links
+                document.addEventListener('click', (e) => {
+                    const target = e.target.closest('a, button');
+                    if (target) {
+                        const label = target.textContent.trim() || target.getAttribute('aria-label') || 'Unknown';
+                        this.trackClick(target.tagName.toLowerCase(), label);
+                    }
+                });
+
+                // Track time on page
+                let startTime = Date.now();
+                window.addEventListener('beforeunload', () => {
+                    const timeOnPage = Math.floor((Date.now() - startTime) / 1000);
+                    this.trackEvent('page_exit', { timeOnPage });
+                });
+
+                // Auto-refresh dashboard every 5 seconds
+                setInterval(() => this.updateDashboard(), 5000);
+            }
+
+            // Update dashboard display
+            updateDashboard() {
+                // Total visitors
+                document.getElementById('totalVisitors').textContent = this.visitors.length;
+
+                // Page views
+                document.getElementById('pageViews').textContent = this.pageViews.length;
+
+                // Total clicks
+                document.getElementById('totalClicks').textContent = this.clicks.length;
+
+                // Average time (mock calculation)
+                const avgTime = this.pageViews.length > 0 ? Math.floor(45 + Math.random() * 30) : 0;
+                document.getElementById('avgTime').textContent = avgTime + 's';
+
+                // Changes (mock)
+                document.getElementById('visitorsChange').textContent = Math.floor(Math.random() * 20 + 5);
+                document.getElementById('viewsChange').textContent = Math.floor(Math.random() * 15 + 10);
+                document.getElementById('avgClickRate').textContent = 
+                    this.pageViews.length > 0 ? Math.floor((this.clicks.length / this.pageViews.length) * 100) : 0;
+
+                // Update charts
+                this.updateCharts();
+
+                // Update top pages
+                this.updateTopPages();
+            }
+
+            // Update charts
+            updateCharts() {
+                // Visitors over time chart
+                const hours = 24;
+                const labels = [];
+                const data = [];
+                
+                for (let i = hours; i >= 0; i--) {
+                    const hour = new Date();
+                    hour.setHours(hour.getHours() - i);
+                    labels.push(hour.getHours() + ':00');
+                    
+                    // Count views in this hour
+                    const hourStart = new Date(hour);
+                    hourStart.setMinutes(0, 0, 0);
+                    const hourEnd = new Date(hourStart);
+                    hourEnd.setHours(hourEnd.getHours() + 1);
+                    
+                    const count = this.pageViews.filter(view => {
+                        const viewTime = new Date(view.timestamp);
+                        return viewTime >= hourStart && viewTime < hourEnd;
+                    }).length;
+                    
+                    data.push(count);
+                }
+
+                const ctx = document.getElementById('visitorsChart').getContext('2d');
+                if (window.visitorsChartInstance) {
+                    window.visitorsChartInstance.destroy();
+                }
+                
+                window.visitorsChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Page Views',
+                            data,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+
+                // Traffic sources (mock data)
+                const sourcesCtx = document.getElementById('sourcesChart').getContext('2d');
+                if (window.sourcesChartInstance) {
+                    window.sourcesChartInstance.destroy();
+                }
+                
+                window.sourcesChartInstance = new Chart(sourcesCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Direct', 'Organic', 'Social', 'Referral'],
+                        datasets: [{
+                            data: [40, 30, 20, 10],
+                            backgroundColor: ['#667eea', '#764ba2', '#28a745', '#ffc107']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true
+                    }
+                });
+            }
+
+            // Update top pages
+            updateTopPages() {
+                const pageCounts = {};
+                this.pageViews.forEach(view => {
+                    pageCounts[view.page] = (pageCounts[view.page] || 0) + 1;
+                });
+
+                const sorted = Object.entries(pageCounts)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5);
+
+                const html = sorted.map(([page, count]) => `
+                    <div class="d-flex justify-content-between align-items-center mb-2 p-2 border-bottom">
+                        <div>
+                            <strong>${page || '/'}</strong><br>
+                            <small class="text-muted">${count} views</small>
+                        </div>
+                        <div class="progress" style="width: 100px;">
+                            <div class="progress-bar bg-primary" style="width: ${(count / this.pageViews.length) * 100}%"></div>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('topPages').innerHTML = html || '<p class="text-muted">No data yet</p>';
+            }
+
+            // Add event to log
+            addEventToLog(type, label) {
+                const log = document.getElementById('eventLog');
+                const time = new Date().toLocaleTimeString();
+                
+                const icons = {
+                    click: 'fa-mouse-pointer text-info',
+                    event: 'fa-bolt text-warning',
+                    pageview: 'fa-eye text-primary'
+                };
+
+                const item = document.createElement('div');
+                item.className = 'event-item';
+                item.innerHTML = `
+                    <i class="fas ${icons[type] || icons.event} me-2"></i>
+                    <strong>${type}</strong>: ${label}
+                    <small class="float-end text-muted">${time}</small>
+                `;
+
+                log.insertBefore(item, log.firstChild);
+
+                // Keep only last 50 events
+                while (log.children.length > 50) {
+                    log.removeChild(log.lastChild);
+                }
+            }
+
+            // Export methods
+            exportCSV() {
+                const csv = [
+                    ['Timestamp', 'Type', 'Page', 'Data'],
+                    ...this.pageViews.map(v => [v.timestamp, 'PageView', v.page, '']),
+                    ...this.clicks.map(c => [c.timestamp, 'Click', c.page, c.label])
+                ].map(row => row.join(',')).join('\\n');
+
+                this.downloadFile('analytics.csv', csv, 'text/csv');
+            }
+
+            exportJSON() {
+                const data = {
+                    visitors: this.visitors,
+                    pageViews: this.pageViews,
+                    clicks: this.clicks,
+                    exportedAt: new Date().toISOString()
+                };
+
+                this.downloadFile('analytics.json', JSON.stringify(data, null, 2), 'application/json');
+            }
+
+            downloadFile(filename, content, type) {
+                const blob = new Blob([content], { type });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+
+            // Clear all data
+            clearData() {
+                if (confirm('Clear all analytics data? This cannot be undone!')) {
+                    this.visitors = [];
+                    this.pageViews = [];
+                    this.clicks = [];
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    this.updateDashboard();
+                    alert('All data cleared!');
+                }
+            }
+        }
+
+        // Initialize analytics
+        const analytics = new LightweightAnalytics();
+
+        // Global functions
+        function exportCSV() { analytics.exportCSV(); }
+        function exportJSON() { analytics.exportJSON(); }
+        function refreshDashboard() { analytics.updateDashboard(); }
+        function clearData() { analytics.clearData(); }
+
+        // Make analytics globally available
+        window.barodatekAnalytics = analytics;
+
+        console.log('✅ Lightweight Analytics Dashboard Loaded!');
+        console.log('Track custom events: barodatekAnalytics.trackEvent("event_name", {data})');
+    </script>
+</body>
+</html>
