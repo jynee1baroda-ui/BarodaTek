@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Tools Dashboard - API Contract MVP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+        
+        .tools-container {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .tool-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-bottom: none;
+        }
+        
+        .tool-body {
+            padding: 20px;
+        }
+        
+        .code-editor {
+            height: 400px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .api-test-result {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .log-viewer {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .log-timestamp {
+            color: #64b5f6;
+        }
+        
+        .log-level-info { color: #4caf50; }
+        .log-level-warn { color: #ff9800; }
+        .log-level-error { color: #f44336; }
+        .log-level-debug { color: #9c27b0; }
+        
+        .schema-viewer {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            height: 400px;
+            overflow-y: auto;
+        }
+        
+        .performance-chart {
+            height: 300px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+        }
+        
+        .nav-tabs .nav-link {
+            color: #667eea;
+            border: none;
+            border-bottom: 2px solid transparent;
+            background: none;
+            padding: 10px 20px;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background: none;
+            border-bottom: 2px solid #667eea;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .status-success { background: #28a745; }
+        .status-warning { background: #ffc107; }
+        .status-danger { background: #dc3545; }
+        .status-info { background: #17a2b8; }
+        
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .floating-toolbar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            padding: 10px 20px;
+            z-index: 1000;
+        }
+        
+        .quick-action {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="tools-container">
+        <div class="text-center mb-4">
+            <h1 class="text-white">
+                <i class="fas fa-tools"></i> Developer Tools Dashboard
+            </h1>
+            <p class="text-white-50">Comprehensive development tools for API testing, monitoring, and optimization</p>
+        </div>
+        
+        <!-- Main Tools Grid -->
+        <div class="tool-grid">
+            <!-- API Testing Tool -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <h4><i class="fas fa-flask"></i> API Testing Suite</h4>
+                    <p class="mb-0">Test your API endpoints with real-time results</p>
+                </div>
+                <div class="tool-body">
+                    <ul class="nav nav-tabs" id="apiTestTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="quick-test-tab" data-bs-toggle="tab" data-bs-target="#quick-test" type="button">Quick Test</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="advanced-test-tab" data-bs-toggle="tab" data-bs-target="#advanced-test" type="button">Advanced</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="batch-test-tab" data-bs-toggle="tab" data-bs-target="#batch-test" type="button">Batch Tests</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="apiTestTabContent">
+                        <div class="tab-pane fade show active" id="quick-test" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <select class="form-select mb-3" id="httpMethod">
+                                        <option value="GET">GET</option>
+                                        <option value="POST">POST</option>
+                                        <option value="PUT">PUT</option>
+                                        <option value="DELETE">DELETE</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control mb-3" id="apiEndpoint" placeholder="Enter API endpoint (e.g., /api/contracts)" value="/api/contracts">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Request Body (JSON)</label>
+                                <textarea class="form-control" id="requestBody" rows="4" placeholder='{"key": "value"}'></textarea>
+                            </div>
+                            
+                            <button class="btn btn-primary" onclick="runApiTest()">
+                                <i class="fas fa-play"></i> Run Test
+                            </button>
+                            <button class="btn btn-outline-secondary ms-2" onclick="clearTestResults()">
+                                <i class="fas fa-trash"></i> Clear
+                            </button>
+                            
+                            <div class="mt-3">
+                                <label class="form-label">Response</label>
+                                <div class="api-test-result" id="apiTestResult">
+                                    Ready to test your API endpoints...
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="advanced-test" role="tabpanel">
+                            <div class="mb-3">
+                                <label class="form-label">Custom Headers</label>
+                                <textarea class="form-control" id="customHeaders" rows="3" placeholder='{"Authorization": "Bearer token", "Content-Type": "application/json"}'></textarea>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">Timeout (ms)</label>
+                                    <input type="number" class="form-control mb-3" id="requestTimeout" value="5000">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Follow Redirects</label>
+                                    <select class="form-select mb-3" id="followRedirects">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-success" onclick="runAdvancedApiTest()">
+                                <i class="fas fa-cogs"></i> Run Advanced Test
+                            </button>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="batch-test" role="tabpanel">
+                            <div class="mb-3">
+                                <label class="form-label">Test Collection (JSON)</label>
+                                <textarea class="form-control" id="batchTests" rows="6" placeholder='[{"method": "GET", "url": "/api/contracts", "name": "Get All Contracts"}]'></textarea>
+                            </div>
+                            
+                            <button class="btn btn-warning" onclick="runBatchTests()">
+                                <i class="fas fa-list"></i> Run Batch Tests
+                            </button>
+                            
+                            <div class="mt-3" id="batchTestResults"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Code Generator Tool -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <h4><i class="fas fa-code"></i> Code Generator</h4>
+                    <p class="mb-0">Generate code snippets and SDKs</p>
+                </div>
+                <div class="tool-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Language/Framework</label>
+                            <select class="form-select" id="codeLanguage">
+                                <option value="javascript">JavaScript</option>
+                                <option value="python">Python</option>
+                                <option value="curl">cURL</option>
+                                <option value="php">PHP</option>
+                                <option value="java">Java</option>
+                                <option value="csharp">C#</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Code Type</label>
+                            <select class="form-select" id="codeType">
+                                <option value="api-call">API Call</option>
+                                <option value="model">Data Model</option>
+                                <option value="validation">Validation</option>
+                                <option value="sdk">SDK Class</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">API Endpoint</label>
+                        <input type="text" class="form-control" id="generateEndpoint" placeholder="/api/contracts" value="/api/contracts">
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="generateCode()">
+                        <i class="fas fa-magic"></i> Generate Code
+                    </button>
+                    <button class="btn btn-outline-primary ms-2" onclick="copyGeneratedCode()">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                    
+                    <div class="mt-3">
+                        <div class="code-editor" id="generatedCodeEditor"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Performance Metrics -->
+        <div class="tool-card">
+            <div class="tool-header">
+                <h4><i class="fas fa-chart-line"></i> Performance Metrics</h4>
+                <p class="mb-0">Real-time API performance and system health</p>
+            </div>
+            <div class="tool-body">
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="responseTime">--</div>
+                        <div class="metric-label">Avg Response Time (ms)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="requestCount">--</div>
+                        <div class="metric-label">Requests/Min</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="successRate">--</div>
+                        <div class="metric-label">Success Rate (%)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="activeConnections">--</div>
+                        <div class="metric-label">Active Connections</div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5>Response Time Trends</h5>
+                        <div class="performance-chart" id="responseTimeChart"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>System Status</h5>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="status-indicator status-success"></span>
+                            <span>API Server: Online</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="status-indicator status-success"></span>
+                            <span>Database: Connected</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="status-indicator status-success"></span>
+                            <span>WebSocket: Active</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="status-indicator status-warning"></span>
+                            <span>Cache: 78% Full</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Log Viewer and Schema Explorer -->
+        <div class="tool-grid">
+            <!-- Log Viewer -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <h4><i class="fas fa-file-alt"></i> Live Log Viewer</h4>
+                    <p class="mb-0">Monitor application logs in real-time</p>
+                </div>
+                <div class="tool-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                            <select class="form-select form-select-sm" id="logLevel" onchange="filterLogs()">
+                                <option value="all">All Levels</option>
+                                <option value="info">Info</option>
+                                <option value="warn">Warning</option>
+                                <option value="error">Error</option>
+                                <option value="debug">Debug</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary" onclick="clearLogs()">
+                                <i class="fas fa-trash"></i> Clear
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="exportLogs()">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="log-viewer" id="logViewer">
+                        <div class="log-entry">
+                            <span class="log-timestamp">[2024-01-15 10:30:15]</span>
+                            <span class="log-level-info">[INFO]</span>
+                            <span>Server started on port 3000</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-timestamp">[2024-01-15 10:30:16]</span>
+                            <span class="log-level-info">[INFO]</span>
+                            <span>Database connected successfully</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-timestamp">[2024-01-15 10:30:17]</span>
+                            <span class="log-level-info">[INFO]</span>
+                            <span>WebSocket server initialized</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Schema Explorer -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <h4><i class="fas fa-database"></i> Schema Explorer</h4>
+                    <p class="mb-0">Explore API schemas and data structures</p>
+                </div>
+                <div class="tool-body">
+                    <div class="mb-3">
+                        <select class="form-select" id="schemaType" onchange="loadSchema()">
+                            <option value="contract">Contract Schema</option>
+                            <option value="user">User Schema</option>
+                            <option value="stats">Statistics Schema</option>
+                            <option value="response">API Response Schema</option>
+                        </select>
+                    </div>
+                    
+                    <div class="schema-viewer" id="schemaViewer">
+                        <pre id="schemaContent">Loading schema...</pre>
+                    </div>
+                    
+                    <button class="btn btn-outline-primary mt-3" onclick="validateSchema()">
+                        <i class="fas fa-check"></i> Validate Schema
+                    </button>
+                    <button class="btn btn-outline-success mt-3 ms-2" onclick="generateFromSchema()">
+                        <i class="fas fa-magic"></i> Generate Sample Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Toolbar -->
+    <div class="floating-toolbar">
+        <button class="quick-action" onclick="openApiExplorer()" title="API Explorer">
+            <i class="fas fa-compass"></i>
+        </button>
+        <button class="quick-action" onclick="openChatbot()" title="AI Assistant">
+            <i class="fas fa-robot"></i>
+        </button>
+        <button class="quick-action" onclick="exportData()" title="Export Data">
+            <i class="fas fa-download"></i>
+        </button>
+        <button class="quick-action" onclick="refreshAll()" title="Refresh All">
+            <i class="fas fa-sync"></i>
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="realtime.js"></script>
+    <script>
+        let generatedCodeEditor;
+        let performanceChart;
+        let logEntries = [];
+        
+        // Initialize Monaco Editor for code generation
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }});
+        require(['vs/editor/editor.main'], function() {
+            generatedCodeEditor = monaco.editor.create(document.getElementById('generatedCodeEditor'), {
+                value: '// Generated code will appear here...',
+                language: 'javascript',
+                theme: 'vs-dark',
+                automaticLayout: true,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false
+            });
+        });
+        
+        // Initialize performance chart
+        function initPerformanceChart() {
+            const ctx = document.getElementById('responseTimeChart').getContext('2d');
+            performanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Response Time (ms)',
+                        data: [],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+        
+        // API Testing Functions
+        async function runApiTest() {
+            const method = document.getElementById('httpMethod').value;
+            const endpoint = document.getElementById('apiEndpoint').value;
+            const body = document.getElementById('requestBody').value;
+            const resultDiv = document.getElementById('apiTestResult');
+            
+            resultDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running test...';
+            
+            try {
+                const startTime = performance.now();
+                
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                };
+                
+                if (body && (method === 'POST' || method === 'PUT')) {
+                    options.body = body;
+                }
+                
+                const response = await fetch(endpoint, options);
+                const endTime = performance.now();
+                const responseTime = Math.round(endTime - startTime);
+                
+                const responseData = await response.json();
+                
+                const result = {
+                    status: response.status,
+                    statusText: response.statusText,
+                    responseTime: responseTime,
+                    headers: Object.fromEntries(response.headers.entries()),
+                    data: responseData
+                };
+                
+                resultDiv.innerHTML = `
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="badge bg-${response.ok ? 'success' : 'danger'}">${response.status} ${response.statusText}</span>
+                        <span class="badge bg-info">${responseTime}ms</span>
+                    </div>
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                `;
+                
+                // Update performance metrics
+                updatePerformanceMetrics(responseTime, response.ok);
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <strong>Error:</strong> ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        function clearTestResults() {
+            document.getElementById('apiTestResult').innerHTML = 'Ready to test your API endpoints...';
+        }
+        
+        // Code Generation Functions
+        function generateCode() {
+            const language = document.getElementById('codeLanguage').value;
+            const codeType = document.getElementById('codeType').value;
+            const endpoint = document.getElementById('generateEndpoint').value;
+            
+            let generatedCode = '';
+            
+            switch (language) {
+                case 'javascript':
+                    generatedCode = generateJavaScriptCode(codeType, endpoint);
+                    break;
+                case 'python':
+                    generatedCode = generatePythonCode(codeType, endpoint);
+                    break;
+                case 'curl':
+                    generatedCode = generateCurlCode(codeType, endpoint);
+                    break;
+                case 'php':
+                    generatedCode = generatePhpCode(codeType, endpoint);
+                    break;
+                case 'java':
+                    generatedCode = generateJavaCode(codeType, endpoint);
+                    break;
+                case 'csharp':
+                    generatedCode = generateCSharpCode(codeType, endpoint);
+                    break;
+            }
+            
+            if (generatedCodeEditor) {
+                generatedCodeEditor.setValue(generatedCode);
+                monaco.editor.setModelLanguage(generatedCodeEditor.getModel(), getMonacoLanguage(language));
+            }
+        }
+        
+        function generateJavaScriptCode(type, endpoint) {
+            switch (type) {
+                case 'api-call':
+                    return `// JavaScript API Call
+async function callAPI() {
+    try {
+        const response = await fetch('${endpoint}', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer your-token-here'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(\`HTTP error! status: \${response.status}\`);
+        }
+        
+        const data = await response.json();
+        console.log('Success:', data);
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+// Usage
+callAPI().then(result => {
+    // Handle successful response
+    console.log(result);
+}).catch(error => {
+    // Handle error
+    console.error('API call failed:', error);
+});`;
+                
+                case 'model':
+                    return `// Contract Data Model
+class Contract {
+    constructor(data = {}) {
+        this.id = data.id || null;
+        this.title = data.title || '';
+        this.client = data.client || '';
+        this.provider = data.provider || '';
+        this.amount = data.amount || 0;
+        this.status = data.status || 'pending';
+        this.createdDate = data.createdDate || new Date().toISOString().split('T')[0];
+        this.expiryDate = data.expiryDate || '';
+        this.description = data.description || '';
+    }
+    
+    validate() {
+        const errors = [];
+        if (!this.title) errors.push('Title is required');
+        if (!this.client) errors.push('Client is required');
+        if (!this.provider) errors.push('Provider is required');
+        if (this.amount <= 0) errors.push('Amount must be greater than 0');
+        return errors;
+    }
+    
+    toJSON() {
+        return {
+            id: this.id,
+            title: this.title,
+            client: this.client,
+            provider: this.provider,
+            amount: this.amount,
+            status: this.status,
+            createdDate: this.createdDate,
+            expiryDate: this.expiryDate,
+            description: this.description
+        };
+    }
+}`;
+                
+                case 'sdk':
+                    return `// API SDK Class
+class ContractAPI {
+    constructor(baseURL = 'http://localhost:3000', apiKey = null) {
+        this.baseURL = baseURL;
+        this.apiKey = apiKey;
+    }
+    
+    async request(endpoint, options = {}) {
+        const url = \`\${this.baseURL}\${endpoint}\`;
+        const headers = {
+            'Content-Type': 'application/json',
+            ...options.headers
+        };
+        
+        if (this.apiKey) {
+            headers['Authorization'] = \`Bearer \${this.apiKey}\`;
+        }
+        
+        const response = await fetch(url, {
+            ...options,
+            headers
+        });
+        
+        if (!response.ok) {
+            throw new Error(\`API Error: \${response.status} \${response.statusText}\`);
+        }
+        
+        return response.json();
+    }
+    
+    async getContracts() {
+        return this.request('/api/contracts');
+    }
+    
+    async getContract(id) {
+        return this.request(\`/api/contracts/\${id}\`);
+    }
+    
+    async createContract(data) {
+        return this.request('/api/contracts', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    }
+    
+    async updateContract(id, data) {
+        return this.request(\`/api/contracts/\${id}\`, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    }
+    
+    async deleteContract(id) {
+        return this.request(\`/api/contracts/\${id}\`, {
+            method: 'DELETE'
+        });
+    }
+}
+
+// Usage
+const api = new ContractAPI();
+const contracts = await api.getContracts();`;
+                
+                default:
+                    return '// Code generation not implemented for this type';
+            }
+        }
+        
+        function generatePythonCode(type, endpoint) {
+            switch (type) {
+                case 'api-call':
+                    return `# Python API Call
+import requests
+import json
+
+def call_api():
+    try:
+        url = "${endpoint}"
+        headers = {
+            'Content-Type': 'application/json',
+            # 'Authorization': 'Bearer your-token-here'
+        }
+        
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raises an HTTPError for bad responses
+        
+        data = response.json()
+        print("Success:", data)
+        return data
+        
+    except requests.exceptions.RequestException as e:
+        print(f"Error: {e}")
+        raise
+
+# Usage
+try:
+    result = call_api()
+    # Handle successful response
+    print(result)
+except Exception as e:
+    # Handle error
+    print(f"API call failed: {e}")`;
+                
+                case 'model':
+                    return `# Contract Data Model
+from dataclasses import dataclass
+from typing import Optional
+from datetime import datetime
+
+@dataclass
+class Contract:
+    title: str
+    client: str
+    provider: str
+    amount: float
+    id: Optional[int] = None
+    status: str = 'pending'
+    created_date: str = None
+    expiry_date: str = ''
+    description: str = ''
+    
+    def __post_init__(self):
+        if self.created_date is None:
+            self.created_date = datetime.now().strftime('%Y-%m-%d')
+    
+    def validate(self):
+        errors = []
+        if not self.title:
+            errors.append('Title is required')
+        if not self.client:
+            errors.append('Client is required')
+        if not self.provider:
+            errors.append('Provider is required')
+        if self.amount <= 0:
+            errors.append('Amount must be greater than 0')
+        return errors
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'client': self.client,
+            'provider': self.provider,
+            'amount': self.amount,
+            'status': self.status,
+            'createdDate': self.created_date,
+            'expiryDate': self.expiry_date,
+            'description': self.description
+        }`;
+                
+                default:
+                    return '# Code generation not implemented for this type';
+            }
+        }
+        
+        function generateCurlCode(type, endpoint) {
+            return `# cURL Command
+curl -X GET "${endpoint}" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer your-token-here" \\
+  --silent \\
+  --show-error \\
+  --fail
+
+# With JSON data (for POST/PUT)
+curl -X POST "${endpoint}" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer your-token-here" \\
+  -d '{
+    "title": "Sample Contract",
+    "client": "Test Client",
+    "provider": "Test Provider",
+    "amount": 10000,
+    "description": "Sample contract description"
+  }' \\
+  --silent \\
+  --show-error \\
+  --fail`;
+        }
+        
+        function getMonacoLanguage(lang) {
+            const langMap = {
+                'javascript': 'javascript',
+                'python': 'python',
+                'curl': 'shell',
+                'php': 'php',
+                'java': 'java',
+                'csharp': 'csharp'
+            };
+            return langMap[lang] || 'javascript';
+        }
+        
+        function copyGeneratedCode() {
+            if (generatedCodeEditor) {
+                const code = generatedCodeEditor.getValue();
+                navigator.clipboard.writeText(code).then(() => {
+                    showNotification('success', 'Code copied to clipboard!');
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            }
+        }
+        
+        // Performance and Metrics Functions
+        function updatePerformanceMetrics(responseTime, success) {
+            // Update response time
+            document.getElementById('responseTime').textContent = responseTime;
+            
+            // Update chart
+            if (performanceChart) {
+                const now = new Date().toLocaleTimeString();
+                performanceChart.data.labels.push(now);
+                performanceChart.data.datasets[0].data.push(responseTime);
+                
+                // Keep only last 20 data points
+                if (performanceChart.data.labels.length > 20) {
+                    performanceChart.data.labels.shift();
+                    performanceChart.data.datasets[0].data.shift();
+                }
+                
+                performanceChart.update();
+            }
+            
+            // Simulate other metrics updates
+            updateRequestCount();
+            updateSuccessRate(success);
+        }
+        
+        function updateRequestCount() {
+            const current = parseInt(document.getElementById('requestCount').textContent) || 0;
+            document.getElementById('requestCount').textContent = current + 1;
+        }
+        
+        function updateSuccessRate(success) {
+            const currentRate = parseFloat(document.getElementById('successRate').textContent) || 100;
+            // Simple calculation - in real app this would be more sophisticated
+            const newRate = success ? Math.min(100, currentRate + 0.1) : Math.max(0, currentRate - 1);
+            document.getElementById('successRate').textContent = newRate.toFixed(1);
+        }
+        
+        // Logging Functions
+        function addLogEntry(level, message) {
+            const timestamp = new Date().toISOString().replace('T', ' ').substr(0, 19);
+            const entry = { timestamp, level, message };
+            logEntries.unshift(entry);
+            
+            // Keep only last 100 entries
+            if (logEntries.length > 100) {
+                logEntries.pop();
+            }
+            
+            renderLogs();
+        }
+        
+        function renderLogs() {
+            const logViewer = document.getElementById('logViewer');
+            const selectedLevel = document.getElementById('logLevel').value;
+            
+            const filteredEntries = selectedLevel === 'all' 
+                ? logEntries 
+                : logEntries.filter(entry => entry.level === selectedLevel);
+            
+            logViewer.innerHTML = filteredEntries.map(entry => `
+                <div class="log-entry">
+                    <span class="log-timestamp">[${entry.timestamp}]</span>
+                    <span class="log-level-${entry.level}">[${entry.level.toUpperCase()}]</span>
+                    <span>${entry.message}</span>
+                </div>
+            `).join('');
+        }
+        
+        function filterLogs() {
+            renderLogs();
+        }
+        
+        function clearLogs() {
+            logEntries = [];
+            renderLogs();
+        }
+        
+        function exportLogs() {
+            const dataStr = JSON.stringify(logEntries, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `logs-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Schema Functions
+        function loadSchema() {
+            const schemaType = document.getElementById('schemaType').value;
+            const schemaContent = document.getElementById('schemaContent');
+            
+            const schemas = {
+                contract: {
+                    type: "object",
+                    properties: {
+                        id: { type: "integer", description: "Unique identifier" },
+                        title: { type: "string", minLength: 1, description: "Contract title" },
+                        client: { type: "string", minLength: 1, description: "Client name" },
+                        provider: { type: "string", minLength: 1, description: "Provider name" },
+                        amount: { type: "number", minimum: 0, description: "Contract amount" },
+                        status: { type: "string", enum: ["pending", "active", "completed", "cancelled"] },
+                        createdDate: { type: "string", format: "date" },
+                        expiryDate: { type: "string", format: "date" },
+                        description: { type: "string", description: "Contract description" }
+                    },
+                    required: ["title", "client", "provider", "amount"]
+                },
+                user: {
+                    type: "object",
+                    properties: {
+                        id: { type: "integer" },
+                        name: { type: "string", minLength: 1 },
+                        email: { type: "string", format: "email" },
+                        role: { type: "string", enum: ["admin", "user", "viewer"] },
+                        createdAt: { type: "string", format: "date-time" }
+                    },
+                    required: ["name", "email"]
+                },
+                stats: {
+                    type: "object",
+                    properties: {
+                        totalContracts: { type: "integer", minimum: 0 },
+                        activeContracts: { type: "integer", minimum: 0 },
+                        pendingContracts: { type: "integer", minimum: 0 },
+                        totalValue: { type: "number", minimum: 0 },
+                        averageValue: { type: "number", minimum: 0 }
+                    }
+                },
+                response: {
+                    type: "object",
+                    properties: {
+                        success: { type: "boolean" },
+                        data: { type: "object" },
+                        message: { type: "string" },
+                        error: { type: "string" }
+                    },
+                    required: ["success"]
+                }
+            };
+            
+            schemaContent.textContent = JSON.stringify(schemas[schemaType], null, 2);
+        }
+        
+        // Utility Functions
+        function showNotification(type, message) {
+            // This would integrate with the notification system
+            console.log(`${type.toUpperCase()}: ${message}`);
+        }
+        
+        function openApiExplorer() {
+            window.open('/api-explorer.html', '_blank');
+        }
+        
+        function openChatbot() {
+            window.open('/chatbot.html', '_blank');
+        }
+        
+        function exportData() {
+            // Export all tool data
+            const data = {
+                logs: logEntries,
+                timestamp: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `dev-tools-export-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function refreshAll() {
+            // Refresh all dashboard components
+            loadSchema();
+            updatePerformanceMetrics(0, true);
+            addLogEntry('info', 'Dashboard refreshed');
+        }
+        
+        // Initialize everything when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initPerformanceChart();
+            loadSchema();
+            
+            // Add some sample log entries
+            addLogEntry('info', 'Developer tools dashboard initialized');
+            addLogEntry('info', 'All systems operational');
+            addLogEntry('debug', 'WebSocket connection established');
+            
+            // Simulate some metrics
+            document.getElementById('responseTime').textContent = '145';
+            document.getElementById('requestCount').textContent = '24';
+            document.getElementById('successRate').textContent = '99.2';
+            document.getElementById('activeConnections').textContent = '3';
+            
+            // Set up periodic updates (in real app, this would come from the server)
+            setInterval(() => {
+                if (Math.random() < 0.3) { // 30% chance
+                    const messages = [
+                        'Contract updated successfully',
+                        'New user connected',
+                        'Cache refreshed',
+                        'Backup completed',
+                        'Performance check passed'
+                    ];
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    addLogEntry('info', randomMessage);
+                }
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

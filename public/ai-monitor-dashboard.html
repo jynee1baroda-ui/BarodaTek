@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 AI Monitor Dashboard - BarodaTek</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-cyan: #00ffff;
+            --neon-magenta: #ff00ff;
+            --neon-yellow: #ffff00;
+            --neon-green: #00ff00;
+            --neon-orange: #ff6600;
+            --arcade-purple: #a855f7;
+            --dark-bg: #0a0a1a;
+            --darker-bg: #050510;
+        }
+        
+        body {
+            background: var(--darker-bg);
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.03) 0px, transparent 1px, transparent 2px, rgba(0, 255, 255, 0.03) 3px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+            color: #e6edf3;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+            padding: 30px;
+            border-radius: 0;
+            margin-bottom: 30px;
+            border: 4px solid var(--neon-cyan);
+            border-image: linear-gradient(45deg, var(--neon-cyan), var(--neon-magenta), var(--neon-yellow)) 1;
+            box-shadow: 
+                inset 0 0 30px rgba(0, 255, 255, 0.3),
+                0 0 50px rgba(0, 255, 255, 0.4),
+                0 0 100px rgba(255, 0, 255, 0.3);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: white;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            color: white;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, rgba(10, 10, 26, 0.95), rgba(20, 20, 40, 0.95));
+            border: 3px solid var(--neon-cyan);
+            border-radius: 0;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 255, 255, 0.2),
+                0 0 30px rgba(0, 255, 255, 0.3);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                inset 0 0 30px rgba(0, 255, 255, 0.4),
+                0 0 50px rgba(0, 255, 255, 0.5),
+                0 10px 40px rgba(255, 0, 255, 0.4);
+            border-color: var(--neon-magenta);
+        }
+        
+        .metric-value {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+        
+        .metric-label {
+            color: #8b949e;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-healthy { background: #10b981; }
+        .status-warning { background: #f59e0b; }
+        .status-error { background: #ef4444; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .notification-item {
+            background: #161b22;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        
+        .notification-item:hover {
+            background: #1c2128;
+        }
+        
+        .notification-item.error {
+            border-left-color: #ef4444;
+        }
+        
+        .notification-item.warning {
+            border-left-color: #f59e0b;
+        }
+        
+        .notification-item.success {
+            border-left-color: #10b981;
+        }
+        
+        .knowledge-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+        
+        .knowledge-card h5 {
+            color: #58a6ff;
+            margin-bottom: 10px;
+        }
+        
+        .badge-custom {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-error { background: #ef4444; color: white; }
+        .badge-warning { background: #f59e0b; color: white; }
+        .badge-performance { background: #3b82f6; color: white; }
+        .badge-unknown { background: #6b7280; color: white; }
+        
+        .terminal-window {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .terminal-line {
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .chart-container {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .refresh-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .timestamp {
+            color: #8b949e;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <div class="text-center mb-3" style="font-size: 80px; line-height: 1; filter: drop-shadow(0 0 20px var(--primary-cyan));">
+                🦙
+            </div>
+            <h1 style="color: var(--primary-cyan); text-shadow: 0 0 10px var(--primary-cyan), 0 0 20px var(--primary-cyan); text-transform: uppercase; letter-spacing: 3px; font-family: 'Space Mono', monospace;">
+                <i class="fas fa-robot"></i> AI MONITOR DASHBOARD
+            </h1>
+            <p style="color: var(--neon-magenta); text-shadow: 0 0 10px var(--neon-magenta);">Real-time system health monitoring, auto-fix capabilities, and intelligent issue detection</p>
+            <div class="mt-3">
+                <span class="status-indicator status-healthy"></span>
+                <span id="system-status">System Status: Operational</span>
+                <span class="ms-3 timestamp" id="last-update">Last update: Never</span>
+            </div>
+        </div>
+        
+        <!-- Key Metrics -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <p class="metric-label">Knowledge Base</p>
+                    <h2 class="metric-value" id="knowledge-count">0</h2>
+                    <small class="text-muted">Known Issues</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <p class="metric-label">Memory Usage</p>
+                    <h2 class="metric-value" id="memory-percent">0%</h2>
+                    <small class="text-muted"><span id="memory-used">0</span>MB / <span id="memory-total">0</span>MB</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <p class="metric-label">Total Errors</p>
+                    <h2 class="metric-value" id="total-errors">0</h2>
+                    <small class="text-muted">Detected Issues</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <p class="metric-label">Uptime</p>
+                    <h2 class="metric-value" id="uptime">0h</h2>
+                    <small class="text-muted">System Online</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Live Activity Terminal -->
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mb-3"><i class="fas fa-terminal"></i> Live Activity Monitor</h3>
+                <div class="terminal-window" id="activity-terminal">
+                    <div class="terminal-line" style="color: #10b981;">🤖 AI Monitor initialized and running...</div>
+                    <div class="terminal-line" style="color: #3b82f6;">📊 Monitoring system health every 10 seconds</div>
+                    <div class="terminal-line" style="color: #8b949e;">Waiting for events...</div>
+                </div>
+                <button class="refresh-btn" onclick="refreshData()">
+                    <i class="fas fa-sync-alt"></i> Refresh Data
+                </button>
+            </div>
+        </div>
+        
+        <!-- Recent Notifications -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h3 class="mb-3"><i class="fas fa-bell"></i> Recent Notifications</h3>
+                <div id="notifications-container">
+                    <div class="notification-item">
+                        <strong>💡 System Ready</strong>
+                        <p class="mb-1">AI Monitor is operational and tracking system health</p>
+                        <span class="timestamp">Just now</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Knowledge Base -->
+            <div class="col-md-6">
+                <h3 class="mb-3"><i class="fas fa-brain"></i> Knowledge Base</h3>
+                <div id="knowledge-container" style="max-height: 500px; overflow-y: auto;">
+                    <p class="text-muted">Loading knowledge base...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="websocket-manager.js"></script>
+    <script>
+        let wsManager = null;
+        let refreshInterval = null;
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            connectWebSocket();
+            refreshData();
+            
+            // Auto-refresh every 30 seconds
+            refreshInterval = setInterval(refreshData, 30000);
+        });
+        
+        // Connect to WebSocket with auto-reconnection
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const url = `${protocol}//${window.location.host}`;
+            
+            wsManager = new WebSocketManager(url, {
+                maxReconnectAttempts: 10,
+                reconnectDelay: 1000,
+                maxReconnectDelay: 30000
+            });
+            
+            wsManager.onOpen(() => {
+                addTerminalLine('✅ Connected to real-time monitoring', 'var(--neon-green)');
+                wsManager.send(JSON.stringify({ type: 'identify', role: 'admin' }));
+            });
+            
+            wsManager.onMessage((event) => {
+                const data = JSON.parse(event.data);
+                
+                if (data.type === 'ai-monitor-notification') {
+                    handleNotification(data);
+                }
+            });
+            
+            wsManager.onClose((event) => {
+                addTerminalLine(`⚠️ WebSocket disconnected (Code: ${event.code})`, 'var(--neon-yellow)');
+                addTerminalLine('🔄 Auto-reconnection enabled with exponential backoff', 'var(--primary-cyan)');
+            });
+            
+            wsManager.onError((error) => {
+                addTerminalLine('❌ WebSocket error - Auto-reconnecting...', 'var(--primary-pink)');
+            });
+        }
+        
+        // Refresh all data
+        async function refreshData() {
+            try {
+                // Get health status
+                const healthRes = await fetch('/api/monitor/health');
+                const healthData = await healthRes.json();
+                updateHealthMetrics(healthData.health);
+                
+                // Get statistics
+                const statsRes = await fetch('/api/monitor/stats');
+                const statsData = await statsRes.json();
+                updateStats(statsData.stats);
+                
+                // Get knowledge base
+                const knowledgeRes = await fetch('/api/monitor/knowledge');
+                const knowledgeData = await knowledgeRes.json();
+                updateKnowledgeBase(knowledgeData.knowledge);
+                
+                document.getElementById('last-update').textContent = 
+                    `Last update: ${new Date().toLocaleTimeString()}`;
+                    
+                addTerminalLine('🔄 Dashboard refreshed', '#3b82f6');
+                
+            } catch (error) {
+                addTerminalLine(`❌ Failed to refresh: ${error.message}`, '#ef4444');
+            }
+        }
+        
+        // Update health metrics
+        function updateHealthMetrics(health) {
+            if (health.performance && health.performance.memory) {
+                const mem = health.performance.memory;
+                document.getElementById('memory-percent').textContent = `${mem.percent}%`;
+                document.getElementById('memory-used').textContent = mem.used;
+                document.getElementById('memory-total').textContent = mem.total;
+            }
+            
+            if (health.errors) {
+                document.getElementById('total-errors').textContent = health.errors.length;
+            }
+            
+            if (health.performance && health.performance.uptime) {
+                const hours = Math.floor(health.performance.uptime / 3600);
+                document.getElementById('uptime').textContent = `${hours}h`;
+            }
+        }
+        
+        // Update statistics
+        function updateStats(stats) {
+            if (stats.knowledgeBaseSize) {
+                document.getElementById('knowledge-count').textContent = stats.knowledgeBaseSize;
+            }
+        }
+        
+        // Update knowledge base
+        function updateKnowledgeBase(knowledge) {
+            const container = document.getElementById('knowledge-container');
+            
+            if (!knowledge || knowledge.length === 0) {
+                container.innerHTML = '<p class="text-muted">No knowledge entries yet</p>';
+                return;
+            }
+            
+            container.innerHTML = knowledge.map(item => `
+                <div class="knowledge-card">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5>${item.issue}</h5>
+                        <span class="badge-custom badge-${item.type}">${item.type.toUpperCase()}</span>
+                    </div>
+                    <p class="mb-2">${item.description}</p>
+                    <strong style="color: #10b981;">💡 Solution:</strong>
+                    <p class="mb-2">${item.solution}</p>
+                    ${item.autoFix ? '<span class="badge bg-success">✅ Auto-Fix Available</span>' : ''}
+                    ${item.timesEncountered ? `<span class="badge bg-info">Encountered ${item.timesEncountered}x</span>` : ''}
+                    ${item.chatbotContribution ? '<span class="badge bg-primary">🤖 Chatbot Contribution</span>' : ''}
+                </div>
+            `).join('');
+        }
+        
+        // Handle real-time notification
+        function handleNotification(notification) {
+            addTerminalLine(`🔔 ${notification.issue || notification.message}`, '#f59e0b');
+            
+            const container = document.getElementById('notifications-container');
+            const notifEl = document.createElement('div');
+            notifEl.className = `notification-item ${notification.type}`;
+            notifEl.innerHTML = `
+                <strong>${getNotificationIcon(notification.type)} ${notification.issue || 'System Alert'}</strong>
+                <p class="mb-1">${notification.description || notification.message}</p>
+                ${notification.solution ? `<small style="color: #10b981;">Solution: ${notification.solution}</small><br>` : ''}
+                <span class="timestamp">${new Date(notification.timestamp).toLocaleTimeString()}</span>
+            `;
+            
+            container.insertBefore(notifEl, container.firstChild);
+            
+            // Keep only last 10 notifications
+            while (container.children.length > 10) {
+                container.removeChild(container.lastChild);
+            }
+        }
+        
+        // Add line to terminal
+        function addTerminalLine(message, color = '#e6edf3') {
+            const terminal = document.getElementById('activity-terminal');
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.style.color = color;
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            
+            terminal.appendChild(line);
+            
+            // Keep only last 50 lines
+            while (terminal.children.length > 50) {
+                terminal.removeChild(terminal.firstChild);
+            }
+            
+            // Scroll to bottom
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+        
+        // Get notification icon
+        function getNotificationIcon(type) {
+            const icons = {
+                error: '❌',
+                warning: '⚠️',
+                success: '✅',
+                info: 'ℹ️',
+                performance: '⚡'
+            };
+            return icons[type] || '📊';
+        }
+    </script>
+</body>
+</html>

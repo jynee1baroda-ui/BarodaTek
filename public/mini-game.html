@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Contract Mini Game - BarodaTek.com</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .game-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .game-board {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .contract-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+        
+        .contract-card:hover {
+            transform: scale(1.05);
+            opacity: 1;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .contract-card.selected {
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            border: 3px solid #ffd700;
+        }
+        
+        .contract-card.correct {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            animation: correctPulse 0.6s ease-in-out;
+        }
+        
+        .contract-card.incorrect {
+            background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+            animation: incorrectShake 0.6s ease-in-out;
+        }
+        
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1.1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .game-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .question-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .difficulty-selector {
+            margin-bottom: 20px;
+        }
+        
+        .difficulty-btn {
+            margin: 0 5px;
+            min-width: 100px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            border-radius: 5px;
+            background: #e9ecef;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .game-controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .power-ups {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .power-up {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 15px;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .power-up:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .power-up:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .leaderboard {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .achievement {
+            background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            animation: achievementSlide 0.5s ease-out;
+        }
+        
+        @keyframes achievementSlide {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .floating-score {
+            position: absolute;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #28a745;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+        }
+        
+        @keyframes floatUp {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+        }
+        
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle 1s ease-out forwards;
+        }
+        
+        @keyframes particle {
+            from {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: translate(var(--dx), var(--dy)) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        .combo-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            pointer-events: none;
+            animation: comboEffect 1s ease-out forwards;
+            z-index: 1000;
+        }
+        
+        @keyframes comboEffect {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1><i class="fas fa-gamepad"></i> API Contract Challenge</h1>
+            <p class="lead">Master the art of API contract management with BarodaTek.com</p>
+            <div class="d-flex justify-content-center align-items-center gap-3">
+                <span class="badge bg-light text-dark">Powered by BarodaTek.com</span>
+                <span id="live-players" class="badge bg-success">Players Online: 1</span>
+            </div>
+        </div>
+        
+        <div class="game-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="score">0</div>
+                <div class="stat-label">Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="level">1</div>
+                <div class="stat-label">Level</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="streak">0</div>
+                <div class="stat-label">Streak</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="time">60</div>
+                <div class="stat-label">Time Left</div>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        
+        <div class="question-panel">
+            <div class="difficulty-selector">
+                <button class="btn btn-outline-success difficulty-btn" data-action="setDifficulty" data-arg="easy">Easy</button>
+                <button class="btn btn-outline-warning difficulty-btn active" data-action="setDifficulty" data-arg="medium">Medium</button>
+                <button class="btn btn-outline-danger difficulty-btn" data-action="setDifficulty" data-arg="hard">Hard</button>
+            </div>
+            
+            <div class="question-text" id="questionText">
+                Welcome to the API Contract Challenge! Select a difficulty and click Start Game.
+            </div>
+            
+            <div class="power-ups">
+                <button class="power-up" id="skipPowerUp" data-action="usePowerUp" data-arg="skip" disabled>
+                    <i class="fas fa-forward"></i> Skip (3)
+                </button>
+                <button class="power-up" id="hintPowerUp" data-action="usePowerUp" data-arg="hint" disabled>
+                    <i class="fas fa-lightbulb"></i> Hint (2)
+                </button>
+                <button class="power-up" id="timePowerUp" data-action="usePowerUp" data-arg="time" disabled>
+                    <i class="fas fa-clock"></i> +Time (1)
+                </button>
+            </div>
+        </div>
+        
+        <div class="game-board">
+            <div class="row" id="contractOptions">
+                <!-- Contract cards will be generated here -->
+            </div>
+        </div>
+        
+        <div class="game-controls">
+            <button class="btn btn-success btn-lg" id="startBtn" data-action="startGame">
+                <i class="fas fa-play"></i> Start Game
+            </button>
+            <button class="btn btn-warning btn-lg" id="pauseBtn" data-action="pauseGame" style="display: none;">
+                <i class="fas fa-pause"></i> Pause
+            </button>
+            <button class="btn btn-danger btn-lg" id="stopBtn" data-action="stopGame" style="display: none;">
+                <i class="fas fa-stop"></i> Stop
+            </button>
+            <button class="btn btn-info btn-lg" data-action="showLeaderboard">
+                <i class="fas fa-trophy"></i> Leaderboard
+            </button>
+        </div>
+        
+        <div class="leaderboard" id="leaderboard" style="display: none;">
+            <h4><i class="fas fa-trophy"></i> Top Players</h4>
+            <div id="leaderboardContent">Loading...</div>
+        </div>
+        
+        <div id="achievements" class="achievements-container">
+            <!-- Achievements will appear here -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="barodatek-analytics.js"></script>
+    <script>
+        class APIContractGame {
+            constructor() {
+                this.score = 0;
+                this.level = 1;
+                this.streak = 0;
+                this.timeLeft = 60;
+                this.difficulty = 'medium';
+                this.isPlaying = false;
+                this.isPaused = false;
+                this.gameTimer = null;
+                this.currentQuestion = null;
+                this.powerUps = { skip: 3, hint: 2, time: 1 };
+                this.achievements = [];
+                this.questionsAnswered = 0;
+                this.correctAnswers = 0;
+                this.maxStreak = 0;
+                
+                this.questions = {
+                    easy: [
+                        {
+                            question: "Which HTTP method is used to create a new contract?",
+                            correct: "POST",
+                            options: ["GET", "POST", "PUT", "DELETE"],
+                            explanation: "POST is used to create new resources in RESTful APIs."
+                        },
+                        {
+                            question: "What HTTP status code indicates successful creation?",
+                            correct: "201",
+                            options: ["200", "201", "400", "500"],
+                            explanation: "201 Created indicates that a new resource has been successfully created."
+                        },
+                        {
+                            question: "Which field is required for all contracts?",
+                            correct: "title",
+                            options: ["description", "title", "notes", "tags"],
+                            explanation: "Title is a mandatory field for contract identification."
+                        }
+                    ],
+                    medium: [
+                        {
+                            question: "What's the best practice for API versioning?",
+                            correct: "/api/v1/contracts",
+                            options: ["/api/contracts", "/api/v1/contracts", "/contracts/api", "/v1/api/contracts"],
+                            explanation: "Including version in the URL path is a common best practice."
+                        },
+                        {
+                            question: "Which validation library is commonly used with Node.js?",
+                            correct: "Joi",
+                            options: ["Joi", "Yup", "Zod", "Ajv"],
+                            explanation: "Joi is a popular schema validation library for Node.js."
+                        },
+                        {
+                            question: "What's the purpose of middleware in Express?",
+                            correct: "Process requests between client and server",
+                            options: ["Store data", "Process requests between client and server", "Create HTML", "Manage databases"],
+                            explanation: "Middleware functions execute during the request-response cycle."
+                        }
+                    ],
+                    hard: [
+                        {
+                            question: "How should you handle concurrent contract updates?",
+                            correct: "Optimistic locking with version numbers",
+                            options: ["First come first served", "Optimistic locking with version numbers", "Reject all updates", "Allow all updates"],
+                            explanation: "Optimistic locking prevents data conflicts in concurrent scenarios."
+                        },
+                        {
+                            question: "What's the best caching strategy for dynamic contract data?",
+                            correct: "Cache-Control with ETag validation",
+                            options: ["No caching", "Cache-Control with ETag validation", "Permanent caching", "Random caching"],
+                            explanation: "ETag validation ensures data consistency while improving performance."
+                        },
+                        {
+                            question: "How should API rate limiting be implemented?",
+                            correct: "Token bucket algorithm with Redis",
+                            options: ["No rate limiting", "Token bucket algorithm with Redis", "Simple counters", "Time-based blocking"],
+                            explanation: "Token bucket with Redis provides scalable rate limiting."
+                        }
+                    ]
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.updateDisplay();
+                this.generateContractOptions();
+                this.loadLeaderboard();
+                
+                // Track game initialization
+                if (window.barodaTekAnalytics) {
+                    window.barodaTekAnalytics.trackCustomEvent('game_initialized', {
+                        game: 'api_contract_challenge',
+                        difficulty: this.difficulty
+                    });
+                }
+            }
+            
+            setDifficulty(difficulty) {
+                this.difficulty = difficulty;
+                document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
+                
+                if (window.barodaTekAnalytics) {
+                    window.barodaTekAnalytics.trackCustomEvent('difficulty_changed', {
+                        newDifficulty: difficulty
+                    });
+                }
+            }
+            
+            startGame() {
+                this.isPlaying = true;
+                this.isPaused = false;
+                this.score = 0;
+                this.level = 1;
+                this.streak = 0;
+                this.timeLeft = 60;
+                this.questionsAnswered = 0;
+                this.correctAnswers = 0;
+                this.maxStreak = 0;
+                
+                document.getElementById('startBtn').style.display = 'none';
+                document.getElementById('pauseBtn').style.display = 'inline-block';
+                document.getElementById('stopBtn').style.display = 'inline-block';
+                
+                this.enablePowerUps();
+                this.startTimer();
+                this.nextQuestion();
+                
+                if (window.barodaTekAnalytics) {
+                    window.barodaTekAnalytics.trackCustomEvent('game_started', {
+                        difficulty: this.difficulty,
+                        timestamp: Date.now()
+                    });
+                }
+                
+                this.showFloatingText('Game Started!', '#28a745');
+            }
+            
+            pauseGame() {
+                if (this.isPaused) {
+                    this.isPaused = false;
+                    this.startTimer();
+                    document.getElementById('pauseBtn').innerHTML = '<i class="fas fa-pause"></i> Pause';
+                } else {
+                    this.isPaused = true;
+                    this.stopTimer();
+                    document.getElementById('pauseBtn').innerHTML = '<i class="fas fa-play"></i> Resume';
+                }
+            }
+            
+            stopGame() {
+                this.isPlaying = false;
+                this.isPaused = false;
+                this.stopTimer();
+                
+                document.getElementById('startBtn').style.display = 'inline-block';
+                document.getElementById('pauseBtn').style.display = 'none';
+                document.getElementById('stopBtn').style.display = 'none';
+                
+                this.disablePowerUps();
+                this.showGameOver();
+                
+                if (window.barodaTekAnalytics) {
+                    window.barodaTekAnalytics.trackCustomEvent('game_ended', {
+                        score: this.score,
+                        level: this.level,
+                        questionsAnswered: this.questionsAnswered,
+                        correctAnswers: this.correctAnswers,
+                        maxStreak: this.maxStreak,
+                        difficulty: this.difficulty
+                    });
+                }
+            }
+            
+            startTimer() {
+                this.gameTimer = setInterval(() => {
+                    if (!this.isPaused) {
+                        this.timeLeft--;
+                        this.updateDisplay();
+                        
+                        if (this.timeLeft <= 0) {
+                            this.stopGame();
+                        }
+                    }
+                }, 1000);
+            }
+            
+            stopTimer() {
+                if (this.gameTimer) {
+                    clearInterval(this.gameTimer);
+                    this.gameTimer = null;
+                }
+            }
+            
+            nextQuestion() {
+                if (!this.isPlaying) return;
+                
+                const questions = this.questions[this.difficulty];
+                this.currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+                
+                document.getElementById('questionText').textContent = this.currentQuestion.question;
+                this.generateContractOptions();
+                
+                // Reset card styles
+                document.querySelectorAll('.contract-card').forEach(card => {
+                    card.classList.remove('correct', 'incorrect', 'selected');
+                });
+            }
+            
+            generateContractOptions() {
+                const container = document.getElementById('contractOptions');
+                container.innerHTML = '';
+                
+                if (!this.currentQuestion) return;
+                
+                const options = [...this.currentQuestion.options];
+                this.shuffleArray(options);
+                
+                options.forEach((option, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'col-md-6 col-lg-3';
+                    const contractCard = document.createElement('div');
+                    contractCard.className = 'contract-card';
+                    contractCard.innerHTML = `
+                        <h6><i class="fas fa-file-contract"></i> Option ${index + 1}</h6>
+                        <p class="mb-0">${option}</p>
+                    `;
+                    contractCard.onclick = function() { selectAnswer(option, this); };
+                    card.appendChild(contractCard);
+                    container.appendChild(card);
+                });
+            }
+            
+            selectAnswer(answer, cardElement) {
+                if (!this.isPlaying || this.isPaused) return;
+                
+                // Remove previous selections
+                document.querySelectorAll('.contract-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                
+                cardElement.classList.add('selected');
+                
+                setTimeout(() => {
+                    this.checkAnswer(answer, cardElement);
+                }, 500);
+            }
+            
+            checkAnswer(answer, cardElement) {
+                this.questionsAnswered++;
+                const isCorrect = answer === this.currentQuestion.correct;
+                
+                if (isCorrect) {
+                    cardElement.classList.add('correct');
+                    this.correctAnswers++;
+                    this.streak++;
+                    this.maxStreak = Math.max(this.maxStreak, this.streak);
+                    
+                    const points = this.calculatePoints();
+                    this.score += points;
+                    
+                    this.showFloatingScore(points, cardElement);
+                    this.createParticles(cardElement);
+                    this.checkForAchievements();
+                    
+                    if (this.streak > 1) {
+                        this.showComboEffect();
+                    }
+                    
+                    if (window.barodaTekAnalytics) {
+                        window.barodaTekAnalytics.trackCustomEvent('correct_answer', {
+                            question: this.currentQuestion.question,
+                            answer: answer,
+                            points: points,
+                            streak: this.streak
+                        });
+                    }
+                } else {
+                    cardElement.classList.add('incorrect');
+                    this.streak = 0;
+                    
+                    // Show correct answer
+                    document.querySelectorAll('.contract-card').forEach(card => {
+                        if (card.textContent.includes(this.currentQuestion.correct)) {
+                            card.classList.add('correct');
+                        }
+                    });
+                    
+                    if (window.barodaTekAnalytics) {
+                        window.barodaTekAnalytics.trackCustomEvent('incorrect_answer', {
+                            question: this.currentQuestion.question,
+                            selectedAnswer: answer,
+                            correctAnswer: this.currentQuestion.correct
+                        });
+                    }
+                }
+                
+                // Show explanation
+                this.showExplanation(this.currentQuestion.explanation);
+                
+                // Level up check
+                if (this.score >= this.level * 1000) {
+                    this.levelUp();
+                }
+                
+                this.updateDisplay();
+                
+                setTimeout(() => {
+                    this.nextQuestion();
+                }, 2000);
+            }
+            
+            calculatePoints() {
+                const basePoints = {
+                    easy: 100,
+                    medium: 200,
+                    hard: 300
+                }[this.difficulty];
+                
+                const streakMultiplier = Math.min(this.streak, 5);
+                const timeBonus = Math.floor(this.timeLeft / 10) * 10;
+                
+                return basePoints + (basePoints * streakMultiplier * 0.2) + timeBonus;
+            }
+            
+            levelUp() {
+                this.level++;
+                this.timeLeft += 20; // Bonus time for leveling up
+                this.showFloatingText(`Level ${this.level}!`, '#ffd700');
+                
+                if (window.barodaTekAnalytics) {
+                    window.barodaTekAnalytics.trackCustomEvent('level_up', {
+                        newLevel: this.level,
+                        score: this.score
+                    });
+                }
+            }
+            
+            usePowerUp(type) {
+                if (this.powerUps[type] <= 0 || !this.isPlaying) return;
+                
+                this.powerUps[type]--;
+                this.updatePowerUpDisplay();
+                
+                switch (type) {
+                    case 'skip':
+                        this.nextQuestion();
+                        this.showFloatingText('Question Skipped!', '#17a2b8');
+                        break;
+                    case 'hint':
+                        this.showHint();
+                        break;
+                    case 'time':
+                        this.timeLeft += 30;
+                        this.showFloatingText('+30 Seconds!', '#28a745');
+                        break;
+                }
+                
+                if (window.barodaTekAnalytics) {
+                    window.barodaTekAnalytics.trackCustomEvent('power_up_used', {
+                        type: type,
+                        remaining: this.powerUps[type]
+                    });
+                }
+            }
+            
+            showHint() {
+                const hintText = `Hint: The correct answer starts with "${this.currentQuestion.correct.charAt(0)}"`;
+                document.getElementById('questionText').innerHTML = `
+                    ${this.currentQuestion.question}<br>
+                    <small class="text-info"><i class="fas fa-lightbulb"></i> ${hintText}</small>
+                `;
+            }
+            
+            showExplanation(explanation) {
+                const questionElement = document.getElementById('questionText');
+                questionElement.innerHTML = `
+                    ${this.currentQuestion.question}<br>
+                    <small class="text-success"><i class="fas fa-info-circle"></i> ${explanation}</small>
+                `;
+            }
+            
+            checkForAchievements() {
+                const achievements = [];
+                
+                if (this.streak === 5 && !this.achievements.includes('streak_5')) {
+                    achievements.push({ id: 'streak_5', name: 'Streak Master', description: '5 answers in a row!' });
+                }
+                
+                if (this.score >= 1000 && !this.achievements.includes('score_1000')) {
+                    achievements.push({ id: 'score_1000', name: 'Point Collector', description: 'Reached 1000 points!' });
+                }
+                
+                if (this.level >= 5 && !this.achievements.includes('level_5')) {
+                    achievements.push({ id: 'level_5', name: 'Level Champion', description: 'Reached level 5!' });
+                }
+                
+                achievements.forEach(achievement => {
+                    this.achievements.push(achievement.id);
+                    this.showAchievement(achievement);
+                });
+            }
+            
+            showAchievement(achievement) {
+                const container = document.getElementById('achievements');
+                const achievementElement = document.createElement('div');
+                achievementElement.className = 'achievement';
+                achievementElement.innerHTML = `
+                    <i class="fas fa-trophy me-3"></i>
+                    <div>
+                        <strong>${achievement.name}</strong><br>
+                        <small>${achievement.description}</small>
+                    </div>
+                `;
+                
+                container.appendChild(achievementElement);
+                
+                setTimeout(() => {
+                    achievementElement.remove();
+                }, 5000);
+            }
+            
+            showFloatingScore(points, element) {
+                const rect = element.getBoundingClientRect();
+                const floatingScore = document.createElement('div');
+                floatingScore.className = 'floating-score';
+                floatingScore.textContent = `+${points}`;
+                floatingScore.style.left = `${rect.left + rect.width/2}px`;
+                floatingScore.style.top = `${rect.top}px`;
+                
+                document.body.appendChild(floatingScore);
+                
+                setTimeout(() => {
+                    floatingScore.remove();
+                }, 1000);
+            }
+            
+            createParticles(element) {
+                const rect = element.getBoundingClientRect();
+                const centerX = rect.left + rect.width/2;
+                const centerY = rect.top + rect.height/2;
+                
+                for (let i = 0; i < 10; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = `${centerX}px`;
+                    particle.style.top = `${centerY}px`;
+                    
+                    const dx = (Math.random() - 0.5) * 200;
+                    const dy = (Math.random() - 0.5) * 200;
+                    particle.style.setProperty('--dx', `${dx}px`);
+                    particle.style.setProperty('--dy', `${dy}px`);
+                    
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 1000);
+                }
+            }
+            
+            showComboEffect() {
+                const combo = document.createElement('div');
+                combo.className = 'combo-indicator';
+                combo.textContent = `${this.streak}x COMBO!`;
+                
+                document.body.appendChild(combo);
+                
+                setTimeout(() => {
+                    combo.remove();
+                }, 1000);
+            }
+            
+            showFloatingText(text, color) {
+                const floating = document.createElement('div');
+                floating.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 2rem;
+                    font-weight: bold;
+                    color: ${color};
+                    pointer-events: none;
+                    animation: floatUp 2s ease-out forwards;
+                    z-index: 1000;
+                `;
+                floating.textContent = text;
+                
+                document.body.appendChild(floating);
+                
+                setTimeout(() => {
+                    floating.remove();
+                }, 2000);
+            }
+            
+            showGameOver() {
+                const accuracy = this.questionsAnswered > 0 ? Math.round((this.correctAnswers / this.questionsAnswered) * 100) : 0;
+                
+                document.getElementById('questionText').innerHTML = `
+                    <h3>🎮 Game Over!</h3>
+                    <div class="row text-start">
+                        <div class="col-md-6">
+                            <p><strong>Final Score:</strong> ${this.score.toLocaleString()}</p>
+                            <p><strong>Level Reached:</strong> ${this.level}</p>
+                            <p><strong>Max Streak:</strong> ${this.maxStreak}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Questions Answered:</strong> ${this.questionsAnswered}</p>
+                            <p><strong>Accuracy:</strong> ${accuracy}%</p>
+                            <p><strong>Difficulty:</strong> ${this.difficulty.charAt(0).toUpperCase() + this.difficulty.slice(1)}</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" data-action="saveScore">Save High Score</button>
+                `;
+            }
+            
+            saveScore() {
+                const playerName = prompt('Enter your name for the leaderboard:') || 'Anonymous';
+                const scoreData = {
+                    name: playerName,
+                    score: this.score,
+                    level: this.level,
+                    accuracy: this.questionsAnswered > 0 ? Math.round((this.correctAnswers / this.questionsAnswered) * 100) : 0,
+                    difficulty: this.difficulty,
+                    date: new Date().toISOString(),
+                    maxStreak: this.maxStreak
+                };
+                
+                let leaderboard = JSON.parse(localStorage.getItem('barodatek_game_leaderboard') || '[]');
+                leaderboard.push(scoreData);
+                leaderboard.sort((a, b) => b.score - a.score);
+                leaderboard = leaderboard.slice(0, 10); // Keep top 10
+                
+                localStorage.setItem('barodatek_game_leaderboard', JSON.stringify(leaderboard));
+                
+                if (window.barodaTekAnalytics) {
+                    window.barodaTekAnalytics.trackCustomEvent('score_saved', scoreData);
+                }
+                
+                this.showFloatingText('Score Saved!', '#28a745');
+                this.loadLeaderboard();
+            }
+            
+            loadLeaderboard() {
+                const leaderboard = JSON.parse(localStorage.getItem('barodatek_game_leaderboard') || '[]');
+                const content = document.getElementById('leaderboardContent');
+                
+                if (leaderboard.length === 0) {
+                    content.innerHTML = '<p class="text-muted">No scores yet. Be the first to play!</p>';
+                    return;
+                }
+                
+                content.innerHTML = leaderboard.map((entry, index) => `
+                    <div class="d-flex justify-content-between align-items-center mb-2 p-2 ${index < 3 ? 'bg-light' : ''} rounded">
+                        <div>
+                            <strong>${index + 1}. ${entry.name}</strong>
+                            <small class="text-muted d-block">${new Date(entry.date).toLocaleDateString()} • ${entry.difficulty}</small>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold">${entry.score.toLocaleString()}</div>
+                            <small class="text-muted">Level ${entry.level} • ${entry.accuracy}%</small>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            showLeaderboard() {
+                const leaderboard = document.getElementById('leaderboard');
+                leaderboard.style.display = leaderboard.style.display === 'none' ? 'block' : 'none';
+                this.loadLeaderboard();
+            }
+            
+            enablePowerUps() {
+                document.getElementById('skipPowerUp').disabled = false;
+                document.getElementById('hintPowerUp').disabled = false;
+                document.getElementById('timePowerUp').disabled = false;
+                this.updatePowerUpDisplay();
+            }
+            
+            disablePowerUps() {
+                document.getElementById('skipPowerUp').disabled = true;
+                document.getElementById('hintPowerUp').disabled = true;
+                document.getElementById('timePowerUp').disabled = true;
+            }
+            
+            updatePowerUpDisplay() {
+                document.getElementById('skipPowerUp').innerHTML = `<i class="fas fa-forward"></i> Skip (${this.powerUps.skip})`;
+                document.getElementById('hintPowerUp').innerHTML = `<i class="fas fa-lightbulb"></i> Hint (${this.powerUps.hint})`;
+                document.getElementById('timePowerUp').innerHTML = `<i class="fas fa-clock"></i> +Time (${this.powerUps.time})`;
+            }
+            
+            updateDisplay() {
+                document.getElementById('score').textContent = this.score.toLocaleString();
+                document.getElementById('level').textContent = this.level;
+                document.getElementById('streak').textContent = this.streak;
+                document.getElementById('time').textContent = this.timeLeft;
+                
+                // Update progress bar
+                const progress = (this.score % 1000) / 1000 * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+            }
+            
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+        }
+        
+        // Global functions
+        function setDifficulty(difficulty) {
+            game.setDifficulty(difficulty);
+        }
+        
+        function startGame() {
+            game.startGame();
+        }
+        
+        function pauseGame() {
+            game.pauseGame();
+        }
+        
+        function stopGame() {
+            game.stopGame();
+        }
+        
+        function selectAnswer(answer, element) {
+            game.selectAnswer(answer, element);
+        }
+        
+        function usePowerUp(type) {
+            game.usePowerUp(type);
+        }
+        
+        function showLeaderboard() {
+            game.showLeaderboard();
+        }
+        
+        // Initialize game when page loads
+        let game;
+        document.addEventListener('DOMContentLoaded', () => {
+            game = new APIContractGame();
+            
+            // Simulate live players (would be real in production)
+            setInterval(() => {
+                const players = Math.floor(Math.random() * 20) + 1;
+                document.getElementById('live-players').textContent = `Players Online: ${players}`;
+            }, 10000);
+            
+            // CSP-safe delegated event handling
+            document.addEventListener('click', function(e) {
+                const actionEl = e.target.closest('[data-action]');
+                if (!actionEl) return;
+                e.preventDefault();
+                
+                const action = actionEl.getAttribute('data-action');
+                const arg = actionEl.getAttribute('data-arg');
+                
+                switch(action) {
+                    case 'setDifficulty':
+                        setDifficulty(arg);
+                        break;
+                    case 'usePowerUp':
+                        usePowerUp(arg);
+                        break;
+                    case 'startGame':
+                        startGame();
+                        break;
+                    case 'pauseGame':
+                        pauseGame();
+                        break;
+                    case 'stopGame':
+                        stopGame();
+                        break;
+                    case 'showLeaderboard':
+                        showLeaderboard();
+                        break;
+                    case 'saveScore':
+                        if (game) game.saveScore();
+                        break;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

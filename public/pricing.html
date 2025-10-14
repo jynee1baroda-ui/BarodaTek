@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Pricing & Services - BarodaTek API Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🦙</text></svg>">
+    <style>
+        :root {
+            --primary-cyan: #00d9ff;
+            --primary-pink: #ff0080;
+            --accent-yellow: #ffd700;
+            --accent-green: #00ff88;
+            --dark-bg: #0a0014;
+            --darker-bg: #050008;
+        }
+        
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Space Mono', monospace;
+        }
+        
+        .pricing-header {
+            padding: 80px 0 40px;
+            text-align: center;
+        }
+        
+        .pricing-header h1 {
+            font-size: 3rem;
+            color: var(--primary-cyan);
+            margin-bottom: 20px;
+        }
+        
+        .pricing-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 16px;
+            padding: 40px 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+            height: 100%;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,217,255,0.3);
+            border-color: var(--accent-yellow);
+        }
+        
+        .pricing-card.featured {
+            border-color: var(--accent-yellow);
+            background: rgba(255,215,0,0.1);
+            position: relative;
+        }
+        
+        .pricing-card.featured::before {
+            content: "⭐ MOST POPULAR";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-yellow);
+            color: black;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        
+        .price {
+            font-size: 3rem;
+            color: var(--accent-yellow);
+            font-weight: 700;
+            margin: 20px 0;
+        }
+        
+        .price small {
+            font-size: 1rem;
+            color: var(--primary-cyan);
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+        }
+        
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .feature-list li:before {
+            content: "✅ ";
+            margin-right: 10px;
+        }
+        
+        .cta-button {
+            background: var(--primary-cyan);
+            color: black;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .cta-button:hover {
+            background: var(--accent-yellow);
+            transform: scale(1.05);
+        }
+        
+        .service-section {
+            padding: 60px 0;
+            border-top: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        .service-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--primary-pink);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover {
+            border-color: var(--accent-green);
+            background: rgba(0,255,136,0.1);
+        }
+        
+        .compare-table {
+            margin: 60px 0;
+        }
+        
+        .compare-table table {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .compare-table th {
+            background: var(--primary-cyan);
+            color: black;
+            padding: 20px;
+            font-weight: 700;
+        }
+        
+        .compare-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .check-mark {
+            color: var(--accent-green);
+            font-size: 1.5rem;
+        }
+        
+        .x-mark {
+            color: var(--primary-pink);
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="pricing-header">
+        <div class="container">
+            <div style="font-size: 80px; margin-bottom: 20px;">🦙</div>
+            <h1>💰 Pricing & Services</h1>
+            <p class="lead" style="color: var(--primary-cyan); max-width: 600px; margin: 0 auto;">
+                Choose the perfect plan for your needs. From free open-source to enterprise solutions.
+            </p>
+        </div>
+    </div>
+    
+    <!-- Pricing Tiers -->
+    <div class="container">
+        <div class="row">
+            <!-- Free Tier -->
+            <div class="col-lg-3 col-md-6">
+                <div class="pricing-card">
+                    <h3 style="color: var(--primary-cyan);">🎁 Community</h3>
+                    <div class="price">
+                        $0
+                        <small>/forever</small>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.7);">Perfect for learning and personal projects</p>
+                    
+                    <ul class="feature-list">
+                        <li>Open-source code access</li>
+                        <li>1,000 API calls/month</li>
+                        <li>Community support</li>
+                        <li>Basic documentation</li>
+                        <li>Self-hosted only</li>
+                        <li>GitHub updates</li>
+                    </ul>
+                    
+                    <a href="https://github.com/jynee1baroda" class="cta-button" style="background: rgba(255,255,255,0.1); color: white;">
+                        <i class="fab fa-github me-2"></i>Get Started
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Starter Tier -->
+            <div class="col-lg-3 col-md-6">
+                <div class="pricing-card">
+                    <h3 style="color: var(--accent-green);">🚀 Starter</h3>
+                    <div class="price">
+                        $29
+                        <small>/month</small>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.7);">Great for small projects and startups</p>
+                    
+                    <ul class="feature-list">
+                        <li>Everything in Free</li>
+                        <li>50,000 API calls/month</li>
+                        <li>Email support (48hr)</li>
+                        <li>Cloud hosting included</li>
+                        <li>Basic analytics</li>
+                        <li>99.9% uptime SLA</li>
+                    </ul>
+                    
+                    <a href="#contact" class="cta-button" style="background: var(--accent-green); color: black;">
+                        Choose Starter
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Professional Tier (Featured) -->
+            <div class="col-lg-3 col-md-6">
+                <div class="pricing-card featured">
+                    <h3 style="color: var(--accent-yellow);">💼 Professional</h3>
+                    <div class="price">
+                        $99
+                        <small>/month</small>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.7);">For growing businesses</p>
+                    
+                    <ul class="feature-list">
+                        <li>Everything in Starter</li>
+                        <li>500,000 API calls/month</li>
+                        <li>Priority support (12hr)</li>
+                        <li>Advanced analytics</li>
+                        <li>Custom domain</li>
+                        <li>Webhook notifications</li>
+                        <li>99.95% uptime SLA</li>
+                    </ul>
+                    
+                    <a href="#contact" class="cta-button">
+                        Choose Pro
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Enterprise Tier -->
+            <div class="col-lg-3 col-md-6">
+                <div class="pricing-card">
+                    <h3 style="color: var(--primary-pink);">🏢 Enterprise</h3>
+                    <div class="price">
+                        Custom
+                        <small>/pricing</small>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.7);">For mission-critical applications</p>
+                    
+                    <ul class="feature-list">
+                        <li>Everything in Pro</li>
+                        <li>Unlimited API calls</li>
+                        <li>24/7 priority support</li>
+                        <li>Dedicated infrastructure</li>
+                        <li>Custom SLA (99.99%+)</li>
+                        <li>On-premise deployment</li>
+                        <li>Custom development</li>
+                    </ul>
+                    
+                    <a href="#contact" class="cta-button" style="background: var(--primary-pink);">
+                        Contact Sales
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Professional Services -->
+    <div class="service-section">
+        <div class="container">
+            <h2 class="text-center mb-5" style="color: var(--primary-cyan);">
+                <i class="fas fa-briefcase me-3"></i>Professional Services
+            </h2>
+            
+            <div class="row">
+                <!-- Implementation Services -->
+                <div class="col-md-6">
+                    <div class="service-card">
+                        <h3 style="color: var(--accent-yellow);">⚙️ Implementation Services</h3>
+                        <p class="mb-4">Get up and running quickly with expert setup and configuration.</p>
+                        
+                        <div class="mb-3">
+                            <strong>Basic Setup - $500</strong>
+                            <ul>
+                                <li>Install & configure API</li>
+                                <li>Basic customization</li>
+                                <li>Initial testing</li>
+                                <li>1 week email support</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <strong>Professional Setup - $2,000</strong>
+                            <ul>
+                                <li>Custom configuration</li>
+                                <li>System integration</li>
+                                <li>Team training (2 hours)</li>
+                                <li>1 month support</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <strong>Enterprise Setup - $10,000+</strong>
+                            <ul>
+                                <li>Full custom deployment</li>
+                                <li>Multi-region setup</li>
+                                <li>Advanced security</li>
+                                <li>On-site training</li>
+                                <li>6 months priority support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Consulting & Training -->
+                <div class="col-md-6">
+                    <div class="service-card">
+                        <h3 style="color: var(--accent-yellow);">🎓 Consulting & Training</h3>
+                        <p class="mb-4">Expert guidance to maximize your API platform's potential.</p>
+                        
+                        <div class="mb-3">
+                            <strong>Hourly Consulting - $150/hour</strong>
+                            <ul>
+                                <li>Architecture design</li>
+                                <li>Best practices guidance</li>
+                                <li>Code review</li>
+                                <li>Performance optimization</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <strong>Training Programs</strong>
+                            <ul>
+                                <li>Basic API Usage - $500 (4 hours)</li>
+                                <li>Advanced Integration - $1,500 (8 hours)</li>
+                                <li>Enterprise Training - Custom</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Custom Development -->
+                <div class="col-md-6 mt-4">
+                    <div class="service-card">
+                        <h3 style="color: var(--accent-yellow);">💻 Custom Development</h3>
+                        <p class="mb-4">Tailored solutions built specifically for your business needs.</p>
+                        
+                        <ul>
+                            <li><strong>$100-200/hour</strong> or fixed-price projects</li>
+                            <li>Custom endpoint development</li>
+                            <li>Third-party integrations</li>
+                            <li>Proprietary feature development</li>
+                            <li>Mobile app integration</li>
+                            <li>Dashboard customization</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Managed Hosting -->
+                <div class="col-md-6 mt-4">
+                    <div class="service-card">
+                        <h3 style="color: var(--accent-yellow);">☁️ Managed Hosting</h3>
+                        <p class="mb-4">Let us handle the infrastructure while you focus on your business.</p>
+                        
+                        <div class="mb-3">
+                            <strong>Starter Hosting - $49/month</strong>
+                            <ul>
+                                <li>Shared infrastructure</li>
+                                <li>Basic monitoring</li>
+                                <li>Daily backups</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <strong>Business Hosting - $199/month</strong>
+                            <ul>
+                                <li>Dedicated resources</li>
+                                <li>Advanced monitoring</li>
+                                <li>Hourly backups</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <strong>Enterprise Hosting - $999/month</strong>
+                            <ul>
+                                <li>Dedicated servers</li>
+                                <li>Real-time monitoring</li>
+                                <li>Continuous backups</li>
+                                <li>24/7 support</li>
+                                <li>Custom SLA</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Feature Comparison Table -->
+    <div class="container compare-table">
+        <h2 class="text-center mb-5" style="color: var(--primary-cyan);">
+            <i class="fas fa-table me-3"></i>Feature Comparison
+        </h2>
+        
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Community</th>
+                        <th>Starter</th>
+                        <th>Professional</th>
+                        <th>Enterprise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>API Calls/Month</strong></td>
+                        <td>1,000</td>
+                        <td>50,000</td>
+                        <td>500,000</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Support</strong></td>
+                        <td>Community</td>
+                        <td>Email (48hr)</td>
+                        <td>Priority (12hr)</td>
+                        <td>24/7 Dedicated</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hosting</strong></td>
+                        <td>Self-hosted</td>
+                        <td><span class="check-mark">✓</span></td>
+                        <td><span class="check-mark">✓</span></td>
+                        <td>Dedicated</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Custom Domain</strong></td>
+                        <td><span class="x-mark">✗</span></td>
+                        <td><span class="x-mark">✗</span></td>
+                        <td><span class="check-mark">✓</span></td>
+                        <td><span class="check-mark">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Analytics</strong></td>
+                        <td>Basic</td>
+                        <td>Standard</td>
+                        <td>Advanced</td>
+                        <td>Custom</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Uptime SLA</strong></td>
+                        <td>-</td>
+                        <td>99.9%</td>
+                        <td>99.95%</td>
+                        <td>99.99%+</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Webhooks</strong></td>
+                        <td><span class="x-mark">✗</span></td>
+                        <td><span class="x-mark">✗</span></td>
+                        <td><span class="check-mark">✓</span></td>
+                        <td><span class="check-mark">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Custom Development</strong></td>
+                        <td><span class="x-mark">✗</span></td>
+                        <td><span class="x-mark">✗</span></td>
+                        <td>Add-on</td>
+                        <td><span class="check-mark">✓</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Contact CTA -->
+    <div class="service-section" id="contact" style="text-align: center;">
+        <div class="container">
+            <h2 style="color: var(--accent-yellow); margin-bottom: 30px;">
+                🤝 Ready to Get Started?
+            </h2>
+            <p class="lead mb-4" style="max-width: 600px; margin: 0 auto;">
+                Contact us to discuss your needs and find the perfect solution for your business.
+            </p>
+            
+            <div class="mt-5">
+                <a href="mailto:jbaroda@barodatek.com" class="cta-button me-3" style="background: var(--accent-yellow);">
+                    <i class="fas fa-envelope me-2"></i>Email Us
+                </a>
+                <a href="/" class="cta-button" style="background: rgba(255,255,255,0.1); color: white;">
+                    <i class="fas fa-home me-2"></i>Back to Home
+                </a>
+            </div>
+            
+            <div class="mt-5">
+                <p style="color: rgba(255,255,255,0.5);">
+                    <small>
+                        All prices in USD. Custom quotes available for special requirements.
+                        <br>Open-source code remains free forever under MIT license.
+                    </small>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

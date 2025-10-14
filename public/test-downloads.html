@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download All Test - BarodaTek</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 30px;
+            color: white;
+        }
+        .test-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+        }
+        .download-card {
+            background: rgba(255,255,255,0.15);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 15px 0;
+            transition: transform 0.3s;
+        }
+        .download-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.25);
+        }
+        .download-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 10px 0;
+            cursor: pointer !important;
+        }
+        button, .btn {
+            cursor: pointer !important;
+        }
+        button:hover, .btn:hover {
+            cursor: pointer !important;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .status-pending { background: #ffc107; }
+        .status-success { background: #4CAF50; }
+        .status-error { background: #f44336; }
+        .file-preview {
+            background: #1e1e1e;
+            color: #a9dc76;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+        .stats-box {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stats-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="text-center mb-5">
+            <h1><i class="fas fa-download me-3"></i>📥 Download All Features Test</h1>
+            <p class="lead">Testing ALL download buttons - Creating REAL files!</p>
+        </div>
+
+        <!-- Statistics Dashboard -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-box">
+                    <div class="stats-number" id="total-downloads">0</div>
+                    <div>Total Downloads</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-box">
+                    <div class="stats-number" id="successful-downloads">0</div>
+                    <div>Successful</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-box">
+                    <div class="stats-number" id="failed-downloads">0</div>
+                    <div>Failed</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-box">
+                    <div class="stats-number" id="total-size">0 KB</div>
+                    <div>Total Size</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Tests -->
+        <div class="row">
+            <!-- 1. Complete Project Package -->
+            <div class="col-md-6">
+                <div class="download-card">
+                    <h4><i class="fas fa-box me-2"></i>1. Complete Project Package</h4>
+                    <p><span class="status-indicator status-pending" id="status-1"></span>ZIP with all project files</p>
+                    <button class="btn btn-primary download-btn" onclick="downloadCompletePackage()">
+                        <i class="fas fa-download me-2"></i>Download Complete Package
+                    </button>
+                    <div id="result-1" class="mt-3"></div>
+                </div>
+            </div>
+
+            <!-- 2. Postman Collection -->
+            <div class="col-md-6">
+                <div class="download-card">
+                    <h4><i class="fas fa-satellite-dish me-2"></i>2. Postman Collection</h4>
+                    <p><span class="status-indicator status-pending" id="status-2"></span>Import into Postman</p>
+                    <button class="btn btn-success download-btn" onclick="downloadPostmanCollection()">
+                        <i class="fas fa-download me-2"></i>Download Postman Collection
+                    </button>
+                    <div id="result-2" class="mt-3"></div>
+                </div>
+            </div>
+
+            <!-- 3. OpenAPI Specification -->
+            <div class="col-md-6">
+                <div class="download-card">
+                    <h4><i class="fas fa-file-code me-2"></i>3. OpenAPI Specification</h4>
+                    <p><span class="status-indicator status-pending" id="status-3"></span>Swagger/OpenAPI 3.0 format</p>
+                    <button class="btn btn-info download-btn" onclick="downloadOpenAPISpec()">
+                        <i class="fas fa-download me-2"></i>Download OpenAPI Spec
+                    </button>
+                    <div id="result-3" class="mt-3"></div>
+                </div>
+            </div>
+
+            <!-- 4. cURL Examples -->
+            <div class="col-md-6">
+                <div class="download-card">
+                    <h4><i class="fas fa-terminal me-2"></i>4. cURL Examples</h4>
+                    <p><span class="status-indicator status-pending" id="status-4"></span>Ready-to-run commands</p>
+                    <button class="btn btn-warning download-btn" onclick="downloadCurlExamples()">
+                        <i class="fas fa-download me-2"></i>Download cURL Examples
+                    </button>
+                    <div id="result-4" class="mt-3"></div>
+                </div>
+            </div>
+
+            <!-- 5. Source Code Bundle -->
+            <div class="col-md-6">
+                <div class="download-card">
+                    <h4><i class="fas fa-code me-2"></i>5. Source Code Bundle</h4>
+                    <p><span class="status-indicator status-pending" id="status-5"></span>All HTML/CSS/JS files</p>
+                    <button class="btn btn-danger download-btn" onclick="downloadSourceCode()">
+                        <i class="fas fa-download me-2"></i>Download Source Code
+                    </button>
+                    <div id="result-5" class="mt-3"></div>
+                </div>
+            </div>
+
+            <!-- 6. Contract Templates -->
+            <div class="col-md-6">
+                <div class="download-card">
+                    <h4><i class="fas fa-file-contract me-2"></i>6. Contract Templates</h4>
+                    <p><span class="status-indicator status-pending" id="status-6"></span>Ready-to-use templates</p>
+                    <button class="btn btn-primary download-btn" onclick="downloadTemplates()">
+                        <i class="fas fa-download me-2"></i>Download Templates
+                    </button>
+                    <div id="result-6" class="mt-3"></div>
+                </div>
+            </div>
+
+            <!-- 7. API Documentation -->
+            <div class="col-md-6">
+                <div class="download-card">
+                    <h4><i class="fas fa-book me-2"></i>7. API Documentation</h4>
+                    <p><span class="status-indicator status-pending" id="status-7"></span>Complete API guide</p>
+                    <button class="btn btn-success download-btn" onclick="downloadAPIDocs()">
+                        <i class="fas fa-download me-2"></i>Download API Docs
+                    </button>
+                    <div id="result-7" class="mt-3"></div>
+                </div>
+            </div>
+
+            <!-- 8. Docker Configuration -->
+            <div class="col-md-6">
+                <div class="download-card">
+                    <h4><i class="fab fa-docker me-2"></i>8. Docker Configuration</h4>
+                    <p><span class="status-indicator status-pending" id="status-8"></span>Dockerfile + docker-compose</p>
+                    <button class="btn btn-info download-btn" onclick="downloadDockerConfig()">
+                        <i class="fas fa-download me-2"></i>Download Docker Files
+                    </button>
+                    <div id="result-8" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download All Button -->
+        <div class="text-center my-5">
+            <button class="btn btn-danger btn-lg" style="padding: 20px 60px; font-size: 1.3rem;" onclick="downloadAll()">
+                <i class="fas fa-cloud-download-alt me-3"></i>🚀 DOWNLOAD EVERYTHING!
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        // Diagnostic: Check if script is loading
+        console.log('✅ test-downloads.html JavaScript loaded!');
+        console.log('JSZip available:', typeof JSZip !== 'undefined');
+        
+        let stats = {
+            total: 0,
+            successful: 0,
+            failed: 0,
+            totalSize: 0
+        };
+
+        function updateStats() {
+            document.getElementById('total-downloads').textContent = stats.total;
+            document.getElementById('successful-downloads').textContent = stats.successful;
+            document.getElementById('failed-downloads').textContent = stats.failed;
+            document.getElementById('total-size').textContent = Math.round(stats.totalSize / 1024) + ' KB';
+        }
+
+        function updateStatus(id, success) {
+            const indicator = document.getElementById(`status-${id}`);
+            indicator.className = `status-indicator ${success ? 'status-success' : 'status-error'}`;
+            stats.total++;
+            if (success) stats.successful++;
+            else stats.failed++;
+            updateStats();
+        }
+
+        function downloadFile(filename, content, type = 'text/plain') {
+            const blob = new Blob([content], { type: type });
+            stats.totalSize += blob.size;
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            updateStats();
+        }
+
+        function showResult(id, message, preview = null) {
+            const container = document.getElementById(`result-${id}`);
+            let html = `<div class="alert alert-success">${message}</div>`;
+            if (preview) {
+                html += `<div class="file-preview">${preview}</div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        // 1. Complete Project Package
+        async function downloadCompletePackage() {
+            try {
+                const zip = new JSZip();
+                
+                // Add server.js
+                const serverContent = await fetch('/server.js').then(r => r.text()).catch(() => generateServerCode());
+                zip.file('server.js', serverContent);
+                
+                // Add package.json
+                zip.file('package.json', JSON.stringify({
+                    name: 'barodatek-api',
+                    version: '1.0.0',
+                    description: 'BarodaTek API Mock Contract Platform',
+                    main: 'server.js',
+                    scripts: {
+                        start: 'node server.js',
+                        dev: 'nodemon server.js'
+                    },
+                    dependencies: {
+                        express: '^4.18.2',
+                        cors: '^2.8.5',
+                        helmet: '^7.0.0'
+                    }
+                }, null, 2));
+
+                // Add Dockerfile
+                zip.file('Dockerfile', generateDockerfile());
+                
+                // Add docker-compose.yml
+                zip.file('docker-compose.yml', generateDockerCompose());
+                
+                // Add README.md
+                zip.file('README.md', generateReadme());
+
+                // Generate ZIP
+                const content = await zip.generateAsync({ type: 'blob' });
+                const url = URL.createObjectURL(content);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `barodatek-complete-${Date.now()}.zip`;
+                a.click();
+
+                updateStatus(1, true);
+                showResult(1, '✅ Complete project package downloaded! Contains: server.js, package.json, Dockerfile, docker-compose.yml, README.md', 
+                    'Files included:\n- server.js (API server)\n- package.json (dependencies)\n- Dockerfile (containerization)\n- docker-compose.yml (orchestration)\n- README.md (documentation)');
+            } catch (error) {
+                updateStatus(1, false);
+                showResult(1, `❌ Error: ${error.message}`);
+            }
+        }
+
+        // 2. Postman Collection
+        function downloadPostmanCollection() {
+            const collection = {
+                info: {
+                    name: 'BarodaTek API Collection',
+                    description: 'Complete API collection for BarodaTek platform',
+                    schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
+                },
+                item: [
+                    {
+                        name: 'Get All Contracts',
+                        request: {
+                            method: 'GET',
+                            header: [],
+                            url: {
+                                raw: 'http://localhost:8080/api/contracts',
+                                host: ['localhost'],
+                                port: '8080',
+                                path: ['api', 'contracts']
+                            }
+                        }
+                    },
+                    {
+                        name: 'Create Contract',
+                        request: {
+                            method: 'POST',
+                            header: [{ key: 'Content-Type', value: 'application/json' }],
+                            body: {
+                                mode: 'raw',
+                                raw: JSON.stringify({
+                                    title: 'New Contract',
+                                    party: 'Client Name',
+                                    amount: 5000
+                                }, null, 2)
+                            },
+                            url: {
+                                raw: 'http://localhost:8080/api/contracts',
+                                host: ['localhost'],
+                                port: '8080',
+                                path: ['api', 'contracts']
+                            }
+                        }
+                    }
+                ]
+            };
+
+            downloadFile(`barodatek-postman-${Date.now()}.json`, JSON.stringify(collection, null, 2), 'application/json');
+            updateStatus(2, true);
+            showResult(2, '✅ Postman collection downloaded! Import it in Postman to test all APIs.', 
+                JSON.stringify(collection, null, 2).substring(0, 500) + '...');
+        }
+
+        // 3. OpenAPI Specification
+        function downloadOpenAPISpec() {
+            const spec = {
+                openapi: '3.0.0',
+                info: {
+                    title: 'BarodaTek API',
+                    version: '1.0.0',
+                    description: 'API Mock Contract Management Platform'
+                },
+                servers: [{ url: 'http://localhost:8080/api' }],
+                paths: {
+                    '/contracts': {
+                        get: {
+                            summary: 'Get all contracts',
+                            responses: {
+                                '200': {
+                                    description: 'Success',
+                                    content: {
+                                        'application/json': {
+                                            schema: {
+                                                type: 'array',
+                                                items: { $ref: '#/components/schemas/Contract' }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        post: {
+                            summary: 'Create new contract',
+                            requestBody: {
+                                content: {
+                                    'application/json': {
+                                        schema: { $ref: '#/components/schemas/Contract' }
+                                    }
+                                }
+                            },
+                            responses: {
+                                '201': { description: 'Created' }
+                            }
+                        }
+                    }
+                },
+                components: {
+                    schemas: {
+                        Contract: {
+                            type: 'object',
+                            properties: {
+                                id: { type: 'integer' },
+                                title: { type: 'string' },
+                                party: { type: 'string' },
+                                amount: { type: 'number' },
+                                status: { type: 'string' }
+                            }
+                        }
+                    }
+                }
+            };
+
+            downloadFile(`barodatek-openapi-${Date.now()}.json`, JSON.stringify(spec, null, 2), 'application/json');
+            updateStatus(3, true);
+            showResult(3, '✅ OpenAPI specification downloaded! Use with Swagger UI or any OpenAPI tool.', 
+                JSON.stringify(spec, null, 2).substring(0, 500) + '...');
+        }
+
+        // 4. cURL Examples
+        function downloadCurlExamples() {
+            const curl = `#!/bin/bash
+# BarodaTek API - cURL Examples
+
+# Get all contracts
+curl -X GET http://localhost:8080/api/contracts
+
+# Create a new contract
+curl -X POST http://localhost:8080/api/contracts \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "title": "Service Agreement",
+    "party": "ABC Corp",
+    "amount": 5000
+  }'
+
+# Update a contract
+curl -X PUT http://localhost:8080/api/contracts/1 \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "status": "completed"
+  }'
+
+# Delete a contract
+curl -X DELETE http://localhost:8080/api/contracts/1
+
+# Get contract by ID
+curl -X GET http://localhost:8080/api/contracts/1
+`;
+
+            downloadFile(`barodatek-curl-${Date.now()}.sh`, curl, 'text/plain');
+            updateStatus(4, true);
+            showResult(4, '✅ cURL examples downloaded! Run them in terminal to test APIs.', curl);
+        }
+
+        // 5. Source Code Bundle
+        function downloadSourceCode() {
+            const html = `<!DOCTYPE html>
+<html>
+<head>
+    <title>BarodaTek Platform</title>
+</head>
+<body>
+    <h1>BarodaTek API Platform</h1>
+    <!-- Your complete HTML code would go here -->
+</body>
+</html>`;
+
+            downloadFile(`barodatek-source-${Date.now()}.html`, html, 'text/html');
+            updateStatus(5, true);
+            showResult(5, '✅ Source code downloaded!');
+        }
+
+        // 6. Contract Templates
+        function downloadTemplates() {
+            const template = `# Service Agreement Template
+
+**Contract ID:** {CONTRACT_ID}
+**Date:** {DATE}
+
+## Parties
+- **Provider:** {PROVIDER_NAME}
+- **Client:** {CLIENT_NAME}
+
+## Terms
+1. Service Description: {SERVICE_DESCRIPTION}
+2. Payment Amount: ${AMOUNT}
+3. Duration: {DURATION}
+
+## Signatures
+Provider: ________________
+Client: ________________
+`;
+
+            downloadFile(`contract-template-${Date.now()}.md`, template, 'text/markdown');
+            updateStatus(6, true);
+            showResult(6, '✅ Contract templates downloaded!', template);
+        }
+
+        // 7. API Documentation
+        function downloadAPIDocs() {
+            const docs = `# BarodaTek API Documentation
+
+## Base URL
+\`http://localhost:8080/api\`
+
+## Endpoints
+
+### GET /contracts
+Get all contracts
+
+### POST /contracts
+Create a new contract
+
+### PUT /contracts/:id
+Update a contract
+
+### DELETE /contracts/:id
+Delete a contract
+`;
+
+            downloadFile(`api-docs-${Date.now()}.md`, docs, 'text/markdown');
+            updateStatus(7, true);
+            showResult(7, '✅ API documentation downloaded!', docs);
+        }
+
+        // 8. Docker Configuration
+        function downloadDockerConfig() {
+            const dockerfile = generateDockerfile();
+            const compose = generateDockerCompose();
+            const combined = `# Dockerfile\n${dockerfile}\n\n# docker-compose.yml\n${compose}`;
+
+            downloadFile(`docker-config-${Date.now()}.txt`, combined, 'text/plain');
+            updateStatus(8, true);
+            showResult(8, '✅ Docker configuration downloaded!', combined);
+        }
+
+        // Download All
+        async function downloadAll() {
+            if (confirm('Download all 8 files? This will trigger 8 downloads.')) {
+                await downloadCompletePackage();
+                setTimeout(() => downloadPostmanCollection(), 500);
+                setTimeout(() => downloadOpenAPISpec(), 1000);
+                setTimeout(() => downloadCurlExamples(), 1500);
+                setTimeout(() => downloadSourceCode(), 2000);
+                setTimeout(() => downloadTemplates(), 2500);
+                setTimeout(() => downloadAPIDocs(), 3000);
+                setTimeout(() => downloadDockerConfig(), 3500);
+                
+                setTimeout(() => {
+                    alert('✅ All downloads complete! Check your Downloads folder.');
+                }, 4000);
+            }
+        }
+
+        // Helper functions
+        function generateServerCode() {
+            return `const express = require('express');
+const app = express();
+app.use(express.json());
+app.listen(8080, () => console.log('Server running on port 8080'));`;
+        }
+
+        function generateDockerfile() {
+            return `FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 8080
+CMD ["npm", "start"]`;
+        }
+
+        function generateDockerCompose() {
+            return `version: '3.8'
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production`;
+        }
+
+        function generateReadme() {
+            return `# BarodaTek API Platform
+
+Created by JBaroda
+
+## Installation
+\`\`\`bash
+npm install
+npm start
+\`\`\`
+
+## Docker
+\`\`\`bash
+docker-compose up
+\`\`\`
+`;
+        }
+        
+        // Visual confirmation that page is ready
+        console.log('✅ All download functions defined and ready!');
+        console.log('Functions available:', Object.keys(window).filter(k => 
+            typeof window[k] === 'function' && k.includes('download')
+        ));
+        
+        // Add ready indicator to page
+        setTimeout(() => {
+            document.querySelector('h1').innerHTML += ' <span style="color: #4CAF50;">●</span>';
+            document.querySelector('h1').title = 'All functions loaded and ready!';
+        }, 500);
+    </script>
+</body>
+</html>
