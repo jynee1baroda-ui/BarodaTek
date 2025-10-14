@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 BarodaTek Pro Services - Interactive Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-cyan: #00d9ff;
+            --primary-pink: #ff0080;
+            --accent-yellow: #ffd700;
+            --accent-green: #00ff88;
+            --dark-bg: #0a0014;
+        }
+        
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background: linear-gradient(135deg, #0a0014 0%, #1a0a2e 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Space Mono', monospace;
+        }
+        
+        .service-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,217,255,0.3);
+            border-color: var(--accent-yellow);
+        }
+        
+        .service-card.active {
+            border-color: var(--accent-green);
+            background: rgba(0,255,136,0.1);
+        }
+        
+        .tool-container {
+            background: #000;
+            border: 1px solid var(--primary-cyan);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 300px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: var(--accent-green);
+            color: black;
+        }
+        
+        .status-demo {
+            background: var(--accent-yellow);
+            color: black;
+        }
+        
+        .price-tag {
+            font-size: 2.5rem;
+            color: var(--accent-yellow);
+            font-weight: 700;
+        }
+        
+        .btn-launch {
+            background: var(--primary-cyan);
+            color: black;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        
+        .btn-launch:hover {
+            background: var(--accent-yellow);
+            transform: scale(1.05);
+        }
+        
+        .monitor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .monitor-item {
+            background: rgba(0,217,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--primary-cyan);
+        }
+        
+        .metric {
+            font-size: 1.5rem;
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+        
+        .chart-container {
+            height: 200px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .code-editor {
+            background: #1e1e1e;
+            border: 1px solid var(--primary-cyan);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            min-height: 200px;
+            color: #d4d4d4;
+        }
+        
+        .log-entry {
+            padding: 5px 10px;
+            margin: 2px 0;
+            border-left: 3px solid var(--accent-green);
+            background: rgba(0,255,136,0.1);
+            border-radius: 3px;
+        }
+        
+        .log-error {
+            border-left-color: var(--primary-pink);
+            background: rgba(255,0,128,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="container mt-5">
+        <div class="text-center mb-5">
+            <div style="font-size: 80px;">🦙</div>
+            <h1 style="color: var(--primary-cyan);">BarodaTek Pro Services</h1>
+            <p class="lead">Interactive tools you can use right now - Learn & Build!</p>
+            <div class="mt-3">
+                <span class="status-badge status-active me-2"><i class="fas fa-check-circle me-1"></i>All Tools Live</span>
+                <span class="status-badge status-demo"><i class="fas fa-graduation-cap me-1"></i>Free to Try</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service 1: API Health Monitor -->
+    <div class="container">
+        <div class="service-card">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h2><i class="fas fa-heartbeat me-2" style="color: var(--primary-pink);"></i>API Health Monitor</h2>
+                    <p class="text-muted">24/7 uptime monitoring, instant alerts, performance analytics</p>
+                    <div class="mt-2">
+                        <span class="badge bg-success me-2"><i class="fas fa-check me-1"></i>Real-time status checks</span>
+                        <span class="badge bg-info me-2"><i class="fas fa-bell me-1"></i>Email/SMS alerts</span>
+                        <span class="badge bg-warning text-dark me-2"><i class="fas fa-chart-line me-1"></i>Performance reports</span>
+                        <span class="badge bg-primary"><i class="fas fa-database me-1"></i>Historical data</span>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <div class="price-tag">$29<small style="font-size: 1rem;">/mo</small></div>
+                    <button class="btn btn-launch mt-2" onclick="launchMonitor()">
+                        <i class="fas fa-play me-2"></i>Launch Tool
+                    </button>
+                </div>
+            </div>
+            
+            <div id="monitorTool" class="tool-container" style="display: none;">
+                <h4><i class="fas fa-tachometer-alt me-2"></i>Live API Monitor Dashboard</h4>
+                <div class="monitor-grid">
+                    <div class="monitor-item">
+                        <div class="text-muted small">Uptime</div>
+                        <div class="metric" id="uptime">99.9%</div>
+                    </div>
+                    <div class="monitor-item">
+                        <div class="text-muted small">Response Time</div>
+                        <div class="metric" id="responseTime">45ms</div>
+                    </div>
+                    <div class="monitor-item">
+                        <div class="text-muted small">Requests/min</div>
+                        <div class="metric" id="requestsPerMin">234</div>
+                    </div>
+                    <div class="monitor-item">
+                        <div class="text-muted small">Error Rate</div>
+                        <div class="metric" id="errorRate" style="color: var(--accent-green);">0.1%</div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="monitorChart"></canvas>
+                </div>
+                
+                <div class="mt-3">
+                    <h5>Recent Activity</h5>
+                    <div id="activityLog"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service 2: Team Collaboration Hub -->
+    <div class="container">
+        <div class="service-card">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h2><i class="fas fa-users me-2" style="color: var(--accent-green);"></i>Team Collaboration Hub</h2>
+                    <p class="text-muted">Real-time code sharing, pair programming, team spaces</p>
+                    <div class="mt-2">
+                        <span class="badge bg-success me-2"><i class="fas fa-code me-1"></i>Live code editor</span>
+                        <span class="badge bg-info me-2"><i class="fas fa-video me-1"></i>Video/voice calls</span>
+                        <span class="badge bg-warning text-dark me-2"><i class="fas fa-desktop me-1"></i>Screen sharing</span>
+                        <span class="badge bg-primary"><i class="fas fa-infinity me-1"></i>Unlimited projects</span>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <div class="price-tag">$49<small style="font-size: 1rem;">/mo</small></div>
+                    <button class="btn btn-launch mt-2" onclick="launchCollaboration()">
+                        <i class="fas fa-play me-2"></i>Launch Tool
+                    </button>
+                </div>
+            </div>
+            
+            <div id="collabTool" class="tool-container" style="display: none;">
+                <h4><i class="fas fa-code-branch me-2"></i>Live Code Collaboration</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Your Code</h5>
+                        <textarea id="codeEditor" class="code-editor" rows="10" placeholder="// Start coding... your team sees changes in real-time!">function greet(name) {
+    return `Hello, ${name}!`;
+}
+
+console.log(greet('Team'));</textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Team Members <span class="badge bg-success">2 online</span></h5>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="bg-success rounded-circle" style="width: 10px; height: 10px;"></div>
+                                <span class="ms-2">JBaroda (You)</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-warning rounded-circle" style="width: 10px; height: 10px;"></div>
+                                <span class="ms-2">TeamMember_1 (Demo)</span>
+                            </div>
+                        </div>
+                        <h5>Chat</h5>
+                        <div id="chatBox" class="code-editor" style="height: 150px; overflow-y: auto;"></div>
+                        <input type="text" id="chatInput" class="form-control mt-2" placeholder="Type a message...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service 3: Auto Deploy Pro -->
+    <div class="container">
+        <div class="service-card">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h2><i class="fas fa-rocket me-2" style="color: var(--accent-yellow);"></i>Auto Deploy Pro</h2>
+                    <p class="text-muted">One-click deployments, CI/CD pipelines, multi-cloud support</p>
+                    <div class="mt-2">
+                        <span class="badge bg-success me-2"><i class="fab fa-github me-1"></i>GitHub integration</span>
+                        <span class="badge bg-info me-2"><i class="fas fa-expand-arrows-alt me-1"></i>Auto-scaling</span>
+                        <span class="badge bg-warning text-dark me-2"><i class="fas fa-undo me-1"></i>Rollback support</span>
+                        <span class="badge bg-primary"><i class="fas fa-cloud-upload-alt me-1"></i>100 deploys/month</span>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <div class="price-tag">$39<small style="font-size: 1rem;">/mo</small></div>
+                    <button class="btn btn-launch mt-2" onclick="launchDeploy()">
+                        <i class="fas fa-play me-2"></i>Launch Tool
+                    </button>
+                </div>
+            </div>
+            
+            <div id="deployTool" class="tool-container" style="display: none;">
+                <h4><i class="fas fa-rocket me-2"></i>Deployment Pipeline</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Deploy Configuration</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Repository</label>
+                            <select class="form-select bg-dark text-white border-info">
+                                <option>jynee1baroda/barodatek-api-platform</option>
+                                <option>your-username/demo-project</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Branch</label>
+                            <select class="form-select bg-dark text-white border-info">
+                                <option>main</option>
+                                <option>develop</option>
+                                <option>staging</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Environment</label>
+                            <select class="form-select bg-dark text-white border-info">
+                                <option>Production</option>
+                                <option>Staging</option>
+                                <option>Development</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-success w-100" onclick="simulateDeploy()">
+                            <i class="fas fa-rocket me-2"></i>Deploy Now
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Deployment Log</h5>
+                        <div id="deployLog" class="code-editor" style="height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service 4: Analytics Pro Dashboard -->
+    <div class="container">
+        <div class="service-card">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h2><i class="fas fa-chart-pie me-2" style="color: var(--primary-cyan);"></i>Analytics Pro Dashboard</h2>
+                    <p class="text-muted">Advanced metrics, custom reports, data visualization</p>
+                    <div class="mt-2">
+                        <span class="badge bg-success me-2"><i class="fas fa-th me-1"></i>Custom dashboards</span>
+                        <span class="badge bg-info me-2"><i class="fas fa-file-export me-1"></i>Export to CSV/PDF</span>
+                        <span class="badge bg-warning text-dark me-2"><i class="fas fa-lightbulb me-1"></i>API usage insights</span>
+                        <span class="badge bg-primary"><i class="fas fa-chart-line me-1"></i>Trend analysis</span>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <div class="price-tag">$35<small style="font-size: 1rem;">/mo</small></div>
+                    <button class="btn btn-launch mt-2" onclick="launchAnalytics()">
+                        <i class="fas fa-play me-2"></i>Launch Tool
+                    </button>
+                </div>
+            </div>
+            
+            <div id="analyticsTool" class="tool-container" style="display: none;">
+                <h4><i class="fas fa-chart-bar me-2"></i>Analytics Dashboard</h4>
+                <div class="monitor-grid mb-4">
+                    <div class="monitor-item">
+                        <div class="text-muted small">Total Users</div>
+                        <div class="metric" id="totalUsers">1,247</div>
+                    </div>
+                    <div class="monitor-item">
+                        <div class="text-muted small">API Calls Today</div>
+                        <div class="metric" id="apiCalls">45,678</div>
+                    </div>
+                    <div class="monitor-item">
+                        <div class="text-muted small">Revenue</div>
+                        <div class="metric" id="revenue">$3,421</div>
+                    </div>
+                    <div class="monitor-item">
+                        <div class="text-muted small">Growth</div>
+                        <div class="metric" id="growth" style="color: var(--accent-green);">+12.5%</div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="analyticsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Quick Actions</h5>
+                        <button class="btn btn-outline-info w-100 mb-2" onclick="exportCSV()">
+                            <i class="fas fa-file-csv me-2"></i>Export CSV
+                        </button>
+                        <button class="btn btn-outline-danger w-100 mb-2" onclick="exportPDF()">
+                            <i class="fas fa-file-pdf me-2"></i>Export PDF
+                        </button>
+                        <button class="btn btn-outline-success w-100" onclick="generateReport()">
+                            <i class="fas fa-file-alt me-2"></i>Generate Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service 5: Security Guardian -->
+    <div class="container">
+        <div class="service-card">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h2><i class="fas fa-shield-alt me-2" style="color: var(--primary-pink);"></i>Security Guardian</h2>
+                    <p class="text-muted">Vulnerability scanning, threat detection, security audits</p>
+                    <div class="mt-2">
+                        <span class="badge bg-danger me-2"><i class="fas fa-search me-1"></i>Daily security scans</span>
+                        <span class="badge bg-warning text-dark me-2"><i class="fas fa-lock me-1"></i>SSL monitoring</span>
+                        <span class="badge bg-info me-2"><i class="fas fa-bug me-1"></i>Penetration testing</span>
+                        <span class="badge bg-success"><i class="fas fa-check-double me-1"></i>Compliance reports</span>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <div class="price-tag">$59<small style="font-size: 1rem;">/mo</small></div>
+                    <button class="btn btn-launch mt-2" onclick="launchSecurity()">
+                        <i class="fas fa-play me-2"></i>Launch Tool
+                    </button>
+                </div>
+            </div>
+            
+            <div id="securityTool" class="tool-container" style="display: none;">
+                <h4><i class="fas fa-shield-alt me-2"></i>Security Scan Dashboard</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="monitor-item text-center">
+                            <h1 style="color: var(--accent-green); font-size: 4rem;">A+</h1>
+                            <p>Security Score</p>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>SSL Certificate</span>
+                                <span class="text-success"><i class="fas fa-check-circle"></i> Valid</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Vulnerability Scan</span>
+                                <span class="text-success"><i class="fas fa-check-circle"></i> No Issues</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Firewall Status</span>
+                                <span class="text-success"><i class="fas fa-check-circle"></i> Active</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>DDoS Protection</span>
+                                <span class="text-success"><i class="fas fa-check-circle"></i> Enabled</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Recent Security Events</h5>
+                    <div id="securityLog"></div>
+                    <button class="btn btn-danger mt-3" onclick="runSecurityScan()">
+                        <i class="fas fa-shield-alt me-2"></i>Run Full Scan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service 6: Database Manager Pro -->
+    <div class="container mb-5">
+        <div class="service-card">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h2><i class="fas fa-database me-2" style="color: var(--accent-green);"></i>Database Manager Pro</h2>
+                    <p class="text-muted">Visual database editor, backups, optimization tools</p>
+                    <div class="mt-2">
+                        <span class="badge bg-success me-2"><i class="fas fa-table me-1"></i>Visual query builder</span>
+                        <span class="badge bg-info me-2"><i class="fas fa-save me-1"></i>Automated backups</span>
+                        <span class="badge bg-warning text-dark me-2"><i class="fas fa-tachometer-alt me-1"></i>Performance tuning</span>
+                        <span class="badge bg-primary"><i class="fas fa-layer-group me-1"></i>Multi-DB support</span>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <div class="price-tag">$44<small style="font-size: 1rem;">/mo</small></div>
+                    <button class="btn btn-launch mt-2" onclick="launchDatabase()">
+                        <i class="fas fa-play me-2"></i>Launch Tool
+                    </button>
+                </div>
+            </div>
+            
+            <div id="databaseTool" class="tool-container" style="display: none;">
+                <h4><i class="fas fa-database me-2"></i>Database Management Console</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>Tables</h5>
+                        <div class="list-group bg-dark">
+                            <button class="list-group-item list-group-item-action bg-dark text-white" onclick="loadTable('users')">
+                                <i class="fas fa-users me-2"></i>users (1,247 rows)
+                            </button>
+                            <button class="list-group-item list-group-item-action bg-dark text-white" onclick="loadTable('contracts')">
+                                <i class="fas fa-file-contract me-2"></i>contracts (543 rows)
+                            </button>
+                            <button class="list-group-item list-group-item-action bg-dark text-white" onclick="loadTable('analytics')">
+                                <i class="fas fa-chart-line me-2"></i>analytics (9,876 rows)
+                            </button>
+                        </div>
+                        <button class="btn btn-success w-100 mt-3" onclick="backupDatabase()">
+                            <i class="fas fa-download me-2"></i>Backup Database
+                        </button>
+                    </div>
+                    <div class="col-md-8">
+                        <h5>Query Builder</h5>
+                        <textarea id="sqlQuery" class="code-editor" rows="5" placeholder="SELECT * FROM users WHERE...">SELECT * FROM users
+WHERE created_at > '2024-01-01'
+ORDER BY name ASC
+LIMIT 10;</textarea>
+                        <button class="btn btn-primary mt-2" onclick="executeQuery()">
+                            <i class="fas fa-play me-2"></i>Execute Query
+                        </button>
+                        <div id="queryResults" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bundle Offer -->
+    <div class="container mb-5">
+        <div class="service-card" style="border-color: var(--accent-yellow); background: rgba(255,215,0,0.1);">
+            <div class="text-center">
+                <h2><i class="fas fa-gift me-2"></i>Bundle & Save!</h2>
+                <p class="lead">Get all 6 premium tools for one low price</p>
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-6">
+                        <div class="text-decoration-line-through text-muted" style="font-size: 1.5rem;">
+                            $255/month separately
+                        </div>
+                        <div class="price-tag" style="font-size: 4rem;">
+                            $149<small style="font-size: 1.5rem;">/mo</small>
+                        </div>
+                        <p class="text-success"><i class="fas fa-tags me-2"></i>Save 42% with bundle</p>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled text-start">
+                            <li><i class="fas fa-check text-success me-2"></i>All features unlocked</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Priority support</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Cancel anytime</li>
+                            <li><i class="fas fa-check text-success me-2"></i>30-day money back</li>
+                        </ul>
+                        <button class="btn btn-launch btn-lg w-100" onclick="alert('Redirecting to checkout... (Demo)')">
+                            <i class="fas fa-shopping-cart me-2"></i>Get Bundle Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Back Button -->
+    <div class="container text-center mb-5">
+        <a href="/public/pricing.html" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-arrow-left me-2"></i>Back to Pricing
+        </a>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // API Health Monitor
+        function launchMonitor() {
+            const tool = document.getElementById('monitorTool');
+            tool.style.display = tool.style.display === 'none' ? 'block' : 'none';
+            if (tool.style.display === 'block') {
+                startMonitoring();
+            }
+        }
+        
+        function startMonitoring() {
+            setInterval(() => {
+                document.getElementById('uptime').textContent = (99 + Math.random()).toFixed(1) + '%';
+                document.getElementById('responseTime').textContent = Math.floor(40 + Math.random() * 20) + 'ms';
+                document.getElementById('requestsPerMin').textContent = Math.floor(200 + Math.random() * 100);
+                document.getElementById('errorRate').textContent = (Math.random() * 0.5).toFixed(2) + '%';
+                
+                const log = document.getElementById('activityLog');
+                const entry = document.createElement('div');
+                entry.className = Math.random() > 0.9 ? 'log-entry log-error' : 'log-entry';
+                entry.innerHTML = `<small>${new Date().toLocaleTimeString()}</small> ${
+                    Math.random() > 0.9 ? '❌ Request failed - /api/test' : '✅ Request successful - /api/health'
+                }`;
+                log.insertBefore(entry, log.firstChild);
+                if (log.children.length > 10) log.removeChild(log.lastChild);
+            }, 2000);
+        }
+        
+        // Team Collaboration
+        function launchCollaboration() {
+            const tool = document.getElementById('collabTool');
+            tool.style.display = tool.style.display === 'none' ? 'block' : 'none';
+            if (tool.style.display === 'block') {
+                startCollaboration();
+            }
+        }
+        
+        function startCollaboration() {
+            document.getElementById('chatInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const chat = document.getElementById('chatBox');
+                    const msg = document.createElement('div');
+                    msg.className = 'mb-2';
+                    msg.innerHTML = `<strong>You:</strong> ${e.target.value}`;
+                    chat.appendChild(msg);
+                    e.target.value = '';
+                    chat.scrollTop = chat.scrollHeight;
+                    
+                    // Simulate team response
+                    setTimeout(() => {
+                        const response = document.createElement('div');
+                        response.className = 'mb-2 text-warning';
+                        response.innerHTML = `<strong>TeamMember_1:</strong> Looks good! 👍`;
+                        chat.appendChild(response);
+                        chat.scrollTop = chat.scrollHeight;
+                    }, 1500);
+                }
+            });
+        }
+        
+        // Auto Deploy
+        function launchDeploy() {
+            const tool = document.getElementById('deployTool');
+            tool.style.display = tool.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function simulateDeploy() {
+            const log = document.getElementById('deployLog');
+            log.innerHTML = '';
+            const steps = [
+                '📦 Building project...',
+                '🔍 Running tests...',
+                '✅ Tests passed!',
+                '☁️ Uploading to cloud...',
+                '🚀 Deploying to production...',
+                '✅ Deployment successful!',
+                '🌐 Live at: https://your-app.com'
+            ];
+            
+            steps.forEach((step, i) => {
+                setTimeout(() => {
+                    const entry = document.createElement('div');
+                    entry.className = 'log-entry';
+                    entry.textContent = step;
+                    log.appendChild(entry);
+                    log.scrollTop = log.scrollHeight;
+                }, i * 1000);
+            });
+        }
+        
+        // Analytics
+        function launchAnalytics() {
+            const tool = document.getElementById('analyticsTool');
+            tool.style.display = tool.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function exportCSV() {
+            alert('📊 Exporting analytics to CSV... (Demo)');
+        }
+        
+        function exportPDF() {
+            alert('📄 Generating PDF report... (Demo)');
+        }
+        
+        function generateReport() {
+            alert('📈 Creating custom report... (Demo)');
+        }
+        
+        // Security
+        function launchSecurity() {
+            const tool = document.getElementById('securityTool');
+            tool.style.display = tool.style.display === 'none' ? 'block' : 'none';
+            if (tool.style.display === 'block') {
+                loadSecurityLog();
+            }
+        }
+        
+        function loadSecurityLog() {
+            const log = document.getElementById('securityLog');
+            log.innerHTML = '';
+            const events = [
+                '✅ SSL certificate validated',
+                '✅ No vulnerabilities detected',
+                '✅ Firewall rules updated',
+                'ℹ️ Security scan completed'
+            ];
+            events.forEach(event => {
+                const entry = document.createElement('div');
+                entry.className = 'log-entry';
+                entry.textContent = event;
+                log.appendChild(entry);
+            });
+        }
+        
+        function runSecurityScan() {
+            alert('🛡️ Running full security scan... This will take 2-3 minutes. (Demo)');
+        }
+        
+        // Database
+        function launchDatabase() {
+            const tool = document.getElementById('databaseTool');
+            tool.style.display = tool.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function loadTable(table) {
+            alert(`📊 Loading table: ${table}... (Demo)`);
+        }
+        
+        function executeQuery() {
+            const results = document.getElementById('queryResults');
+            results.innerHTML = `
+                <div class="table-responsive">
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>JBaroda</td>
+                                <td>jbaroda@barodatek.com</td>
+                                <td>2024-01-15</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Demo User</td>
+                                <td>demo@example.com</td>
+                                <td>2024-01-16</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+        
+        function backupDatabase() {
+            alert('💾 Creating database backup... (Demo)');
+        }
+    </script>
+</body>
+</html>
