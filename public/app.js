@@ -1617,6 +1617,7 @@ function startGame() {
     performanceData.gameScore = 0;
     let currentLevel = 1;
     let currentQuestionIndex = 0;
+    let usedHint = false;
     
     // API Knowledge Questions
     const questions = [
@@ -1645,6 +1646,14 @@ function startGame() {
             options: ["200", "404", "500", "301"],
             correct: 1
         }
+    ];
+
+    const hints = [
+        'Think about the word: you “get” data from the server.',
+        'It’s the most common 2xx success code: “OK”.',
+        'It stands for Representational State Transfer.',
+        'You “post” something new, like posting a message.',
+        'The internet’s most famous code for a missing page.'
     ];
     
     // Hide start screen
@@ -1676,7 +1685,7 @@ function startGame() {
             endGame();
             return;
         }
-        
+        usedHint = false;
         const q = questions[currentQuestionIndex];
         const questionText = document.getElementById('question-text');
         const answersContainer = document.getElementById('answers-container');
@@ -1695,6 +1704,50 @@ function startGame() {
             });
             answersContainer.appendChild(btn);
         });
+
+        // Add hint/reveal/skip controls
+        const controls = document.createElement('div');
+        controls.className = 'd-flex gap-2 justify-content-center mt-3';
+        controls.innerHTML = `
+            <button class="btn btn-warning" id="api-quiz-hint-btn">💡 Hint</button>
+            <button class="btn btn-info" id="api-quiz-reveal-btn">👁️ Reveal</button>
+            <button class="btn btn-secondary" id="api-quiz-skip-btn">⏭️ Skip</button>
+        `;
+        answersContainer.appendChild(controls);
+
+        // Hint box area
+        const hintBox = document.createElement('div');
+        hintBox.id = 'api-quiz-hint-box';
+        hintBox.className = 'mt-2';
+        answersContainer.appendChild(hintBox);
+
+        document.getElementById('api-quiz-hint-btn').onclick = () => {
+            if (usedHint) return;
+            usedHint = true;
+            const msg = hints[currentQuestionIndex] || 'Focus on the HTTP method or status semantics.';
+            hintBox.innerHTML = `<div class="alert alert-warning"><strong>Hint:</strong> ${msg}</div>`;
+            // Optional small penalty
+            performanceData.gameScore = Math.max(0, performanceData.gameScore - 20);
+            scoreElement.textContent = performanceData.gameScore;
+        };
+
+        document.getElementById('api-quiz-reveal-btn').onclick = () => {
+            // Highlight correct answer and move on
+            const btns = answersContainer.querySelectorAll('button.btn');
+            btns.forEach((b, i) => {
+                b.disabled = true;
+                if (Number(b.getAttribute('data-answer-index')) === q.correct) {
+                    b.classList.remove('btn-outline-light');
+                    b.classList.add('btn-success');
+                    b.innerHTML = `✅ ${b.textContent}`;
+                }
+            });
+            setTimeout(nextQuestion, 1500);
+        };
+
+        document.getElementById('api-quiz-skip-btn').onclick = () => {
+            nextQuestion();
+        };
         
         scoreElement.textContent = performanceData.gameScore;
         levelElement.textContent = currentLevel;
@@ -1936,6 +1989,12 @@ for (let i = 0; i < arr.length; i++) {
     
     let currentBug = 0;
     let score = 0;
+    let hints = [
+        'Check punctuation like ; and matching quotes.',
+        'Are you comparing values or assigning them?',
+        'Look at array bounds: length vs last index.'
+    ];
+    let hintsUsed = 0;
     
     showGameModal('Debug Detective', () => {
         if (currentBug >= buggyCode.length) {
@@ -1953,7 +2012,11 @@ for (let i = 0; i < arr.length; i++) {
             <div class="mt-3">
                 <p><strong>What's wrong with this code?</strong></p>
                 <textarea class="form-control mb-3" id="bugAnswer" placeholder="Describe the bug..."></textarea>
-                <button class="btn btn-primary" onclick="checkDebugAnswer(${currentBug})">Submit Answer</button>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary" onclick="checkDebugAnswer(${currentBug})">Submit Answer</button>
+                    <button class="btn btn-warning" onclick="hintDebug(${currentBug})">Hint</button>
+                    <button class="btn btn-secondary" onclick="revealDebug(${currentBug})">Reveal</button>
+                </div>
             </div>
             <div id="bugResult" class="mt-3"></div>
         </div>`;
@@ -1969,6 +2032,11 @@ function startSyntaxSpeed() {
     
     let startTime = Date.now();
     let currentChallenge = 0;
+    let syntaxHints = [
+        'Arrays use [ ] and commas.',
+        'Arrow functions use => and return.',
+        'Objects use { key: value } pairs.'
+    ];
     
     showGameModal('Syntax Speed Run', () => {
         if (currentChallenge >= challenges.length) {
@@ -1984,7 +2052,11 @@ function startSyntaxSpeed() {
             <h5>Challenge ${currentChallenge + 1}:</h5>
             <p class="lead">${challenges[currentChallenge].task}</p>
             <input type="text" class="form-control mb-3" id="syntaxInput" placeholder="Type your code here...">
-            <button class="btn btn-primary" onclick="checkSyntax(${currentChallenge})">Submit</button>
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary" onclick="checkSyntax(${currentChallenge})">Submit</button>
+                <button class="btn btn-warning" onclick="hintSyntax(${currentChallenge})">Hint</button>
+                <button class="btn btn-secondary" onclick="revealSyntax(${currentChallenge})">Reveal</button>
+            </div>
             <div id="syntaxResult" class="mt-3"></div>
         </div>`;
     });
@@ -2014,6 +2086,11 @@ function startAlgorithmPuzzle() {
     
     let currentPuzzle = 0;
     let score = 0;
+    const algoHints = [
+        'Remember PEMDAS (order of operations).',
+        'Strings -> array -> reverse -> join.',
+        'Spread the array into Math.max.'
+    ];
     
     showGameModal('Algorithm Puzzle', () => {
         if (currentPuzzle >= puzzles.length) {
@@ -2032,6 +2109,10 @@ function startAlgorithmPuzzle() {
                 ${puzzle.options.map((opt, idx) => 
                     `<button class="btn btn-outline-primary" onclick="checkPuzzle(${idx}, ${puzzle.correct})">${opt}</button>`
                 ).join('')}
+            </div>
+            <div class="mt-3 d-flex gap-2">
+                <button class="btn btn-warning" onclick="hintAlgo(${currentPuzzle})">Hint</button>
+                <button class="btn btn-secondary" onclick="revealAlgo(${currentPuzzle})">Reveal</button>
             </div>
             <div id="puzzleResult" class="mt-3"></div>
         </div>`;
@@ -2061,6 +2142,104 @@ function showGameModal(title, contentFunc) {
     document.body.insertAdjacentHTML('beforeend', modalHtml);
     const modal = new bootstrap.Modal(document.getElementById('gameModal'));
     modal.show();
+}
+
+// === Hint/Reveal and Check handlers for mini-games ===
+function checkDebugAnswer(idx) {
+    const buggy = [
+        { must: ['semicolon', ';', 'quote'], also: ['string'] },
+        { must: ['===', '==', 'comparison'], also: ['assignment', '= 5'] },
+        { must: ['index', 'bounds', 'length', 'undefined'], also: ['arr[3]'] }
+    ];
+    const el = document.getElementById('bugAnswer');
+    const text = (el?.value || '').toLowerCase();
+    const rules = buggy[idx] || { must: [] };
+    const ok = rules.must.some(k => text.includes(k));
+    const result = document.getElementById('bugResult');
+    if (ok) {
+        result.innerHTML = '<div class="alert alert-success">Nice catch! That’s the core issue. ✅</div>';
+    } else {
+        result.innerHTML = '<div class="alert alert-warning">Close! Mention the exact issue (e.g., missing quote, wrong operator). 💡</div>';
+    }
+}
+
+function hintDebug(idx) {
+    const hints = [
+        'Look for a missing closing quote (\' vs ") and missing semicolon.',
+        'You used assignment (=) instead of comparison (==/===).',
+        'Arrays are zero-indexed; length is one past the last valid index.'
+    ];
+    const result = document.getElementById('bugResult');
+    result.innerHTML = `<div class="alert alert-info">💡 Hint: ${hints[idx] || 'Focus on the exact operator or bounds.'}</div>`;
+}
+
+function revealDebug(idx) {
+    const fixes = [
+        'Add the missing quote and a semicolon.',
+        'Use a comparison operator: if (x === 5) { ... }',
+        'Use i < arr.length or ensure index exists.'
+    ];
+    const result = document.getElementById('bugResult');
+    result.innerHTML = `<div class="alert alert-secondary">👁️ Reveal: ${fixes[idx] || 'Check operators and bounds precisely.'}</div>`;
+}
+
+function checkSyntax(idx) {
+    const expect = [
+        /\[\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\]/,
+        /function\s+hello\s*\(\)\s*\{\s*return\s*['\"]world['\"]\s*;?\s*\}/i,
+        /\{\s*name\s*:\s*['\"]BarodaTek['\"]\s*\}/
+    ];
+    const input = (document.getElementById('syntaxInput')?.value || '').replace(/\s+/g,'');
+    const ok = expect[idx]?.test(input);
+    const out = document.getElementById('syntaxResult');
+    out.innerHTML = ok
+        ? '<div class="alert alert-success">Correct! ⚡</div>'
+        : '<div class="alert alert-warning">Not quite. Mind the exact brackets, quotes, and keywords. 💡</div>';
+}
+
+function hintSyntax(idx) {
+    const tips = [
+        'Arrays: [1,2,3] with commas and square brackets.',
+        'Function: function name() { return "value" }',
+        'Object: { key: "value" } using colon and quotes.'
+    ];
+    document.getElementById('syntaxResult').innerHTML = `<div class="alert alert-info">💡 Hint: ${tips[idx] || ''}</div>`;
+}
+
+function revealSyntax(idx) {
+    const ans = [
+        '[1,2,3]',
+        'function hello(){ return "world" }',
+        '{ name: "BarodaTek" }'
+    ];
+    document.getElementById('syntaxResult').innerHTML = `<div class="alert alert-secondary">👁️ Reveal: ${ans[idx] || ''}</div>`;
+}
+
+function checkPuzzle(selected, correct) {
+    const el = document.getElementById('puzzleResult');
+    if (Number(selected) === Number(correct)) {
+        el.innerHTML = '<div class="alert alert-success">Correct! 🧩</div>';
+    } else {
+        el.innerHTML = '<div class="alert alert-danger">Incorrect. Try a hint or reveal.</div>';
+    }
+}
+
+function hintAlgo(idx) {
+    const tips = [
+        'Do multiplication before addition.',
+        "Use split(''), reverse(), then join('') to reverse.",
+        'Use Math.max(...arr) to expand array to arguments.'
+    ];
+    document.getElementById('puzzleResult').innerHTML = `<div class="alert alert-info">💡 Hint: ${tips[idx] || ''}</div>`;
+}
+
+function revealAlgo(idx) {
+    const reveals = [
+        'Result is 6 (2*2=4, then 2+4=6).',
+        '"abc".split("").reverse().join("")',
+        'Math.max(3,7,2,9,1)'
+    ];
+    document.getElementById('puzzleResult').innerHTML = `<div class="alert alert-secondary">👁️ Reveal: ${reveals[idx] || ''}</div>`;
 }
 
 // 🛠️ UTILITY FUNCTIONS

@@ -104,30 +104,6 @@ function reconnectWebSocket(retries = 0) {
         console.log(`✅ Knowledge base initialized with ${this.knowledgeDB.size} known issues`);
     }
     
-    // Public interface used by server to report errors/warnings with context
-    reportError(issueKey, error, context = {}) {
-        try {
-            // Prefer known issue handling when available
-            const knowledge = this.getKnowledge(issueKey);
-            if (knowledge) {
-                this.detectIssue(issueKey, { ...context, errorMessage: error?.message, stack: error?.stack });
-                return;
-            }
-
-            // Fallback: emit a generic error notification
-            this.sendNotification({
-                type: 'error',
-                issue: issueKey,
-                description: error?.message || String(error),
-                context,
-                stack: error?.stack,
-            });
-        } catch (e) {
-            // Last resort: log to console to avoid recursive failures
-            console.error('AI Monitor reportError failed:', e);
-        }
-    }
-
     // Add knowledge to database
     addKnowledge(issueKey, data) {
         this.knowledgeDB.set(issueKey, {
@@ -236,6 +212,28 @@ function reconnectWebSocket(retries = 0) {
                 this.detectIssue(key, { errorMessage });
                 break;
             }
+        }
+    }
+
+    // Public: report an arbitrary error into the monitor
+    reportError(issueKey, error, context = {}) {
+        try {
+            const payload = {
+                ...context,
+                errorMessage: error && error.message ? error.message : String(error),
+                stack: error && error.stack ? error.stack : undefined,
+                timestamp: new Date().toISOString(),
+            };
+            this.sendNotification({
+                type: 'error',
+                issue: issueKey,
+                message: payload.errorMessage,
+                context: payload,
+                timestamp: new Date(),
+            });
+            this.detectIssue(issueKey, payload);
+        } catch (e) {
+            console.error('AIMonitor.reportError failed:', e);
         }
     }
     

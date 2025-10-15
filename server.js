@@ -828,30 +828,109 @@ app.post('/api/stats/pageview', async (req, res) => {
     }
 });
 
-// AI Chat endpoint (mock)
+// AI Chat endpoint (enhanced, local intent-based)
 app.post('/api/chat', (req, res) => {
-    const { message, context } = req.body;
-    
-    // Mock AI responses
-    const responses = [
-        "Welcome to BarodaTek.com! I'm here to help you with API development and contract management.",
-        "That's a great question! Let me help you understand our API mock contract system.",
-        "I can assist you with real-time features, WebSocket implementation, and best practices.",
-        "For detailed documentation, check out our comprehensive API explorer and developer tools.",
-        "BarodaTek.com offers cutting-edge solutions for modern web development challenges."
-    ];
-    
-    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-    
+    const raw = (req.body && (req.body.message || req.body.prompt)) || '';
+    const message = String(raw || '').trim();
+    if (!message) {
+        return res.status(400).json({ success: false, error: 'message is required' });
+    }
+
+    // Lightweight intent detection
+    const m = message.toLowerCase();
+    const now = new Date().toISOString();
+
+    function section(title, body) {
+        return `\n\n${title}\n${'-'.repeat(title.length)}\n${body}`;
+    }
+
+    function code(lang, content) {
+        return `\n\nExample (${lang})\n>>>\n${content}\n<<<`;
+    }
+
+    let reply = '';
+    const suggestions = [];
+
+    // Greetings / casual
+    if (/^(hi|hello|hey|yo|howdy)\b/.test(m) || m.includes('how are you')) {
+        reply = `Hey there! I’m your BarodaTek assistant. I can help with code, APIs, debugging, learning paths, and general questions. What are we building today?`;
+        suggestions.push('Show me API examples', 'Help me fix an error', 'Generate starter code');
+    }
+    // Pricing / business
+    else if (/(price|pricing|cost|pay|payment|cash app|plans)/.test(m)) {
+        reply = `Here’s a quick overview of BarodaTek options and how to get in touch for quotes.`
+            + section('Plans', '• Developer (Free) — Try tools, games, and explorer\n• Professional — Priority help, advanced analytics\n• Enterprise — Custom features and support')
+            + section('Contact', 'Email: barodatek.services@gmail.com\nPayments: Cash App $baroda98');
+        suggestions.push('Email pricing info', 'What’s included in Pro?', 'Book a consultation');
+    }
+    // API/HTTP help
+    else if (/(api|endpoint|http|rest|json|status code)/.test(m)) {
+        reply = `Here are core API concepts and how to work with this platform.`
+            + section('Key Endpoints', `GET /api/health\nGET /api/contracts\nPOST /api/contracts\nGET /api/analytics\nPOST /api/chat`)
+            + section('Tips', '• Use origin-based URLs (no localhost hardcodes)\n• Validate inputs (status 400 on errors)\n• Prefer idempotent methods for updates (PUT/PATCH)')
+            + code('JavaScript fetch', `const base = window.location.origin + '/api';
+const res = await fetch(base + '/contracts');
+const data = await res.json();
+console.log(data);`);
+        suggestions.push('Show POST example', 'How to handle 404 vs 500?', 'CORS quick check');
+    }
+    // Debugging
+    else if (/(bug|error|exception|stack|debug|not working)/.test(m)) {
+        reply = `Let’s debug systematically. Share the exact error and a minimal snippet if you can.`
+            + section('Checklist', '1) Reproduce consistently\n2) Read the full error (line/file)\n3) Isolate the smallest failing code\n4) Add console logs around the failing path\n5) Verify network requests in DevTools > Network')
+            + section('Common Fixes', '• CORS: check allowed origins\n• 404: verify route and HTTP method\n• 500: inspect server logs and validation\n• WebSocket: use ws:// or wss:// matches protocol/host')
+            + code('Console probe', `fetch('/api/health').then(r=>{console.log(r.status);return r.json()}).then(console.log).catch(console.error);`);
+        suggestions.push('Help me with a CORS error', 'Explain this stack trace', 'Network tab walkthrough');
+    }
+    // Learning / roadmap
+    else if (/(learn|roadmap|where to start|tutorial|guide)/.test(m)) {
+        reply = `Here’s a practical learning path that matches this platform’s features.`
+            + section('Level 1 — Play', 'API Galaxy, Debug Detective, Syntax Speed Run, Algorithm Puzzle')
+            + section('Level 2 — Tools', 'API Explorer, Analytics Dashboard')
+            + section('Level 3 — Build', 'Scaffold an Express API, add validation, deploy to Vercel/Railway')
+            + section('Level 4 — Ship', 'Instrument logs, add tests, collect feedback');
+        suggestions.push('Start API Galaxy', 'Open API Explorer', 'Generate Express server');
+    }
+    // General knowledge (safe, brief)
+    else if (/(what is|define|explain)\b/.test(m)) {
+        if (m.includes('javascript')) {
+            reply = `JavaScript is the language of the web—runs in browsers and on servers via Node.js.`
+                + code('JS', `console.log('Hello!');\nconst add = (a,b)=>a+b;`);
+            suggestions.push('Explain async/await', 'Show fetch example', 'Difference: var vs let');
+        } else if (m.includes('python')) {
+            reply = `Python is a versatile, beginner-friendly language used in web, data, and AI.`
+                + code('Python', `def add(a,b):\n    return a+b\nprint(add(2,3))`);
+            suggestions.push('What is virtualenv?', 'Flask vs Django', 'Read file example');
+        } else if (m.includes('api')) {
+            reply = `An API lets software talk to software. You send requests (like GET/POST) and get structured responses (usually JSON).`;
+            suggestions.push('Show a REST example', 'Status codes guide', 'Build a CRUD API');
+        } else {
+            reply = `Here’s a concise explanation:` + section('Summary', 'I can give short, practical definitions and examples. Ask me to tailor details to your use case.');
+            suggestions.push('Give an example', 'Relate to web dev', 'Keep it simple');
+        }
+    }
+    // Jokes / motivation
+    else if (/(joke|funny|motivate|quote|inspire)/.test(m)) {
+        reply = `Here’s a quick boost: “The best way to learn to code is to ship something small—today.”`;
+        suggestions.push('Tell me a dev joke', 'Give me a study plan', 'Small project ideas');
+    }
+    // Catch-all supportive default
+    else {
+        reply = `I can help with APIs, debugging, code generation, learning plans, and general Q&A. Tell me a goal (“build X”, “fix Y”) and I’ll map out next steps with examples.`;
+        suggestions.push('Help me build a small API', 'Review my code', 'Explain an error');
+    }
+
+    // Simulate thoughtful latency
+    const delay = 300 + Math.floor(Math.random() * 700);
     setTimeout(() => {
         res.json({
             success: true,
-            response: randomResponse,
-            context: 'api_help',
-            timestamp: new Date().toISOString(),
+            response: reply,
+            suggestions,
+            timestamp: now,
             sessionId: req.headers['x-session-id'] || 'anonymous'
         });
-    }, 1000 + Math.random() * 2000); // Simulate thinking time
+    }, delay);
 });
 
 // 🤖 AI MONITOR ENDPOINTS
