@@ -1,0 +1,4 @@
+[2025-10-15T00:07:19.847Z] SUCCESS: {"type":"success","message":"Auto-fixed: HIGH_MEMORY_USAGE","details":"Enable --expose-gc flag to allow manual GC","timestamp":"2025-10-15T00:07:19.847Z"}
+[2025-10-15T00:07:19.848Z] WARNING: {"type":"warning","issue":"HIGH_MEMORY_USAGE","description":"Memory usage exceeds 80%","solution":"Check for memory leaks, optimize data structures","autoFixed":true,"context":{"current":80.2975739196361,"threshold":80},"timestamp":"2025-10-15T00:07:19.848Z"}
+[2025-10-15T00:07:29.847Z] SUCCESS: {"type":"success","message":"Auto-fixed: HIGH_MEMORY_USAGE","details":"Enable --expose-gc flag to allow manual GC","timestamp":"2025-10-15T00:07:29.847Z"}
+[2025-10-15T00:07:29.847Z] WARNING: {"type":"warning","issue":"HIGH_MEMORY_USAGE","description":"Memory usage exceeds 80%","solution":"Check for memory leaks, optimize data structures","autoFixed":true,"context":{"current":82.8153244757773,"threshold":80},"timestamp":"2025-10-15T00:07:29.847Z"}

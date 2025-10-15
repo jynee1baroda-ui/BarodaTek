@@ -448,6 +448,29 @@
             100% { left: 100%; }
         }
         
+        /* TUTORIAL ANIMATIONS */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+        
         .stats-box h3 {
             font-size: 3rem;
             color: var(--gold-trim);
@@ -805,28 +828,129 @@
         <div class="container">
             <div class="section-title">
                 <h2>📚 ARENA 4: LEARNING CENTER</h2>
-                <p>From beginner to champion</p>
+                <p>From beginner to champion - Track your progress, master new skills</p>
             </div>
+            
+            <!-- Global Progress -->
+            <div style="text-align: center; margin-bottom: 40px; padding: 20px; background: var(--electric-black); border-radius: 10px; border: 2px solid var(--border-dark);">
+                <h3 style="color: var(--neon-cyan); margin-bottom: 10px;">
+                    <i class="fas fa-trophy"></i> Your Learning Journey
+                </h3>
+                <p id="global-progress" style="color: var(--text-gray); font-size: 1.1rem; margin: 0;">
+                    0/12 tutorials completed (0%)
+                </p>
+            </div>
+            
             <div class="row">
                 <div class="col-md-4">
-                    <div class="feature-card">
-                        <h4><i class="fas fa-book-reader"></i> BEGINNER PATH</h4>
-                        <p>Start your coding journey with fundamentals. Learn JavaScript, APIs, HTTP methods, and JSON basics.</p>
-                        <button class="btn-tech btn-sm" onclick="alert('Beginner Path - Tutorial links coming soon!')">START PATH</button>
+                    <div class="feature-card" style="transition: all 0.3s ease; cursor: pointer; height: 100%;" 
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--neon-cyan)';" 
+                         onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-dark)';">
+                        <div style="text-align: center; margin-bottom: 15px; font-size: 3rem;">🎓</div>
+                        <h4 style="text-align: center; color: var(--neon-cyan); margin-bottom: 15px;">
+                            <i class="fas fa-book-reader"></i> BEGINNER PATH
+                        </h4>
+                        <p style="text-align: center; margin-bottom: 20px; line-height: 1.6;">
+                            Start your coding journey with fundamentals. Learn JavaScript, APIs, HTTP methods, and JSON basics.
+                        </p>
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <div class="progress-indicator" style="color: var(--text-gray); font-size: 0.9rem;">
+                                0/3 tutorials completed
+                            </div>
+                        </div>
+                        <ul style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 20px; list-style: none; padding: 0;">
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--code-green);"></i> JavaScript Basics</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--code-green);"></i> HTTP Methods</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--code-green);"></i> JSON Fundamentals</li>
+                        </ul>
+                        <div style="text-align: center;">
+                            <button class="btn-tech btn-sm" onclick="tutorialManager.openPath('beginner')">
+                                <i class="fas fa-play"></i> START PATH
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="feature-card">
-                        <h4><i class="fas fa-rocket"></i> API MASTERY</h4>
-                        <p>Deep dive into REST APIs, authentication, error handling, and best practices.</p>
-                        <button class="btn-tech btn-sm" onclick="alert('API Mastery - Tutorial links coming soon!')">START PATH</button>
+                    <div class="feature-card" style="transition: all 0.3s ease; cursor: pointer; height: 100%;" 
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--gold-trim)';" 
+                         onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-dark)';">
+                        <div style="text-align: center; margin-bottom: 15px; font-size: 3rem;">🚀</div>
+                        <h4 style="text-align: center; color: var(--gold-trim); margin-bottom: 15px;">
+                            <i class="fas fa-rocket"></i> API MASTERY
+                        </h4>
+                        <p style="text-align: center; margin-bottom: 20px; line-height: 1.6;">
+                            Deep dive into REST APIs, authentication, error handling, and testing best practices.
+                        </p>
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <div class="progress-indicator" style="color: var(--text-gray); font-size: 0.9rem;">
+                                0/4 tutorials completed
+                            </div>
+                        </div>
+                        <ul style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 20px; list-style: none; padding: 0;">
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--gold-trim);"></i> RESTful API Design</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--gold-trim);"></i> Authentication & Security</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--gold-trim);"></i> Error Handling</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--gold-trim);"></i> API Testing</li>
+                        </ul>
+                        <div style="text-align: center;">
+                            <button class="btn-champion btn-sm" onclick="tutorialManager.openPath('apiMastery')">
+                                <i class="fas fa-play"></i> START PATH
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="feature-card">
-                        <h4><i class="fas fa-brain"></i> ADVANCED TECHNIQUES</h4>
-                        <p>Master microservices, GraphQL, WebSockets, and advanced architecture patterns.</p>
-                        <button class="btn-tech btn-sm" onclick="alert('Advanced Techniques - Tutorial links coming soon!')">START PATH</button>
+                    <div class="feature-card" style="transition: all 0.3s ease; cursor: pointer; height: 100%;" 
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--champion-red)';" 
+                         onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-dark)';">
+                        <div style="text-align: center; margin-bottom: 15px; font-size: 3rem;">⚡</div>
+                        <h4 style="text-align: center; color: var(--champion-red); margin-bottom: 15px;">
+                            <i class="fas fa-brain"></i> ADVANCED TECHNIQUES
+                        </h4>
+                        <p style="text-align: center; margin-bottom: 20px; line-height: 1.6;">
+                            Master microservices, GraphQL, WebSockets, and advanced architecture patterns.
+                        </p>
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <div class="progress-indicator" style="color: var(--text-gray); font-size: 0.9rem;">
+                                0/4 tutorials completed
+                            </div>
+                        </div>
+                        <ul style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 20px; list-style: none; padding: 0;">
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--champion-red);"></i> Microservices</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--champion-red);"></i> GraphQL</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--champion-red);"></i> WebSockets</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--champion-red);"></i> Performance</li>
+                        </ul>
+                        <div style="text-align: center;">
+                            <button class="btn-tech btn-sm" style="background: var(--champion-red); border-color: var(--champion-red);" onclick="tutorialManager.openPath('advanced')">
+                                <i class="fas fa-play"></i> START PATH
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Learning Tips -->
+            <div style="margin-top: 40px; padding: 25px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(255, 0, 120, 0.1)); border-radius: 10px; border: 1px solid var(--border-dark);">
+                <h4 style="color: var(--neon-cyan); margin-bottom: 15px; text-align: center;">
+                    <i class="fas fa-lightbulb"></i> Pro Learning Tips
+                </h4>
+                <div class="row">
+                    <div class="col-md-3" style="text-align: center; margin-bottom: 15px;">
+                        <i class="fas fa-code" style="font-size: 2rem; color: var(--code-green); margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-gray); font-size: 0.9rem; margin: 0;">Practice coding daily</p>
+                    </div>
+                    <div class="col-md-3" style="text-align: center; margin-bottom: 15px;">
+                        <i class="fas fa-users" style="font-size: 2rem; color: var(--tech-blue); margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-gray); font-size: 0.9rem; margin: 0;">Join developer communities</p>
+                    </div>
+                    <div class="col-md-3" style="text-align: center; margin-bottom: 15px;">
+                        <i class="fas fa-project-diagram" style="font-size: 2rem; color: var(--gold-trim); margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-gray); font-size: 0.9rem; margin: 0;">Build real projects</p>
+                    </div>
+                    <div class="col-md-3" style="text-align: center; margin-bottom: 15px;">
+                        <i class="fas fa-robot" style="font-size: 2rem; color: var(--neon-cyan); margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-gray); font-size: 0.9rem; margin: 0;">Use AI Chatbot for help</p>
                     </div>
                 </div>
             </div>
@@ -932,6 +1056,9 @@
 
     <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="config.js"></script>
+    <script type="module" src="dom-utils.js"></script>
+    <script type="module" src="tutorial-manager.js"></script>
     <script src="enhanced-games.js"></script>
     <script src="enhanced-chatbot.js"></script>
     <script>
