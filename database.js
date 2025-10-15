@@ -14,6 +14,7 @@ const REVIEWS_DB = path.join(DB_DIR, 'reviews.json');
 const ANALYTICS_DB = path.join(DB_DIR, 'analytics.json');
 const USERS_DB = path.join(DB_DIR, 'users.json');
 const SESSIONS_DB = path.join(DB_DIR, 'sessions.json');
+const ERRORS_DB = path.join(DB_DIR, 'errors.json');
 
 // Initialize database
 async function initDatabase() {
@@ -39,7 +40,8 @@ async function initDatabase() {
                 lastUpdated: new Date().toISOString()
             },
             [USERS_DB]: [],
-            [SESSIONS_DB]: []
+            [SESSIONS_DB]: [],
+            [ERRORS_DB]: []
         };
 
         for (const [dbPath, defaultData] of Object.entries(databases)) {
@@ -310,14 +312,71 @@ async function updateSessionActivity(sessionId) {
     return null;
 }
 
+// ========== ERROR TRACKING ==========
+
+async function logError(errorData) {
+    const errors = await readDB(ERRORS_DB);
+    
+    const newError = {
+        id: errors.length + 1,
+        timestamp: new Date().toISOString(),
+        message: errorData.message || 'Unknown error',
+        stack: errorData.stack || null,
+        type: errorData.type || 'UnknownError',
+        url: errorData.url || null,
+        userAgent: errorData.userAgent || null,
+        context: errorData.context || {},
+        resolved: false
+    };
+
+    errors.push(newError);
+    
+    // Keep only last 500 errors to prevent file bloat
+    if (errors.length > 500) {
+        errors.shift();
+    }
+
+    await writeDB(ERRORS_DB, errors);
+    return newError;
+}
+
+async function getAllErrors(filters = {}) {
+    const errors = await readDB(ERRORS_DB);
+    let filtered = errors;
+
+    if (filters.resolved !== undefined) {
+        filtered = filtered.filter(e => e.resolved === filters.resolved);
+    }
+    if (filters.type) {
+        filtered = filtered.filter(e => e.type === filters.type);
+    }
+
+    return filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+}
+
+async function markErrorResolved(id) {
+    const errors = await readDB(ERRORS_DB);
+    const index = errors.findIndex(e => e.id === parseInt(id));
+    
+    if (index >= 0) {
+        errors[index].resolved = true;
+        errors[index].resolvedAt = new Date().toISOString();
+        await writeDB(ERRORS_DB, errors);
+        return errors[index];
+    }
+    
+    return null;
+}
+
 // ========== DATABASE STATS ==========
 
 async function getDatabaseStats() {
-    const [contracts, reviews, analytics, sessions] = await Promise.all([
+    const [contracts, reviews, analytics, sessions, errors] = await Promise.all([
         readDB(CONTRACTS_DB),
         readDB(REVIEWS_DB),
         readDB(ANALYTICS_DB),
-        readDB(SESSIONS_DB)
+        readDB(SESSIONS_DB),
+        readDB(ERRORS_DB)
     ]);
 
     return {
@@ -344,6 +403,16 @@ async function getDatabaseStats() {
         sessions: {
             total: sessions.length,
             active: await getActiveSessionCount()
+        },
+        errors: {
+            total: errors.length,
+            unresolved: errors.filter(e => !e.resolved).length,
+            resolved: errors.filter(e => e.resolved).length,
+            recent24h: errors.filter(e => {
+                const errorTime = new Date(e.timestamp).getTime();
+                const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+                return errorTime > oneDayAgo;
+            }).length
         }
     };
 }
@@ -376,6 +445,11 @@ module.exports = {
     createSession,
     getActiveSessionCount,
     updateSessionActivity,
+    
+    // Error Tracking
+    logError,
+    getAllErrors,
+    markErrorResolved,
     
     // Stats
     getDatabaseStats

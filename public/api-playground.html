@@ -234,7 +234,7 @@
                     <div class="example-api" onclick="loadExample('https://api.github.com/users/github', 'GET')">
                         <strong>GET</strong> GitHub API - User Info
                     </div>
-                    <div class="example-api" onclick="loadExample('http://localhost:8080/api/contracts', 'GET')">
+                    <div class="example-api" onclick="loadExample(window.location.origin + '/api/contracts', 'GET')">
                         <strong>GET</strong> BarodaTek API - Contracts
                     </div>
                 </div>
@@ -253,7 +253,7 @@
                     <label class="form-label"><strong>Request URL:</strong></label>
                     <input type="text" class="form-control url-input" id="apiUrl" 
                            placeholder="https://barodatek-79j1mznjj-jynee1baroda-6483s-projects.vercel.app/api/health"
-                           value="http://localhost:8080/api/contracts">
+                           value="">
                 </div>
                 
                 <!-- Tabs for Headers/Body/Auth -->
@@ -613,3 +613,10 @@ axios({
     </script>
 </body>
 </html>
+<script>
+    (function(){
+        var input = document.querySelector('input[type="text"][name="api-url"], #api-url');
+        if (!input) input = document.querySelector('input[value=""]');
+        if (input && !input.value) input.value = window.location.origin + '/api/contracts';
+    })();
+</script>

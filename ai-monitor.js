@@ -104,6 +104,30 @@ function reconnectWebSocket(retries = 0) {
         console.log(`✅ Knowledge base initialized with ${this.knowledgeDB.size} known issues`);
     }
     
+    // Public interface used by server to report errors/warnings with context
+    reportError(issueKey, error, context = {}) {
+        try {
+            // Prefer known issue handling when available
+            const knowledge = this.getKnowledge(issueKey);
+            if (knowledge) {
+                this.detectIssue(issueKey, { ...context, errorMessage: error?.message, stack: error?.stack });
+                return;
+            }
+
+            // Fallback: emit a generic error notification
+            this.sendNotification({
+                type: 'error',
+                issue: issueKey,
+                description: error?.message || String(error),
+                context,
+                stack: error?.stack,
+            });
+        } catch (e) {
+            // Last resort: log to console to avoid recursive failures
+            console.error('AI Monitor reportError failed:', e);
+        }
+    }
+
     // Add knowledge to database
     addKnowledge(issueKey, data) {
         this.knowledgeDB.set(issueKey, {

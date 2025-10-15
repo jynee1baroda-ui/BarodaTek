@@ -1,0 +1,118 @@
+[
+  {
+    "id": 1,
+    "timestamp": "2025-10-15T01:38:10.297Z",
+    "message": "Uncaught TypeError: Cannot read properties of undefined (reading 'IS_PRODUCTION')",
+    "stack": "TypeError: Cannot read properties of undefined (reading 'IS_PRODUCTION')\n    at http://localhost:8080/config.js:87:26",
+    "type": "JavaScriptError",
+    "url": "http://localhost:8080/config.js",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "page": "http://localhost:8080/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+    },
+    "resolved": false
+  },
+  {
+    "id": 2,
+    "timestamp": "2025-10-15T01:38:10.466Z",
+    "message": "Uncaught TypeError: Cannot read properties of undefined (reading 'IS_PRODUCTION')",
+    "stack": "TypeError: Cannot read properties of undefined (reading 'IS_PRODUCTION')\n    at http://localhost:8080/config.js:87:26",
+    "type": "JavaScriptError",
+    "url": "http://localhost:8080/config.js",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "page": "http://localhost:8080/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+    },
+    "resolved": false
+  },
+  {
+    "id": 3,
+    "timestamp": "2025-10-15T01:38:12.228Z",
+    "message": "Uncaught TypeError: Cannot read properties of undefined (reading 'IS_PRODUCTION')",
+    "stack": "TypeError: Cannot read properties of undefined (reading 'IS_PRODUCTION')\n    at http://localhost:8080/config.js:87:26",
+    "type": "JavaScriptError",
+    "url": "http://localhost:8080/config.js",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "page": "http://localhost:8080/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+    },
+    "resolved": false
+  },
+  {
+    "id": 4,
+    "timestamp": "2025-10-15T01:38:12.333Z",
+    "message": "Uncaught TypeError: Cannot read properties of undefined (reading 'IS_PRODUCTION')",
+    "stack": "TypeError: Cannot read properties of undefined (reading 'IS_PRODUCTION')\n    at http://localhost:8080/config.js:87:26",
+    "type": "JavaScriptError",
+    "url": "http://localhost:8080/config.js",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "page": "http://localhost:8080/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+    },
+    "resolved": false
+  },
+  {
+    "id": 5,
+    "timestamp": "2025-10-15T02:04:18.662Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "/api/stats",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 6,
+    "timestamp": "2025-10-15T02:04:53.660Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "/api/stats",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/#about"
+    },
+    "resolved": false
+  },
+  {
+    "id": 7,
+    "timestamp": "2025-10-15T02:04:57.228Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "/api/stats",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/#about"
+    },
+    "resolved": false
+  },
+  {
+    "id": 8,
+    "timestamp": "2025-10-15T02:05:04.259Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "/api/stats",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/#about"
+    },
+    "resolved": false
+  }
+]

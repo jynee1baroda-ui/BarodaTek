@@ -93,7 +93,7 @@
                 <div class="col-md-8">
                     <div class="alert alert-light" role="alert">
                         <i class="fas fa-info-circle me-2"></i>
-                        <strong>Base URL:</strong> <code>http://localhost:8080/api</code>
+                        <strong>Base URL:</strong> <code id="base-api-url">(loading...)</code>
                     </div>
                 </div>
             </div>
@@ -358,3 +358,11 @@ curl -X POST http://localhost:8080/api/contracts \
     <script src="api-explorer.js"></script>
 </body>
 </html>
+<script>
+    (function(){
+        try {
+            var el = document.getElementById('base-api-url');
+            if (el) el.textContent = window.location.origin + '/api';
+        } catch (e) { /* noop */ }
+    })();
+    </script>

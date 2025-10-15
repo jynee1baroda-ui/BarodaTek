@@ -459,7 +459,7 @@
                     
                     <div class="code-block">
                     // Connect to WebSocket
-                    const ws = new WebSocket('ws://localhost:8080');
+                    const ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host);
                     ws.onmessage = (event) => {
                         const data = JSON.parse(event.data);
                         console.log('Real-time update:', data);

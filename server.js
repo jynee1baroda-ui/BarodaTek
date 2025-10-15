@@ -20,16 +20,32 @@ db.initDatabase().then(() => {
     console.log('✅ Database ready for real-time data persistence');
 });
 
-// Memory monitoring with auto-fix
+// Memory monitoring with auto-fix and cleanup
 setInterval(() => {
     const memUsage = process.memoryUsage();
     const heapUsedMB = Math.round(memUsage.heapUsed / 1024 / 1024);
     const heapTotalMB = Math.round(memUsage.heapTotal / 1024 / 1024);
     const heapPercent = Math.round((memUsage.heapUsed / memUsage.heapTotal) * 100);
     
+    // Clean up old analytics events (keep only last 100)
+    if (analytics.events.length > 100) {
+        analytics.events = analytics.events.slice(-100);
+    }
+    
+    // Clean up old sessions (older than 1 hour)
+    const oneHourAgo = Date.now() - (60 * 60 * 1000);
+    analytics.sessions.forEach((value, key) => {
+        if (value < oneHourAgo) {
+            analytics.sessions.delete(key);
+        }
+    });
+    
     if (heapPercent > 80) {
         console.log(`⚠️  High memory usage: ${heapPercent}% (${heapUsedMB}MB / ${heapTotalMB}MB)`);
-        console.log('🔄 Auto-fix: Running garbage collection...');
+        console.log('🔄 Auto-fix: Running garbage collection and cleanup...');
+        
+        // Clean up analytics in memory
+        analytics.events = analytics.events.slice(-50);
         
         // Force garbage collection if available
         if (global.gc) {
@@ -43,7 +59,8 @@ setInterval(() => {
             heapUsed: heapUsedMB,
             heapTotal: heapTotalMB,
             heapPercent,
-            autoFix: !!global.gc
+            autoFix: !!global.gc,
+            eventsCleared: analytics.events.length
         });
     }
 }, 30000); // Check every 30 seconds
@@ -70,6 +87,7 @@ aiMonitor.on('chatbot-message', (data) => {
 // Feature flags (enable globally for all clients)
 const featureFlags = {
     grokCodeFastV1Preview: true,
+    gemini25ProEnabled: true,  // ✅ Gemini 2.5 Pro enabled for all clients
 };
 
 // Port configuration
@@ -100,11 +118,11 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
             scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
             imgSrc: ["'self'", "data:", "https:", "blob:"],
             connectSrc: ["'self'", "ws:", "wss:", "https:"],
-            fontSrc: ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
+            fontSrc: ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
             mediaSrc: ["'self'"],
             objectSrc: ["'none'"],
             baseUri: ["'self'"],
@@ -229,22 +247,86 @@ wss.on('connection', (ws, req) => {
 });
 
 // Handle analytics events
-function handleAnalyticsEvent(data, ws) {
+async function handleAnalyticsEvent(data, ws) {
     // Check if data exists and has required properties
     if (!data || typeof data !== 'object') {
         return;
     }
     
+    if (data.type === 'analytics_event' && data.payload) {
+        const payload = data.payload;
+        const eventType = payload.eventType || 'unknown';
+        const eventData = payload.data || {};
+        
+        // Store event in memory (legacy)
+        analytics.events.push({
+            ...payload,
+            receivedAt: Date.now()
+        });
+        
+        // ✅ PERSIST TO DATABASE
+        try {
+            await db.trackEvent({
+                type: eventType,
+                sessionId: payload.sessionId,
+                data: eventData,
+                source: payload.source || 'websocket'
+            });
+        } catch (error) {
+            console.error('Failed to persist analytics event:', error);
+        }
+        
+        // Update counters based on event type
+        if (eventType) {
+            switch (eventType) {
+                case 'page_view':
+                    analytics.pageViews++;
+                    try {
+                        await db.trackPageView({
+                            path: eventData.url || '/',
+                            timestamp: eventData.timestamp
+                        });
+                    } catch (error) {
+                        console.error('Failed to persist page view:', error);
+                    }
+                    break;
+                case 'interaction':
+                    analytics.interactions++;
+                    break;
+                case 'download':
+                    analytics.downloads++;
+                    break;
+            }
+        }
+        
+        // Broadcast updates to all connected clients
+        broadcastAnalyticsUpdate();
+        
+        console.log(`📊 Analytics event: ${eventType} from session ${payload.sessionId || 'unknown'}`);
+    }
+    
+    // Legacy format support
     if (data.type === 'analytics_event' && data.event) {
         const event = data.event;
         
-        // Store event
         analytics.events.push({
             ...event,
             receivedAt: Date.now()
         });
         
-        // Update counters based on event type
+        // Persist to database
+        try {
+            await db.trackEvent({
+                type: event.type || 'unknown',
+                sessionId: event.sessionId,
+                data: event,
+                source: 'websocket_legacy'
+            });
+        } catch (error) {
+            console.error('Failed to persist legacy event:', error);
+        }
+        
+        // Update counters
         if (event && event.type) {
             switch (event.type) {
                 case 'page_view':
@@ -259,10 +341,8 @@ function handleAnalyticsEvent(data, ws) {
             }
         }
         
-        // Broadcast updates to all connected clients
         broadcastAnalyticsUpdate();
-        
-        console.log(`📊 Analytics event: ${event.type} from session ${event.sessionId}`);
+        console.log(`📊 Analytics event (legacy): ${event.type} from session ${event.sessionId}`);
     }
 }
 
@@ -856,6 +936,96 @@ app.post('/api/monitor/chatbot-message', (req, res) => {
     });
 });
 
+// ========== ERROR TRACKING ENDPOINTS ==========
+
+// Log client-side error
+app.post('/api/errors/log', async (req, res) => {
+    try {
+        const errorData = {
+            message: req.body.message,
+            stack: req.body.stack,
+            type: req.body.type || 'ClientError',
+            url: req.body.url,
+            userAgent: req.headers['user-agent'],
+            context: req.body.context || {}
+        };
+        
+        const loggedError = await db.logError(errorData);
+        
+        // Also report to AI Monitor for pattern detection
+        aiMonitor.reportError(errorData.type, new Error(errorData.message), errorData.context);
+        
+        res.json({
+            success: true,
+            data: loggedError,
+            message: 'Error logged successfully',
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error logging error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to log error',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// Get all errors (admin only)
+app.get('/api/errors', async (req, res) => {
+    try {
+        const filters = {
+            resolved: req.query.resolved === 'true' ? true : req.query.resolved === 'false' ? false : undefined,
+            type: req.query.type
+        };
+        
+        const errors = await db.getAllErrors(filters);
+        
+        res.json({
+            success: true,
+            data: errors,
+            total: errors.length,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error fetching errors:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch errors',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// Mark error as resolved
+app.put('/api/errors/:id/resolve', async (req, res) => {
+    try {
+        const resolvedError = await db.markErrorResolved(req.params.id);
+        
+        if (!resolvedError) {
+            return res.status(404).json({
+                success: false,
+                error: 'Error not found',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        res.json({
+            success: true,
+            data: resolvedError,
+            message: 'Error marked as resolved',
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error resolving error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to resolve error',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
 // Error handling
 app.use((err, req, res, next) => {
     console.error('❌ Error:', err);
@@ -907,7 +1077,7 @@ function startServer(port) {
     server.listen(port, () => {
         const isLocal = port === 8080 || port === 3000;
         const localUrl = `http://localhost:${port}`;
-        const productionUrl = 'https://barodatek.com';
+    const productionUrl = 'https://barodatek.com';
         
         console.log('🚀 BarodaTek.com API Mock Contract MVP Server Started!');
         console.log(`📡 Server running on port ${port}`);
@@ -943,20 +1113,26 @@ function startServer(port) {
 startServer(PORT);
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
-    console.log('🔄 SIGTERM received, shutting down gracefully...');
-    server.close(() => {
-        console.log('✅ Server shutdown complete');
-        process.exit(0);
-    });
-});
+// In development, avoid exiting the process on SIGINT/SIGTERM so automated monitoring or accidental signals
+// don't bring down the local server while we're testing frontend behaviors. In production we keep the
+// graceful shutdown behavior to allow proper termination.
+function gracefulShutdown(signal) {
+    const isProd = (process.env.NODE_ENV === 'production');
+    console.log(`🔄 ${signal} received.`);
 
-process.on('SIGINT', () => {
-    console.log('🔄 SIGINT received, shutting down gracefully...');
+    if (!isProd) {
+        console.log('ℹ️ Running in non-production mode — ignoring shutdown to allow interactive testing.');
+        return;
+    }
+
+    console.log('🔄 Shutting down gracefully...');
     server.close(() => {
         console.log('✅ Server shutdown complete');
         process.exit(0);
     });
-});
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 module.exports = app;

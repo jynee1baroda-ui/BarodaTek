@@ -474,11 +474,11 @@ class EnhancedGameEngine {
                 </div>
 
                 <div class="d-flex gap-3 justify-content-center">
-                    <button class="btn btn-primary btn-lg" onclick="location.reload()">
+                    <button class="btn btn-primary btn-lg" onclick="window.gameEngine.resetToGameSelection()">
                         <i class="fas fa-redo me-2"></i>Play Again
                     </button>
-                    <button class="btn btn-success btn-lg" onclick="document.getElementById('game-start').style.display='block'; document.getElementById('game-board').innerHTML='';">
-                        <i class="fas fa-home me-2"></i>Game Menu
+                    <button class="btn btn-success btn-lg" onclick="window.gameEngine.returnToGameSelection()">
+                        <i class="fas fa-home me-2"></i>Back to Game Selection
                     </button>
                 </div>
             </div>
@@ -517,6 +517,40 @@ class EnhancedGameEngine {
         } else {
             console.log(`[${type}] ${message}`);
         }
+    }
+
+    // ✅ Return to game selection screen
+    returnToGameSelection() {
+        const gameStart = document.getElementById('game-start');
+        const gameBoard = document.getElementById('game-board');
+        
+        if (gameBoard) gameBoard.innerHTML = '';
+        if (gameStart) {
+            gameStart.style.display = 'block';
+            gameStart.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        // Reset game state
+        this.currentGame = null;
+        this.score = 0;
+        this.hintsUsed = 0;
+        this.currentQuestionIndex = 0;
+        this.questions = [];
+        
+        this.showNotification('🎮 Returned to game selection!', 'info');
+    }
+
+    // ✅ Play the same game again
+    resetToGameSelection() {
+        const currentGameType = this.currentGame;
+        this.returnToGameSelection();
+        
+        // Automatically restart the same game
+        setTimeout(() => {
+            if (currentGameType === 'api-quiz') this.startAPIQuiz();
+            else if (currentGameType === 'debug-game') this.startDebugGame();
+            else if (currentGameType === 'syntax-game') this.startSyntaxGame();
+        }, 500);
     }
 }
 

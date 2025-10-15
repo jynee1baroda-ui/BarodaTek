@@ -146,7 +146,7 @@ function validateForm(data) {
                     return `🔧 **JavaScript ${method} Request:**\n\n\`\`\`javascript\nasync function ${method.toLowerCase()}Data(url${method !== 'GET' ? ', data' : ''}) {\n    try {\n        const options = {\n            method: '${method}',\n            headers: { 'Content-Type': 'application/json' }${method !== 'GET' ? ',\n            body: JSON.stringify(data)' : ''}\n        };\n        \n        const response = await fetch(url, options);\n        \n        if (!response.ok) {\n            throw new Error(\`HTTP \${response.status}\`);\n        }\n        \n        const result = await response.json();\n        console.log('Success:', result);\n        return result;\n    } catch (error) {\n        console.error('Error:', error);\n        throw error;\n    }\n}\n\n// Usage:\n${method === 'GET' ? "getData('https://api.example.com/data');" : "postData('https://api.example.com/data', { key: 'value' });"}\n\`\`\`\n\n**Features:**\n✅ Async/await\n✅ Error handling\n✅ Status checking\n✅ JSON parsing\n\nCopy and use this code! 🚀`;
                 }
             } else if (lang === 'python') {
-                return `🐍 **Python ${method} Request:**\n\n\`\`\`python\nimport requests\nimport json\n\ndef ${method.toLowerCase()}_data(url${', data=None' if method !== 'GET' else ''}):\n    headers = {'Content-Type': 'application/json'}\n    \n    try:\n        response = requests.${method.toLowerCase()}(\n            url${',\n            json=data' if method !== 'GET' else ''},\n            headers=headers\n        )\n        response.raise_for_status()\n        result = response.json()\n        print(f'Success: {result}')\n        return result\n    except requests.exceptions.RequestException as e:\n        print(f'Error: {e}')\n        raise\n\n# Usage:\n${method === 'GET' ? "get_data('https://api.example.com/data')" : "post_data('https://api.example.com/data', {'key': 'value'})"}\n\`\`\`\n\n**To use:**\n1. pip install requests\n2. Run script\n3. Check output\n\nNeed Flask server code? Ask me! 🚀`;
+                return `🐍 **Python ${method} Request:**\n\n\`\`\`python\nimport requests\nimport json\n\ndef ${method.toLowerCase()}_data(url${method !== 'GET' ? ', data=None' : ''}):\n    headers = {'Content-Type': 'application/json'}\n    \n    try:\n        response = requests.${method.toLowerCase()}(\n            url${method !== 'GET' ? ',\n            json=data' : ''},\n            headers=headers\n        )\n        response.raise_for_status()\n        result = response.json()\n        print(f'Success: {result}')\n        return result\n    except requests.exceptions.RequestException as e:\n        print(f'Error: {e}')\n        raise\n\n# Usage:\n${method === 'GET' ? "get_data('https://api.example.com/data')" : "post_data('https://api.example.com/data', {'key': 'value'})"}\n\`\`\`\n\n**To use:**\n1. pip install requests\n2. Run script\n3. Check output\n\nNeed Flask server code? Ask me! 🚀`;
             }
         }
 
@@ -227,7 +227,57 @@ function validateForm(data) {
     }
 
     getGeneralHelp(message) {
-        return `🤖 **I'm here to help!**\n\n**Ask me to:**\n\n**Generate Code** 💻\n• "generate API request"\n• "create validation function"\n• "make Express server"\n\n**Explain Features** 🎯\n• "show me API quiz"\n• "demo API explorer"\n• "explain pro services"\n\n**Debug Issues** 🐛\n• "fix CORS error"\n• "help with 404"\n• "debug undefined"\n\n**Learn** 📚\n• "how to start coding"\n• "learn JavaScript"\n• "play api quiz"\n\n**Be specific:**\nInstead of "help" → "generate code to fetch API data"\nInstead of "game" → "show me how API quiz works"\n\nWhat do you need? 🚀`;
+        // 🧠 CHATGPT-STYLE INTELLIGENT RESPONSE SYSTEM
+        // Handles ANY question with contextual understanding
+        
+        const msg = message.toLowerCase();
+        
+        // ===== GENERAL KNOWLEDGE & CONVERSATIONAL AI =====
+        
+        // Philosophy & Life Questions
+        if (msg.match(/meaning of life|purpose|why (do )?(we|i) exist/)) {
+            return `🌟 **Deep Questions!**\n\nThe meaning of life is a profound question philosophers have pondered for millennia. While I'm an AI focused on helping developers, I can share some perspectives:\n\n**From a coding lens:**\n• Life is like debugging - we find and fix problems\n• Purpose comes from creating value for others\n• Every line of code we write can help someone\n\n**Universal themes:**\n• Connection with others\n• Creating and building\n• Learning and growing\n• Making a positive impact\n\n**My purpose?** To help YOU learn, build, and succeed in your coding journey!\n\nWhat would you like to create today? 🚀`;
+        }
+        
+        // Weather & Current Events
+        if (msg.match(/weather|temperature|forecast/)) {
+            return `🌤️ **Weather Info:**\n\nI don't have real-time weather access, but I can help you BUILD a weather app!\n\n**Quick Weather App Tutorial:**\n\`\`\`javascript\n// Use OpenWeather API (free)\nconst API_KEY = 'your_key_here';\nconst city = 'Los Angeles';\n\nfetch(\`https://api.openweathermap.org/data/2.5/weather?q=\${city}&appid=\${API_KEY}\`)\n  .then(res => res.json())\n  .then(data => {\n    console.log(\`\${data.name}: \${data.main.temp}K\`);\n    console.log(\`Description: \${data.weather[0].description}\`);\n  });\n\`\`\`\n\n**Free Weather APIs:**\n• OpenWeather (free tier)\n• WeatherAPI.com\n• National Weather Service (US only)\n\nWant me to generate a complete weather app? 🌦️`;
+        }
+        
+        // Math & Science Questions
+        if (msg.match(/solve|calculate|what is \d+|math|equation/)) {
+            return `🔢 **Math & Calculations:**\n\nI can help with programming math problems! Share the equation and I'll write code to solve it.\n\n**Example:**\n\`\`\`javascript\n// Solve quadratic equation: ax² + bx + c = 0\nfunction solveQuadratic(a, b, c) {\n    const discriminant = b*b - 4*a*c;\n    if (discriminant < 0) return 'No real solutions';\n    \n    const x1 = (-b + Math.sqrt(discriminant)) / (2*a);\n    const x2 = (-b - Math.sqrt(discriminant)) / (2*a);\n    return { x1, x2 };\n}\n\nconsole.log(solveQuadratic(1, -3, 2)); // {x1: 2, x2: 1}\n\`\`\`\n\n**Math in JavaScript:**\n• Math.sqrt() - Square root\n• Math.pow(x, y) - Power\n• Math.abs() - Absolute value\n• Math.round/floor/ceil - Rounding\n\nWhat calculation do you need? 📐`;
+        }
+        
+        // History & Facts
+        if (msg.match(/who (is|was|invented)|when (was|did)|history of/)) {
+            return `📚 **Historical Context:**\n\nWhile I'm primarily a coding AI, I can share tech history and help you research!\n\n**Tech History Highlights:**\n• 1991 - World Wide Web goes public (Tim Berners-Lee)\n• 1995 - JavaScript created in 10 days (Brendan Eich)\n• 2004 - Facebook launched (Dorm room project!)\n• 2008 - First iPhone App Store opens\n• 2015 - React Native enables cross-platform apps\n\n**Research with Code:**\n\`\`\`javascript\n// Build a Wikipedia API client\nfetch('https://en.wikipedia.org/api/rest_v1/page/summary/JavaScript')\n  .then(res => res.json())\n  .then(data => console.log(data.extract));\n\`\`\`\n\nWant to build a research tool or learn about tech history? 🏛️`;
+        }
+        
+        // Personal Advice & Recommendations
+        if (msg.match(/should i|recommend|what's better|advice|suggest/)) {
+            return `💡 **My Recommendation:**\n\nI analyze your question contextually! For development choices:\n\n**Learning Path:**\n• New to coding? → Start with JavaScript + our games\n• Have experience? → Jump into advanced tutorials\n• Want quick results? → Use our code generator\n\n**Tech Stack Advice:**\n• Frontend: React, Vue, or vanilla JavaScript\n• Backend: Node.js/Express (what we use!)\n• Database: Start with JSON files, scale to MongoDB/PostgreSQL\n• Hosting: Vercel (frontend), Railway (backend)\n\n**Career Advice:**\n• Build projects (not just tutorials)\n• Contribute to open source\n• Network with developers\n• Stay curious and keep learning\n\n**Specific question?**\nBe more detailed and I'll give targeted advice! 🎯`;
+        }
+        
+        // Creative & Fun Responses
+        if (msg.match(/joke|funny|make me laugh/)) {
+            return `😄 **Developer Humor:**\n\n**Why do programmers prefer dark mode?**\nBecause light attracts bugs! �\n\n**Programming truths:**\n• "Works on my machine" ¯\\_(ツ)_/¯\n• 99 bugs in the code, 99 bugs... Take one down, patch it around, 127 bugs in the code!\n• Debugging: Like being a detective in a crime movie where YOU are also the murderer 🕵️\n\n**Actual code comment found:**\n\`\`\`javascript\n// I am not responsible for this code.\n// They made me write it, against my will.\n\`\`\`\n\nNow let's write some bug-free code! 🚀`;
+        }
+        
+        // Motivational & Encouragement
+        if (msg.match(/hard|difficult|can't|frustrated|stuck|give up/)) {
+            return `💪 **You've Got This!**\n\nEvery developer feels stuck sometimes - it's part of the journey!\n\n**Remember:**\n• The best programmers aren't geniuses - they're persistent\n• Every error teaches you something new\n• "I don't know yet" is better than "I can't"\n• Your first code will be messy - that's normal!\n\n**When stuck:**\n1️⃣ Take a break (walk, coffee, fresh air)\n2️⃣ Explain the problem out loud (rubber duck debugging)\n3️⃣ Break it into smaller problems\n4️⃣ Ask for help (that's what I'm here for!)\n\n**Fun fact:** The creator of this site (JBaroda) had ZERO coding experience before building this platform. If they can do it, so can you!\n\n**How can I help right now?**\n• Debug your code?\n• Explain a concept?\n• Generate working examples?\n\nLet's solve this together! 🔥`;
+        }
+        
+        // Food, Travel, Entertainment (Fun diversions)
+        if (msg.match(/food|hungry|eat|recipe|restaurant/)) {
+            return `🍕 **Hungry?**\n\nWhile I can't order food, I can help you BUILD a food ordering app!\n\n**Quick Food API Example:**\n\`\`\`javascript\n// Fake Restaurant API\nconst menu = [\n    { id: 1, name: 'Pizza', price: 12.99, emoji: '🍕' },\n    { id: 2, name: 'Burger', price: 9.99, emoji: '🍔' },\n    { id: 3, name: 'Sushi', price: 15.99, emoji: '🍣' }\n];\n\n// Order function\nfunction placeOrder(itemId) {\n    const item = menu.find(i => i.id === itemId);\n    return \`Order placed: \${item.emoji} \${item.name} - $\${item.price}\`;\n}\n\nconsole.log(placeOrder(1)); // "Order placed: 🍕 Pizza - $12.99"\n\`\`\`\n\n**Coding & Coffee:**\nDevelopers run on coffee and determination! ☕\n\nWant to build a full food delivery app? Let's do it! 🚀`;
+        }
+        
+        // ===== FALLBACK: GENERAL INTELLIGENT RESPONSE =====
+        // If no specific pattern matches, provide contextual help
+        
+        return `🤖 **I understand you're asking: "${message}"**\n\nWhile I'm specialized in coding and development, I can still help! Here's how:\n\n**What I excel at:**\n✅ Generating code for ANY programming task\n✅ Explaining technical concepts simply\n✅ Debugging errors and issues\n✅ Building complete applications\n✅ Teaching programming from scratch\n\n**Try asking me:**\n• Technical questions: "How do arrays work?"\n• Code generation: "Build me a calculator app"\n• Debugging: "Why isn't my code working?"\n• Learning: "Teach me async/await"\n• Project ideas: "What should I build?"\n\n**Or explore our platform:**\n• 🎮 Play interactive coding games\n• 🔧 Use our API Explorer tool\n• 📚 Browse learning tutorials\n• 💻 Generate custom code snippets\n\n**For non-coding questions:**\nI'll do my best to provide helpful context and guide you toward coding solutions!\n\nHow can I help you code today? 🚀`;
     }
 }
 

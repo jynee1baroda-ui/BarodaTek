@@ -30,14 +30,16 @@ export const CONFIG = {
      * @returns {string} WebSocket URL
      */
     get WS_URL() {
+        // Optional global override, e.g. window.__WS_URL = 'wss://ws.barodatek.com'
+        if (typeof window !== 'undefined' && window.__WS_URL) {
+            return window.__WS_URL;
+        }
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const host = window.location.host;
-        
         // Local development
         if (window.location.hostname === 'localhost') {
             return 'ws://localhost:8080';
         }
-        
         return `${protocol}//${host}`;
     },
     

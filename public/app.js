@@ -3270,7 +3270,7 @@ function startTutorial(tutorialId) {
                     <p class="text-info">👉 <strong>GET requests</strong> are used to <em>retrieve</em> data (like viewing a menu).</p>`,
                     example: {
                         code: `// Make a GET request to get all contracts
-fetch('http://localhost:8080/api/contracts')
+fetch(window.location.origin + '/api/contracts')
     .then(response => response.json())
     .then(data => {
         console.log('Success! Here's the data:', data);
@@ -3321,7 +3321,7 @@ fetch('http://localhost:8080/api/contracts')
                     <p>We use <strong>POST</strong> requests to send data to the server:</p>`,
                     example: {
                         code: `// Create a new contract
-fetch('http://localhost:8080/api/contracts', {
+fetch(window.location.origin + '/api/contracts', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -3365,7 +3365,8 @@ fetch('http://localhost:8080/api/contracts', {
                     content: `<h5>Let's establish a WebSocket connection:</h5>`,
                     example: {
                         code: `// Connect to our WebSocket server
-const ws = new WebSocket('ws://localhost:8080');
+var wsProtocol = (window.location.protocol === 'https:') ? 'wss' : 'ws';
+var ws = new WebSocket(wsProtocol + '://' + window.location.host);
 
 // When connection opens
 ws.onopen = () => {

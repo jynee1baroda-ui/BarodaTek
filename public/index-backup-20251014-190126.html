@@ -1,0 +1,1318 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BARODATEK | Retro API Platform</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100  100'><text y='75' font-size='75'>��</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* �� RETRO MINIMALIST THEME - Clean & Professional */
+        
+        :root {
+            --primary-cyan: #00d9ff;
+            --primary-pink: #ff0080;
+            --accent-yellow: #ffd700;
+            --accent-green: #00ff88;
+            --dark-bg: #0a0014;
+            --darker-bg: #050008;
+            --light-text: #e0e0ff;
+            --border-color: #333366;
+        }
+        
+        /* Minimalist Clean Background */
+        body {
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--light-text);
+            font-family: 'IBM Plex Mono', monospace;
+            line-height: 1.6;
+        }
+        
+        /* Minimalist Text Styling - Fixed Character Spacing */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            word-spacing: 2px;
+        }
+        
+        /* Fix body text spacing */
+        body {
+            letter-spacing: 0.3px;
+            word-spacing: 1px;
+        }
+        
+        /* Fix paragraph spacing */
+        p {
+            letter-spacing: 0.2px;
+            word-spacing: 1.5px;
+            line-height: 1.7;
+        }
+        
+        /* Simple Underline Effect */
+        .retro-underline {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .retro-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-pink));
+        }
+        
+        /* Clean Glow */
+        .simple-glow {
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        /* Minimal Border */
+        .minimal-border {
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+        }
+        
+        .minimal-border:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+        }
+        
+        /* Subtle Float Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Minimalist Hero Section */
+        .hero-section {
+            background: linear-gradient(180deg, rgba(10, 0, 20, 0.9) 0%, var(--dark-bg) 100%);
+            color: white;
+            padding: 5rem 0;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            animation: float 20s infinite linear;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* Minimalist Card Styling */
+        .card {
+            background: rgba(20, 20, 40, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-cyan);
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.2);
+        }
+        
+        /* Minimalist Button Styles - Fixed Spacing */
+        .btn {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 2px solid;
+            padding: 12px 30px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.8px;
+            word-spacing: 2px;
+        }
+        
+        .btn-light {
+            background: transparent;
+            border-color: var(--primary-cyan);
+            color: var(--primary-cyan);
+        }
+        
+        .btn-light:hover {
+            background: var(--primary-cyan);
+            color: var(--darker-bg);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+        }
+        
+        .btn-success {
+            background: transparent;
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(135deg, var(--neon-yellow), var(--neon-orange));
+            border-color: var(--neon-yellow);
+            box-shadow: 0 0 40px var(--neon-yellow);
+            transform: scale(1.05);
+        }
+        
+        .btn-outline-light {
+            background: transparent;
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+        
+        .btn-outline-light:hover {
+            background: var(--neon-cyan);
+            color: black;
+            box-shadow: 0 0 40px var(--neon-cyan);
+            transform: scale(1.05);
+        }
+        
+        /* Enhanced Text Readability - Maximum Contrast */
+        .text-white-readable {
+            color: #ffffff !important;
+            text-shadow: 0 3px 6px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.9);
+            font-weight: 500;
+        }
+        
+        .text-light-readable {
+            color: #f8f9fa !important;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.7), 0 0 10px rgba(0,0,0,0.4);
+            font-weight: 500;
+        }
+        
+        .text-dark-readable {
+            color: #1a1a1a !important;
+            font-weight: 600;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .hero-section h1, .hero-section p {
+            text-shadow: 0 4px 12px rgba(0,0,0,0.8), 0 2px 6px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4);
+            color: #ffffff !important;
+        }
+        
+        .hero-section .lead {
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+        
+        /* Retro/Minimalist Design Elements */
+        .retro-border {
+            border: 3px solid;
+            border-image: linear-gradient(45deg, #667eea, #764ba2, #f093fb) 1;
+        }
+        
+        .minimal-card {
+            border: 2px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .minimal-card:hover {
+            border-color: rgba(102, 126, 234, 0.6);
+            background: rgba(255,255,255,0.05);
+            transform: translateY(-3px);
+        }
+        
+        .bg-dark {
+            background: rgba(18, 18, 35, 0.98) !important;
+            backdrop-filter: blur(15px);
+        }
+        
+        .bg-dark * {
+            color: #ffffff !important;
+        }
+        
+        .bg-light {
+            background: rgba(248, 249, 250, 0.98) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        .bg-light h1, .bg-light h2, .bg-light h3, .bg-light h4, .bg-light h5, .bg-light h6, .bg-light p {
+            color: #1a1a1a !important;
+        }
+        
+        /* Ensure text contrast on all sections */
+        section {
+            position: relative;
+            z-index: 1;
+        }
+        
+        section.py-5 {
+            padding: 4rem 0 !important;
+        }
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+        .stats-card {
+            background: linear-gradient(45deg, rgba(240, 147, 251, 0.9) 0%, rgba(245, 87, 108, 0.9) 100%);
+            color: white;
+        }
+        .contract-card {
+            border-left: 4px solid #667eea;
+        }
+        .api-endpoint {
+            background-color: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .loading {
+            display: none;
+        }
+        .download-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        .tool-card {
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(45deg, #667eea, #764ba2) border-box;
+        }
+        .feature-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+        .pulse-btn {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow-x: auto;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .live-demo-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #28a745;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        .interactive-section {
+            background: linear-gradient(45deg, #f8f9fa 25%, white 25%, white 50%, #f8f9fa 50%, #f8f9fa 75%, white 75%);
+            background-size: 40px 40px;
+        }
+        #spaceship {
+            transition: all 0.3s ease;
+        }
+        
+        /* Game Area Cursor Fix */
+        #game-board, #game-area, #game-board * {
+            cursor: default !important;
+        }
+        #game-board button, #game-area button {
+            cursor: pointer !important;
+        }
+        .btn, button, [onclick] {
+            cursor: pointer !important;
+        }
+        
+        /* Contribution Cards Styling */
+        .contribution-card {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            cursor: pointer;
+        }
+        .contribution-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: white;
+        }
+        .contribution-card i {
+            transition: transform 0.3s ease;
+        }
+        .contribution-card:hover i {
+            transform: scale(1.2) rotate(10deg);
+        }
+        .contribution-card .btn {
+            transition: all 0.3s ease;
+        }
+        .contribution-card:hover .btn {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Orbs Background -->
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="floating-orb orb-3"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: rgba(10, 0, 20, 0.95); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border-color);">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="#home" style="font-family: 'Space Mono', monospace; font-size: 1.2rem;">
+                <span style="font-size: 2rem; margin-right: 8px;">��</span>
+                <span style="color: var(--primary-cyan); letter-spacing: 1.2px; word-spacing: 2px;">BARODATEK</span>
+                <span class="badge ms-3 px-2" style="background: var(--accent-green); color: var(--darker-bg); font-size: 0.7rem;">�LIVE</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">�� Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">���� About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="public/mini-game.html">�� Mini Game</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="public/chatbot.html">�� AI Chat</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="public/dev-tools.html">��� Dev Tools</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contracts">�� Contracts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="public/api-explorer.html">�� API Explorer</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#api">�� API Docs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="public/pricing.html">�� Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#opensource">�� Open Source</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link text-warning" id="live-visitor-count">
+                            <i class="fas fa-users"></i> <span id="visitor-count">1</span> online
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section crt-effect">
+        <div class="container text-center position-relative">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto">
+                    <!-- Llama Logo -->
+                    <div class="mb-4" style="font-size: 150px; line-height: 1; filter: drop-shadow(0 0 30px var(--primary-cyan)) drop-shadow(0 0 60px var(--primary-pink)); animation: float 3s ease-in-out infinite;">
+                        ��
+                    </div>
+                    <h1 class="display-3 fw-bold mb-4 neon-glow" style="font-family: 'Space Mono', monospace; color: var(--primary-cyan); text-transform: uppercase; letter-spacing: 4px;">
+                        BARODATEK API HUB
+                        <div class="live-demo-badge" style="background: var(--neon-green); animation: blink 1s infinite;">�</div>
+                    </h1>
+                    <p class="lead mb-4" style="font-family: 'Orbitron', sans-serif; color: var(--neon-magenta); text-shadow: 0 0 10px var(--neon-magenta);">
+                        �� <span class="feature-highlight" style="color: var(--neon-yellow);">ENTERPRISE-GRADE API DEVELOPMENT PLATFORM</span> ��<br>
+                        <span style="color: white;">Full-stack API integration suite with real-time analytics, interactive testing tools, and production-ready solutions for businesses and developers worldwide!</span>
+                    </p>
+                    <div class="row justify-content-center mb-4">
+                        <div class="col-auto">
+                            <div class="badge me-2 mb-2 px-3 py-2" style="background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue)); color: black; font-weight: 900; border: 2px solid var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan);">
+                                <i class="fas fa-download me-1"></i>DOWNLOADABLE
+                            </div>
+                            <div class="badge me-2 mb-2 px-3 py-2" style="background: linear-gradient(90deg, var(--neon-green), #00cc00); color: black; font-weight: 900; border: 2px solid var(--neon-green); box-shadow: 0 0 15px var(--neon-green);">
+                                <i class="fas fa-code me-1"></i>OPEN SOURCE
+                            </div>
+                            <div class="badge me-2 mb-2 px-3 py-2" style="background: linear-gradient(90deg, var(--neon-magenta), var(--arcade-pink)); color: white; font-weight: 900; border: 2px solid var(--neon-magenta); box-shadow: 0 0 15px var(--neon-magenta);">
+                                <i class="fas fa-tools me-1"></i>DEV TOOLS
+                            </div>
+                            <div class="badge me-2 mb-2 px-3 py-2" style="background: linear-gradient(90deg, var(--neon-yellow), var(--neon-orange)); color: black; font-weight: 900; border: 2px solid var(--neon-yellow); box-shadow: 0 0 15px var(--neon-yellow);">
+                                <i class="fas fa-puzzle-piece me-1"></i>CUSTOMIZABLE
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <button class="btn btn-light btn-lg pulse-btn" data-action="loadContracts">
+                            <i class="fas fa-play me-2"></i>Live Demo
+                        </button>
+                        <a href="#downloads" class="btn btn-success btn-lg">
+                            <i class="fas fa-download me-2"></i>Download All
+                        </a>
+                        <a href="api-explorer.html" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-code me-2"></i>API Explorer
+                        </a>
+                        <button class="btn btn-outline-light btn-lg" data-action="showCreateForm">
+                            <i class="fas fa-plus me-2"></i>Create Contract
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Real-time Stats Dashboard -->
+    <section class="py-4" style="background: linear-gradient(180deg, rgba(10, 10, 26, 0.98), rgba(5, 5, 16, 0.95)); border-top: 2px solid var(--neon-cyan); border-bottom: 2px solid var(--neon-magenta);">
+        <div class="container">
+            <div class="row g-3">
+                <!-- Live Visitors -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100" style="background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(10, 10, 26, 0.95)); border: 3px solid var(--neon-cyan); box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.3), 0 0 30px rgba(0, 255, 255, 0.4);">
+                        <div class="card-body text-white text-center">
+                            <i class="fas fa-users fa-2x mb-2" style="color: var(--neon-cyan); filter: drop-shadow(0 0 10px var(--neon-cyan));"></i>
+                            <h3 class="mb-0 neon-glow" style="color: var(--neon-cyan); font-family: 'Orbitron', sans-serif; font-size: 2.5rem;" id="liveVisitors">0</h3>
+                            <small style="color: var(--neon-cyan); font-family: 'Orbitron', sans-serif;">ACTIVE USERS</small>
+                            <div class="mt-2">
+                                <i class="fas fa-circle" style="color: var(--neon-green); animation: blink 1s infinite; font-size: 10px;"></i>
+                                <span class="small ms-1" style="color: var(--neon-green);">LIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Total Page Views -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100" style="background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(10, 10, 26, 0.95)); border: 3px solid var(--neon-magenta); box-shadow: inset 0 0 20px rgba(255, 0, 255, 0.3), 0 0 30px rgba(255, 0, 255, 0.4);">
+                        <div class="card-body text-white text-center">
+                            <i class="fas fa-eye fa-2x mb-2" style="color: var(--neon-magenta); filter: drop-shadow(0 0 10px var(--neon-magenta));"></i>
+                            <h3 class="mb-0 neon-glow" style="color: var(--neon-magenta); font-family: 'Orbitron', sans-serif; font-size: 2.5rem;" id="totalViews">0</h3>
+                            <small style="color: var(--neon-magenta); font-family: 'Orbitron', sans-serif;">PAGE VIEWS</small>
+                            <div class="mt-2 small" style="color: var(--neon-magenta);">
+                                +<span id="viewsToday">0</span> TODAY
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- API Requests -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100" style="background: linear-gradient(135deg, rgba(255, 255, 0, 0.2), rgba(10, 10, 26, 0.95)); border: 3px solid var(--neon-yellow); box-shadow: inset 0 0 20px rgba(255, 255, 0, 0.3), 0 0 30px rgba(255, 255, 0, 0.4);">
+                        <div class="card-body text-white text-center">
+                            <i class="fas fa-server fa-2x mb-2" style="color: var(--neon-yellow); filter: drop-shadow(0 0 10px var(--neon-yellow));"></i>
+                            <h3 class="mb-0 neon-glow" style="color: var(--neon-yellow); font-family: 'Orbitron', sans-serif; font-size: 2.5rem;" id="apiRequests">0</h3>
+                            <small style="color: var(--neon-yellow); font-family: 'Orbitron', sans-serif;">API REQUESTS</small>
+                            <div class="mt-2 small" style="color: var(--neon-yellow);">
+                                <span id="requestsPerMin">0</span>/MIN
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- System Status -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100" style="background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(10, 10, 26, 0.95)); border: 3px solid var(--neon-green); box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.3), 0 0 30px rgba(0, 255, 0, 0.4);">
+                        <div class="card-body text-white text-center">
+                            <i class="fas fa-check-circle fa-2x mb-2" style="color: var(--neon-green); filter: drop-shadow(0 0 10px var(--neon-green));"></i>
+                            <h3 class="mb-0 neon-glow" style="color: var(--neon-green); font-family: 'Orbitron', sans-serif; font-size: 2.5rem;">99.9%</h3>
+                            <small style="color: var(--neon-green); font-family: 'Orbitron', sans-serif;">UPTIME</small>
+                            <div class="mt-2 small" style="color: var(--neon-green);">
+                                PORT: <span id="current-port">8080</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions Bar -->
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card border-0" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                        <div class="card-body py-2">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <div class="text-white-readable">
+                                    <i class="fas fa-circle text-success me-2" style="animation: blink 1s infinite;"></i>
+                                    <strong>Status: LIVE & OPERATIONAL</strong>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-light btn-sm" data-action="testAPI">
+                                        <i class="fas fa-heartbeat me-1"></i>Test API
+                                    </button>
+                                    <button class="btn btn-outline-light btn-sm" data-action="loadSampleContracts">
+                                        <i class="fas fa-database me-1"></i>Load Samples
+                                    </button>
+                                    <button class="btn btn-outline-light btn-sm" data-action="refreshStats">
+                                        <i class="fas fa-sync me-1"></i>Refresh Stats
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Creator - JBaroda -->
+    <section id="about" class="py-5" style="background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%); color: white; backdrop-filter: blur(10px);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="position-relative">
+                        <div class="text-center mb-4">
+                            <div style="width: 250px; height: 250px; margin: 0 auto; border-radius: 50%; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 5px var(--primary-cyan), 0 0 0 10px var(--primary-pink); border: 3px solid white;">
+                                <img src="/public/jbaroda-profile.jpg" alt="JBaroda - Creator of BarodaTek" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                            </div>
+                            <div class="mt-3">
+                                <p class="mb-1" style="color: var(--primary-cyan); font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1.2rem;">JBaroda</p>
+                                <p class="mb-0" style="color: var(--accent-yellow); font-size: 0.9rem;">Creator & Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ps-lg-4">
+                        <h2 class="display-4 mb-4">
+                            <span class="text-gradient" style="background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Meet JBaroda</span>
+                        </h2>
+                        <p class="lead mb-4">
+                            <em>"From psychology to programming - a journey of discovery, creativity, and endless possibilities."</em>
+                        </p>
+                        
+                        <div class="mb-4">
+                            <h4 class="text-info mb-3"><i class="fas fa-star me-2"></i>Creator's Story</h4>
+                            <p class="fs-5 lh-base">
+                                Hi! I'm <strong>JBaroda</strong>, a 27-year-old from beautiful California with a passion for learning and creating. 
+                                My journey into coding and AI began through an amazing friend who works for the state - they opened my eyes to 
+                                the incredible world of technology and all the cool creations and imagination that comes with it.
+                            </p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-success mb-3"><i class="fas fa-graduation-cap me-2"></i>Background</h4>
+                            <p class="fs-5 lh-base">
+                                With a <strong>Bachelor's degree in Psychology</strong>, I bring a unique perspective to technology - 
+                                understanding human behavior and how people interact with digital experiences. I have 
+                                <strong>no prior coding experience whatsoever</strong>, which makes this project even more special to me!
+                            </p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-warning mb-3"><i class="fas fa-heart me-2"></i>My Mission</h4>
+                            <p class="fs-5 lh-base">
+                                I created this BarodaTek API Hub to <strong>empower developers and transform businesses</strong>. 
+                                I aim for higher knowledge and hope these tools and this website help those who seek answers. 
+                                This project represents my first step into the amazing world of development and AI.
+                            </p>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-3 mt-4">
+                            <span class="badge bg-primary fs-6 p-2">�� Psychology Graduate</span>
+                            <span class="badge bg-success fs-6 p-2">�� First-Time Developer</span>
+                            <span class="badge bg-info fs-6 p-2">��� California Native</span>
+                            <span class="badge bg-warning text-dark fs-6 p-2">�� AI Enthusiast</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mini Game Section -->
+    <section id="game" class="py-5" style="background: linear-gradient(135deg, rgba(15, 52, 96, 0.95) 0%, rgba(26, 26, 46, 0.95) 100%); color: white; backdrop-filter: blur(10px);">
+        <div class="container">
+            <h2 class="text-center mb-5 text-white-readable">
+                <i class="fas fa-gamepad me-3"></i>�� Coding Space Adventure
+                <small class="d-block text-light-readable mt-2">Test your API knowledge while exploring the galaxy!</small>
+            </h2>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px);">
+                        <div class="card-body p-4">
+                            <div id="game-area" class="text-center">
+                                <div id="game-board" style="background: linear-gradient(45deg, #0c0c0c, #1a1a2e); border-radius: 10px; padding: 30px; min-height: 300px; position: relative; overflow: hidden;">
+                                    <div id="spaceship" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 2rem;">��</div>
+                                    <div id="stars-container"></div>
+                                    <div id="question-container" class="mt-4" style="display: none;">
+                                        <h4 id="question-text" class="text-white mb-3"></h4>
+                                        <div id="answers-container" class="d-grid gap-2"></div>
+                                    </div>
+                                    <div id="game-start" class="text-center">
+                                        <h3 class="text-white-readable mb-4">�� Choose Your Challenge!</h3>
+                                        <p class="text-light-readable mb-4">Select a game to test your skills and earn points!</p>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="card" style="background: rgba(102, 126, 234, 0.2); border: 2px solid #667eea;">
+                                                    <div class="card-body">
+                                                        <h5 class="text-white-readable">�� API Galaxy</h5>
+                                                        <p class="text-light-readable small">Answer API questions</p>
+                                                        <button class="btn btn-primary w-100" data-action="startGameSafe" data-arg="api-quiz">
+                                                            Play Now
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card" style="background: rgba(118, 75, 162, 0.2); border: 2px solid #764ba2;">
+                                                    <div class="card-body">
+                                                        <h5 class="text-white-readable">�� Debug Detective</h5>
+                                                        <p class="text-light-readable small">Find & fix code bugs</p>
+                                                        <button class="btn btn-warning w-100" data-action="startGame" data-arg="debug-detective">
+                                                            Play Now
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card" style="background: rgba(255, 107, 107, 0.2); border: 2px solid #ff6b6b;">
+                                                    <div class="card-body">
+                                                        <h5 class="text-white-readable">� Syntax Speed Run</h5>
+                                                        <p class="text-light-readable small">Complete code fast</p>
+                                                        <button class="btn btn-danger w-100" data-action="startGame" data-arg="syntax-speed">
+                                                            Play Now
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card" style="background: rgba(78, 205, 196, 0.2); border: 2px solid #4ecdc4;">
+                                                    <div class="card-body">
+                                                        <h5 class="text-white-readable">�� Algorithm Puzzle</h5>
+                                                        <p class="text-light-readable small">Solve logic challenges</p>
+                                                        <button class="btn btn-info w-100" data-action="startGame" data-arg="algorithm-puzzle">
+                                                            Play Now
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="game-stats" class="position-absolute top-0 start-0 p-3" style="display: none;">
+                                        <div class="text-white">
+                                            <strong>Score: <span id="score">0</span></strong><br>
+                                            <strong>Level: <span id="level">1</span></strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARENA 1: INTERACTIVE LEARNING -->
+    <section id="games" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>🎮 ARENA 1: INTERACTIVE LEARNING</h2>
+                <p>Master your skills through challenging games</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-galaxy"></i> API GALAXY QUIZ</h4>
+                        <p>Test your API knowledge with interactive quizzes. Features hints, answer reveals, and grading system (S to D ranks).</p>
+                        <button class="btn-tech btn-sm" onclick="startGame('api-quiz')">LAUNCH GAME</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-bug"></i> DEBUG DETECTIVE</h4>
+                        <p>Find and fix bugs in code snippets. Improve your debugging skills with real-world scenarios.</p>
+                        <button class="btn-tech btn-sm" onclick="startGame('debug-game')">LAUNCH GAME</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-code"></i> SYNTAX SPEED RUN</h4>
+                        <p>Complete code syntax challenges as fast as possible. Race against time and improve your coding speed.</p>
+                        <button class="btn-tech btn-sm" onclick="startGame('syntax-game')">LAUNCH GAME</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-book"></i> LEARNING TUTORIALS</h4>
+                        <p>Step-by-step guides for beginners to advanced developers. Learn API development, REST principles, and more.</p>
+                        <button class="btn-tech btn-sm" onclick="scrollToSection('learn')">VIEW TUTORIALS</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GAME MODAL CONTAINER -->
+            <div id="game-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; overflow-y: auto;">
+                <div class="container py-5">
+                    <div class="d-flex justify-content-end mb-3">
+                        <button class="btn btn-danger" onclick="closeGameModal()">
+                            <i class="fas fa-times"></i> Close Game
+                        </button>
+                    </div>
+                    <div id="game-board" style="max-width: 900px; margin: 0 auto;">
+                        <!-- Game content loads here -->
+                    </div>
+                    <div id="game-start" class="text-center" style="display: none;">
+                        <h3 class="text-white mb-4">Choose a Game</h3>
+                        <div class="d-flex gap-3 justify-content-center flex-wrap">
+                            <button class="btn-champion" onclick="gameEngine.startAPIQuiz()">API Quiz</button>
+                            <button class="btn-champion" onclick="gameEngine.startDebugGame()">Debug Detective</button>
+                            <button class="btn-champion" onclick="gameEngine.startSyntaxGame()">Syntax Speed Run</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="champion-line"></div>
+
+    <!-- ARENA 2: DEVELOPER TOOLS -->
+    <section id="tools" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>🔧 ARENA 2: DEVELOPER TOOLS</h2>
+                <p>Professional tools for champions</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-search"></i> API EXPLORER</h4>
+                        <p>Test API endpoints directly in your browser. View requests, responses, and status codes in real-time.</p>
+                        <a href="api-explorer.html" class="btn-tech btn-sm">OPEN EXPLORER</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-file-contract"></i> CONTRACT MANAGER</h4>
+                        <p>Manage API contracts, mock data, and service agreements. Full CRUD operations available.</p>
+                        <button class="btn-tech btn-sm" onclick="alert('Contract Manager - Coming Soon!')">OPEN MANAGER</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-code"></i> CODE GENERATOR</h4>
+                        <p>Generate boilerplate code for APIs, routes, and controllers automatically.</p>
+                        <button class="btn-tech btn-sm" onclick="alert('Code Generator - Coming Soon!')">GENERATE CODE</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-chart-line"></i> ANALYTICS DASHBOARD</h4>
+                        <p>Track visitors, page views, and API usage with privacy-first analytics. No external tracking.</p>
+                        <a href="tools/lightweight-analytics.html" class="btn-tech btn-sm">VIEW ANALYTICS</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-tachometer-alt"></i> PERFORMANCE METRICS</h4>
+                        <p>Monitor API response times, error rates, and system performance in real-time.</p>
+                        <button class="btn-tech btn-sm" onclick="alert('Performance Metrics - Coming Soon!')">VIEW METRICS</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-download"></i> EXPORT DATA</h4>
+                        <p>Export analytics, contracts, and reports in CSV or JSON format for analysis.</p>
+                        <button class="btn-tech btn-sm" onclick="alert('Export Data - Coming Soon!')">EXPORT NOW</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="champion-line"></div>
+
+    <!-- ARENA 3: AI ASSISTANCE -->
+    <section id="ai" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>🤖 ARENA 3: AI ASSISTANCE</h2>
+                <p>Your intelligent coding companion</p>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="feature-card" style="min-height: 400px;">
+                        <h4><i class="fas fa-comments"></i> AI CHATBOT - ENHANCED</h4>
+                        <p>Ask questions about code, APIs, debugging, learning, and more. Supports 9 topic categories with conversation memory.</p>
+                        
+                        <!-- Chatbot Interface -->
+                        <div id="chatbot-container" class="mt-4">
+                            <div id="chat-messages" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-dark); padding: 20px; height: 300px; overflow-y: auto; margin-bottom: 15px; border-radius: 4px;">
+                                <p style="color: var(--neon-cyan);"><strong>AI Bot:</strong> Hello! I'm your coding assistant. Ask me about games, coding, APIs, debugging, learning, or anything else! 🤖</p>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" id="chat-input" class="form-control" placeholder="Ask me anything..." style="background: rgba(0,0,0,0.5); border: 1px solid var(--border-dark); color: white;">
+                                <button class="btn-champion" onclick="sendMessage()">SEND</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-lightbulb"></i> SMART FEATURES</h4>
+                        <p><strong>9 Topic Categories:</strong></p>
+                        <ul style="color: var(--text-gray); font-size: 0.9rem; text-align: left;">
+                            <li>Game Help & Hints</li>
+                            <li>Coding Tutorials</li>
+                            <li>Learning Resources</li>
+                            <li>API Concepts</li>
+                            <li>Debug Assistance</li>
+                            <li>Pricing & Business</li>
+                            <li>AI/ML Topics</li>
+                            <li>Greetings & Chat</li>
+                            <li>General Questions</li>
+                        </ul>
+                        <p style="margin-top: 20px;"><strong>Features:</strong></p>
+                        <ul style="color: var(--text-gray); font-size: 0.9rem; text-align: left;">
+                            <li>Context Awareness</li>
+                            <li>Conversation Memory</li>
+                            <li>Intent Detection</li>
+                            <li>Code Examples</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="champion-line"></div>
+
+    <!-- ARENA 4: LEARNING CENTER -->
+    <section id="learn" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>📚 ARENA 4: LEARNING CENTER</h2>
+                <p>From beginner to champion - Track your progress, master new skills</p>
+            </div>
+            
+            <!-- Global Progress -->
+            <div style="text-align: center; margin-bottom: 40px; padding: 20px; background: var(--electric-black); border-radius: 10px; border: 2px solid var(--border-dark);">
+                <h3 style="color: var(--neon-cyan); margin-bottom: 10px;">
+                    <i class="fas fa-trophy"></i> Your Learning Journey
+                </h3>
+                <p id="global-progress" style="color: var(--text-gray); font-size: 1.1rem; margin: 0;">
+                    0/12 tutorials completed (0%)
+                </p>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-card" style="transition: all 0.3s ease; cursor: pointer; height: 100%;" 
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--neon-cyan)';" 
+                         onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-dark)';">
+                        <div style="text-align: center; margin-bottom: 15px; font-size: 3rem;">🎓</div>
+                        <h4 style="text-align: center; color: var(--neon-cyan); margin-bottom: 15px;">
+                            <i class="fas fa-book-reader"></i> BEGINNER PATH
+                        </h4>
+                        <p style="text-align: center; margin-bottom: 20px; line-height: 1.6;">
+                            Start your coding journey with fundamentals. Learn JavaScript, APIs, HTTP methods, and JSON basics.
+                        </p>
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <div class="progress-indicator" style="color: var(--text-gray); font-size: 0.9rem;">
+                                0/3 tutorials completed
+                            </div>
+                        </div>
+                        <ul style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 20px; list-style: none; padding: 0;">
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--code-green);"></i> JavaScript Basics</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--code-green);"></i> HTTP Methods</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--code-green);"></i> JSON Fundamentals</li>
+                        </ul>
+                        <div style="text-align: center;">
+                            <button class="btn-tech btn-sm" onclick="safeOpenTutorial('beginner')">
+                                <i class="fas fa-play"></i> START PATH
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card" style="transition: all 0.3s ease; cursor: pointer; height: 100%;" 
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--gold-trim)';" 
+                         onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-dark)';">
+                        <div style="text-align: center; margin-bottom: 15px; font-size: 3rem;">🚀</div>
+                        <h4 style="text-align: center; color: var(--gold-trim); margin-bottom: 15px;">
+                            <i class="fas fa-rocket"></i> API MASTERY
+                        </h4>
+                        <p style="text-align: center; margin-bottom: 20px; line-height: 1.6;">
+                            Deep dive into REST APIs, authentication, error handling, and testing best practices.
+                        </p>
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <div class="progress-indicator" style="color: var(--text-gray); font-size: 0.9rem;">
+                                0/4 tutorials completed
+                            </div>
+                        </div>
+                        <ul style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 20px; list-style: none; padding: 0;">
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--gold-trim);"></i> RESTful API Design</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--gold-trim);"></i> Authentication & Security</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--gold-trim);"></i> Error Handling</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--gold-trim);"></i> API Testing</li>
+                        </ul>
+                        <div style="text-align: center;">
+                            <button class="btn-champion btn-sm" onclick="safeOpenTutorial('apiMastery')">
+                                <i class="fas fa-play"></i> START PATH
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card" style="transition: all 0.3s ease; cursor: pointer; height: 100%;" 
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--champion-red)';" 
+                         onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-dark)';">
+                        <div style="text-align: center; margin-bottom: 15px; font-size: 3rem;">⚡</div>
+                        <h4 style="text-align: center; color: var(--champion-red); margin-bottom: 15px;">
+                            <i class="fas fa-brain"></i> ADVANCED TECHNIQUES
+                        </h4>
+                        <p style="text-align: center; margin-bottom: 20px; line-height: 1.6;">
+                            Master microservices, GraphQL, WebSockets, and advanced architecture patterns.
+                        </p>
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <div class="progress-indicator" style="color: var(--text-gray); font-size: 0.9rem;">
+                                0/4 tutorials completed
+                            </div>
+                        </div>
+                        <ul style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 20px; list-style: none; padding: 0;">
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--champion-red);"></i> Microservices</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--champion-red);"></i> GraphQL</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--champion-red);"></i> WebSockets</li>
+                            <li style="padding: 5px 0;"><i class="fas fa-check-circle" style="color: var(--champion-red);"></i> Performance</li>
+                        </ul>
+                        <div style="text-align: center;">
+                            <button class="btn-tech btn-sm" style="background: var(--champion-red); border-color: var(--champion-red);" onclick="safeOpenTutorial('advanced')">
+                                <i class="fas fa-play"></i> START PATH
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Learning Tips -->
+            <div style="margin-top: 40px; padding: 25px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(255, 0, 120, 0.1)); border-radius: 10px; border: 1px solid var(--border-dark);">
+                <h4 style="color: var(--neon-cyan); margin-bottom: 15px; text-align: center;">
+                    <i class="fas fa-lightbulb"></i> Pro Learning Tips
+                </h4>
+                <div class="row">
+                    <div class="col-md-3" style="text-align: center; margin-bottom: 15px;">
+                        <i class="fas fa-code" style="font-size: 2rem; color: var(--code-green); margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-gray); font-size: 0.9rem; margin: 0;">Practice coding daily</p>
+                    </div>
+                    <div class="col-md-3" style="text-align: center; margin-bottom: 15px;">
+                        <i class="fas fa-users" style="font-size: 2rem; color: var(--tech-blue); margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-gray); font-size: 0.9rem; margin: 0;">Join developer communities</p>
+                    </div>
+                    <div class="col-md-3" style="text-align: center; margin-bottom: 15px;">
+                        <i class="fas fa-project-diagram" style="font-size: 2rem; color: var(--gold-trim); margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-gray); font-size: 0.9rem; margin: 0;">Build real projects</p>
+                    </div>
+                    <div class="col-md-3" style="text-align: center; margin-bottom: 15px;">
+                        <i class="fas fa-robot" style="font-size: 2rem; color: var(--neon-cyan); margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-gray); font-size: 0.9rem; margin: 0;">Use AI Chatbot for help</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="champion-line"></div>
+
+    <!-- STATS SECTION -->
+    <section class="section" style="background: var(--steel-gray);">
+        <div class="container">
+            <div class="section-title">
+                <h2>🏆 CHAMPIONSHIP STATS</h2>
+                <p>Live platform performance</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="stats-box">
+                        <h3 id="live-visitors">0</h3>
+                        <p>Online Now</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-box">
+                        <h3 id="total-views">0</h3>
+                        <p>Total Views</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-box">
+                        <h3 id="games-played">0</h3>
+                        <p>Games Played</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-box">
+                        <h3 id="api-requests">0</h3>
+                        <p>API Requests</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="champion-line"></div>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="section">
+        <div class="container text-center">
+            <div class="section-title">
+                <h2>⚡ LEVEL UP WITH US</h2>
+                <p>Ready to dominate your code?</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-handshake"></i> LET'S WORK TOGETHER</h4>
+                        <p>Whether you need custom development, API integration, training, or consulting - we're here to help you achieve championship status.</p>
+                        
+                        <div class="mt-4">
+                            <p><i class="fas fa-envelope"></i> Email: <a href="mailto:barodatek.services@gmail.com" style="color: var(--neon-cyan);">barodatek.services@gmail.com</a></p>
+                            <p><i class="fas fa-dollar-sign"></i> CashApp: <strong style="color: var(--gold-trim);">$baroda98</strong></p>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button class="btn-champion" onclick="window.location.href='mailto:barodatek.services@gmail.com'">SEND EMAIL</button>
+                            <button class="btn-tech ms-3" onclick="window.open('https://cash.app/$baroda98', '_blank')">SEND PAYMENT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo">BARODATEK</div>
+            <p style="color: var(--text-gray); font-style: italic;">"Violence. Speed. Momentum."</p>
+            
+            <div class="footer-links">
+                <a href="#games">Games</a>
+                <a href="#tools">Tools</a>
+                <a href="#ai">AI Bot</a>
+                <a href="#learn">Learn</a>
+                <a href="#contact">Contact</a>
+            </div>
+            
+            <div class="footer-contact">
+                <p><strong>🌐 ONE PERMANENT URL:</strong></p>
+                <p><a href="https://barodatek.com" target="_blank">https://barodatek.com</a></p>
+                <p style="font-size: 0.85rem; color: var(--text-gray); margin-top: 10px;">
+                    This URL never changes. No sign-in required. Always public.
+                </p>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 BARODATEK. All Rights Reserved.</p>
+                <p>Built with confidence, designed for champions.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="config.js"></script>
+    <script type="module" src="dom-utils.js"></script>
+    <script type="module" src="tutorial-manager.js"></script>
+    <script src="enhanced-games.js"></script>
+    <script src="enhanced-chatbot.js"></script>
+    <script>
+        // Prefer globally-initialized instances from module scripts when available.
+        // These modules (enhanced-games.js / enhanced-chatbot.js) also create window.gameEngine and window.chatbot.
+        const gameEngine = window.gameEngine || new EnhancedGameEngine();
+
+        // Use the chatbot instance created by the module when present to avoid duplicate state.
+        const chatbot = window.chatbot || new EnhancedChatbot();
+        
+        // Smooth scroll function
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        // Start game function
+        function startGame(gameType) {
+            console.log('startGame called:', gameType, 'gameEngine available:', !!gameEngine, 'window.gameEngine:', !!window.gameEngine);
+            // Open game modal
+            document.getElementById('game-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+
+            // Clear previous game
+            document.getElementById('game-board').innerHTML = '';
+
+            // Start selected game (defensive: prefer existing engine, catch errors)
+            setTimeout(() => {
+                try {
+                    const engine = gameEngine || window.gameEngine;
+                    if (!engine) {
+                        console.error('No game engine instance available to start game.');
+                        return;
+                    }
+
+                    if (gameType === 'api-quiz') {
+                        engine.startAPIQuiz();
+                    } else if (gameType === 'debug-game') {
+                        engine.startDebugGame();
+                    } else if (gameType === 'syntax-game') {
+                        engine.startSyntaxGame();
+                    } else {
+                        console.warn('Unknown gameType for startGame:', gameType);
+                    }
+                } catch (err) {
+                    console.error('Error while starting game:', err);
+                }
+            }, 100);
+        }
+
+        // Close game modal
+        function closeGameModal() {
+            document.getElementById('game-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('game-board').innerHTML = '';
+        }
+        
+        // Chatbot send message
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const messagesDiv = document.getElementById('chat-messages');
+            const userMessage = input.value.trim();
+
+            if (!userMessage) return;
+
+            // Display user message
+            const userMsgElement = document.createElement('p');
+            userMsgElement.innerHTML = `<strong style="color: var(--neon-cyan);">You:</strong> ${userMessage}`;
+            messagesDiv.appendChild(userMsgElement);
+
+            // Clear input
+            input.value = '';
+
+            // Show typing indicator
+            const typingEl = document.createElement('p');
+            typingEl.innerHTML = `<strong style="color: var(--gold-trim);">AI Bot:</strong> <em>Thinking...</em>`;
+            messagesDiv.appendChild(typingEl);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            // Get AI response (handle sync or Promise)
+            try {
+                const result = await Promise.resolve(chatbot.processMessage(userMessage));
+                typingEl.innerHTML = `<strong style="color: var(--gold-trim);">AI Bot:</strong> ${result}`;
+            } catch (err) {
+                console.error('chatbot.processMessage error:', err);
+                typingEl.innerHTML = `<strong style="color: var(--gold-trim);">AI Bot:</strong> Sorry, an error occurred while processing your message.`;
+            }
+
+            // Scroll to bottom after response
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        // Enter key to send message
+        document.getElementById('chat-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Safe tutorial opener - waits for tutorialManager if not yet initialized
+        function safeOpenTutorial(pathName, maxWaitMs = 3000) {
+            try {
+                if (window.tutorialManager && typeof window.tutorialManager.openPath === 'function') {
+                    return window.tutorialManager.openPath(pathName);
+                }
+
+                const interval = 100;
+                let waited = 0;
+                const timer = setInterval(() => {
+                    if (window.tutorialManager && typeof window.tutorialManager.openPath === 'function') {
+                        clearInterval(timer);
+                        window.tutorialManager.openPath(pathName);
+                        return;
+                    }
+                    waited += interval;
+                    if (waited >= maxWaitMs) {
+                        clearInterval(timer);
+                        console.warn('tutorialManager not available after waiting', pathName);
+                    }
+                }, interval);
+            } catch (err) {
+                console.error('safeOpenTutorial error:', err);
+            }
+        }
+        
+        // Simulate stats (replace with real analytics later)
+        function updateStats() {
+            document.getElementById('live-visitors').textContent = Math.floor(Math.random() * 20) + 1;
+            document.getElementById('total-views').textContent = Math.floor(Math.random() * 5000) + 1000;
+            document.getElementById('games-played').textContent = Math.floor(Math.random() * 1000) + 100;
+            document.getElementById('api-requests').textContent = Math.floor(Math.random() * 10000) + 1000;
+        }
+        
+        // Update stats every 5 seconds
+        updateStats();
+        setInterval(updateStats, 5000);
+        
+        // Console message for developers
+        console.log('%cBARODATEK PLATFORM', 'color: #E50914; font-size: 30px; font-weight: bold;');
+        console.log('%cYour Code Learning Arena', 'color: #FFD700; font-size: 16px; font-style: italic;');
+        console.log('%cMaster APIs. Build Skills. Ship Fast.', 'color: #00F0FF; font-size: 14px;');
+    </script>
+    
+    <!-- Error Tracker - Automatically logs all client errors -->
+    <script src="/error-tracker.js"></script>
+</body>
+</html>
