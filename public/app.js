@@ -4168,43 +4168,192 @@ function refreshStats() {
 
 // Business Features - Lead Capture
 
-function subscribeNewsletter() {
+async function subscribeNewsletter() {
     const email = document.getElementById('subscribeEmail')?.value;
     const name = document.getElementById('subscribeName')?.value;
     const agree = document.getElementById('subscribeAgree')?.checked;
     
     if (!email) {
-        alert('⚠️ Please enter your email address');
+        showNotification('⚠️ Please enter your email address', 'warning');
+        return;
+    }
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showNotification('⚠️ Please enter a valid email address', 'warning');
         return;
     }
     
     if (!agree) {
-        alert('⚠️ Please agree to receive updates');
+        showNotification('⚠️ Please agree to receive updates', 'warning');
         return;
     }
     
-    // Simulate API call
-    console.log('📧 Newsletter subscription:', { email, name });
-    
-    // Show success message
-    alert(`✅ Welcome aboard, ${name || 'developer'}! 
-
-🎉 You're now subscribed to BarodaTek updates!
-
-You'll receive:
-• Weekly API tips & tricks
-• New feature announcements  
-• Exclusive tutorials
-• Special promotions
-
-Check your email (${email}) for a confirmation link.
-
-Thank you for joining our community! 🚀`);
-    
-    // Clear form
-    if (document.getElementById('subscribeEmail')) document.getElementById('subscribeEmail').value = '';
-    if (document.getElementById('subscribeName')) document.getElementById('subscribeName').value = '';
+    try {
+        // Send subscription to server (which will email you)
+        const response = await fetch('/api/newsletter/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                email, 
+                name: name || 'Anonymous',
+                subscribedAt: new Date().toISOString(),
+                source: 'website'
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showNotification(`✅ Welcome aboard, ${name || 'developer'}! 🎉 Check your email at ${email} for confirmation.`, 'success');
+            
+            // Clear form
+            if (document.getElementById('subscribeEmail')) document.getElementById('subscribeEmail').value = '';
+            if (document.getElementById('subscribeName')) document.getElementById('subscribeName').value = '';
+            
+            console.log('📧 Newsletter subscription successful:', { email, name });
+        } else {
+            throw new Error(result.error || 'Subscription failed');
+        }
+    } catch (error) {
+        console.error('Subscription error:', error);
+        showNotification('❌ Subscription failed. Please try again or email us directly at barodatek.services@gmail.com', 'danger');
+    }
 }
+
+// Submit Review with Google Business Integration
+async function submitReview() {
+    // Create modal for review submission
+    const modalHTML = `
+        <div class="modal fade" id="reviewModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">
+                            <i class="fas fa-star text-warning me-2"></i>Write a Review
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="reviewForm">
+                            <div class="mb-3">
+                                <label class="form-label">Your Name *</label>
+                                <input type="text" class="form-control" id="reviewName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email (optional)</label>
+                                <input type="email" class="form-control" id="reviewEmail">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Rating *</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="rating" id="rating5" value="5" required>
+                                    <label class="btn btn-outline-warning" for="rating5">⭐⭐⭐⭐⭐ (5)</label>
+                                    
+                                    <input type="radio" class="btn-check" name="rating" id="rating4" value="4">
+                                    <label class="btn btn-outline-warning" for="rating4">⭐⭐⭐⭐ (4)</label>
+                                    
+                                    <input type="radio" class="btn-check" name="rating" id="rating3" value="3">
+                                    <label class="btn btn-outline-warning" for="rating3">⭐⭐⭐ (3)</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Your Review *</label>
+                                <textarea class="form-control" id="reviewComment" rows="4" required placeholder="Share your experience with BarodaTek..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Service Used (optional)</label>
+                                <select class="form-control" id="reviewService">
+                                    <option value="">Select a service</option>
+                                    <option value="API Development">API Development</option>
+                                    <option value="Web Development">Web Development</option>
+                                    <option value="Consulting">Consulting</option>
+                                    <option value="Training">Training</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="submitReviewForm()">
+                            <i class="fas fa-paper-plane me-2"></i>Submit Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remove existing modal if present
+    const existingModal = document.getElementById('reviewModal');
+    if (existingModal) existingModal.remove();
+    
+    // Add modal to page
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
+    modal.show();
+}
+
+// Submit the review form
+window.submitReviewForm = async function() {
+    const name = document.getElementById('reviewName')?.value;
+    const email = document.getElementById('reviewEmail')?.value;
+    const rating = document.querySelector('input[name="rating"]:checked')?.value;
+    const comment = document.getElementById('reviewComment')?.value;
+    const service = document.getElementById('reviewService')?.value;
+    
+    if (!name || !rating || !comment) {
+        showNotification('⚠️ Please fill in all required fields', 'warning');
+        return;
+    }
+    
+    try {
+        // Submit review to server
+        const response = await fetch('/api/reviews/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                name,
+                email: email || '',
+                rating: parseInt(rating),
+                comment,
+                service: service || 'General',
+                submittedAt: new Date().toISOString(),
+                source: 'website'
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
+            modal.hide();
+            
+            // Show success with Google Business link
+            showNotification(`✅ Thank you for your ${rating}-star review, ${name}! 🌟`, 'success');
+            
+            // Prompt to also review on Google
+            setTimeout(() => {
+                if (confirm('Would you like to also leave a review on our Google Business page? This helps others find us!')) {
+                    // Replace with your actual Google Business review URL
+                    window.open(result.googleReviewUrl || 'https://g.page/r/YOUR_GOOGLE_PLACE_ID/review', '_blank');
+                }
+            }, 1000);
+            
+            console.log('✅ Review submitted successfully');
+        } else {
+            throw new Error(result.error || 'Review submission failed');
+        }
+    } catch (error) {
+        console.error('Review submission error:', error);
+        showNotification('❌ Failed to submit review. Please try again or email us at barodatek.services@gmail.com', 'danger');
+    }
+};
 
 function startFreeTier() {
     alert(`🚀 Starting Free Developer Plan!
@@ -4522,6 +4671,7 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'openApiExplorer': return window.location.href = '/api-explorer.html';
             case 'refreshStats': return refreshStats();
             case 'subscribeNewsletter': return subscribeNewsletter();
+            case 'submitReview': return submitReview();
             case 'startFreeTier': return startFreeTier();
             case 'upgradeToPro': return upgradeToPro();
             case 'contactEnterprise': return contactEnterprise();

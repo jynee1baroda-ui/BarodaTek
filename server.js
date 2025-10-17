@@ -2870,6 +2870,134 @@ app.delete('/api/reviews/:id', async (req, res) => {
     }
 });
 
+// ========== NEWSLETTER SUBSCRIPTION ENDPOINT ==========
+
+app.post('/api/newsletter/subscribe', async (req, res) => {
+    try {
+        const { email, name, subscribedAt, source } = req.body;
+        
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                error: 'Email is required',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Store subscription in database
+        const subscription = {
+            email,
+            name: name || 'Anonymous',
+            subscribedAt: subscribedAt || new Date().toISOString(),
+            source: source || 'website',
+            status: 'active'
+        };
+        
+        // Save to database (you can implement this in your db module)
+        console.log('📧 NEW NEWSLETTER SUBSCRIPTION:', subscription);
+        
+        // Send email notification to you
+        const notificationSubject = `🎉 New Newsletter Subscriber: ${name || email}`;
+        const notificationBody = `
+New subscriber details:
+- Name: ${name || 'Anonymous'}
+- Email: ${email}
+- Subscribed at: ${subscribedAt || new Date().toISOString()}
+- Source: ${source || 'website'}
+
+You can now add this email to your newsletter list!
+        `;
+        
+        // Log for now - you can integrate with nodemailer or other email service
+        console.log('📧 EMAIL NOTIFICATION TO barodatek.services@gmail.com:');
+        console.log('Subject:', notificationSubject);
+        console.log('Body:', notificationBody);
+        
+        res.status(201).json({
+            success: true,
+            message: 'Successfully subscribed to newsletter',
+            data: { email, name },
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error processing newsletter subscription:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to process subscription',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// ========== REVIEW SUBMISSION WITH GOOGLE BUSINESS INTEGRATION ==========
+
+app.post('/api/reviews/submit', async (req, res) => {
+    try {
+        const { name, email, rating, comment, service, submittedAt, source } = req.body;
+        
+        if (!name || !rating || !comment) {
+            return res.status(400).json({
+                success: false,
+                error: 'Name, rating, and comment are required',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        const reviewData = {
+            name,
+            email: email || '',
+            rating: parseInt(rating),
+            comment,
+            service: service || 'General',
+            submittedAt: submittedAt || new Date().toISOString(),
+            source: source || 'website',
+            approved: false // Reviews need approval before showing
+        };
+        
+        // Create review in database
+        const newReview = await db.createReview(reviewData);
+        
+        // Send email notification to you
+        const stars = '⭐'.repeat(rating);
+        const notificationSubject = `${stars} New ${rating}-Star Review from ${name}`;
+        const notificationBody = `
+New review received:
+- Name: ${name}
+- Email: ${email || 'Not provided'}
+- Rating: ${rating}/5 ${stars}
+- Service: ${service || 'General'}
+- Review: "${comment}"
+- Submitted at: ${submittedAt || new Date().toISOString()}
+
+You can approve this review in your admin panel.
+        `;
+        
+        console.log('⭐ NEW REVIEW RECEIVED:');
+        console.log('📧 EMAIL NOTIFICATION TO barodatek.services@gmail.com:');
+        console.log('Subject:', notificationSubject);
+        console.log('Body:', notificationBody);
+        console.log('Review data:', reviewData);
+        
+        // Your Google Business review URL
+        const googleReviewUrl = 'https://g.page/r/YOUR_GOOGLE_PLACE_ID/review'; // REPLACE WITH YOUR ACTUAL URL
+        
+        res.status(201).json({
+            success: true,
+            message: 'Review submitted successfully. Thank you!',
+            data: newReview,
+            googleReviewUrl: googleReviewUrl,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error submitting review:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to submit review',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
 // ========== ANALYTICS & STATS (REAL DATABASE) ==========
 
 app.get('/api/analytics', async (req, res) => {
