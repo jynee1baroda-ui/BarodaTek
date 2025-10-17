@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Function Test</title>
+    <style>
+        body {
+            background: #1a1a2e;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            text-align: center;
+        }
+        .test-box {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .status {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        .ok { color: #28a745; }
+        .error { color: #dc3545; }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 BarodaTek Function Test</h1>
+    
+    <div class="test-box">
+        <h2>Testing if app.js is loaded...</h2>
+        <div id="test-result" class="status">⏳ Testing...</div>
+        <div id="details"></div>
+    </div>
+    
+    <div class="test-box">
+        <h2>Manual Test Buttons</h2>
+        <button onclick="testStartGame()">Test startGame()</button>
+        <button onclick="testLoadContracts()">Test loadContracts()</button>
+        <button onclick="testExportData()">Test exportAllData()</button>
+        <div id="button-result" style="margin-top: 20px;"></div>
+    </div>
+    
+    <div class="test-box">
+        <h2>🚨 If Functions Are Missing:</h2>
+        <p style="font-size: 20px; color: #ffc107;">
+            YOU MUST REFRESH YOUR BROWSER!<br>
+            Press: <strong>Ctrl + Shift + R</strong>
+        </p>
+        <p>This clears the cache and loads the updated JavaScript file.</p>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        const testResult = document.getElementById('test-result');
+        const details = document.getElementById('details');
+        const buttonResult = document.getElementById('button-result');
+        
+        // Wait for app.js to load
+        setTimeout(() => {
+            const functionsToTest = [
+                'startGame',
+                'loadContracts',
+                'exportAllData',
+                'handleCommand',
+                'setCommand',
+                'testAPI'
+            ];
+            
+            let allOk = true;
+            let detailsHtml = '<div style="text-align: left; margin-top: 20px;">';
+            
+            functionsToTest.forEach(funcName => {
+                const exists = typeof window[funcName] === 'function';
+                if (!exists) allOk = false;
+                
+                const icon = exists ? '✅' : '❌';
+                const className = exists ? 'ok' : 'error';
+                detailsHtml += `<div class="${className}">${icon} ${funcName}()</div>`;
+            });
+            
+            detailsHtml += '</div>';
+            details.innerHTML = detailsHtml;
+            
+            if (allOk) {
+                testResult.innerHTML = '<span class="ok">✅ ALL FUNCTIONS LOADED!</span>';
+                testResult.innerHTML += '<p>All buttons on the main page should work now.</p>';
+            } else {
+                testResult.innerHTML = '<span class="error">❌ FUNCTIONS MISSING!</span>';
+                testResult.innerHTML += '<p style="color: #ffc107;">You need to refresh your browser: Ctrl + Shift + R</p>';
+            }
+        }, 500);
+        
+        function testStartGame() {
+            buttonResult.innerHTML = '<div style="color: #17a2b8;">Testing startGame()...</div>';
+            try {
+                if (typeof startGame === 'function') {
+                    buttonResult.innerHTML = '<div class="ok">✅ startGame() EXISTS and is a function!<br>It should work on the main page.</div>';
+                    console.log('startGame() is available');
+                } else {
+                    throw new Error('startGame is not a function');
+                }
+            } catch (error) {
+                buttonResult.innerHTML = `<div class="error">❌ Error: ${error.message}<br>Refresh your browser!</div>`;
+            }
+        }
+        
+        function testLoadContracts() {
+            buttonResult.innerHTML = '<div style="color: #17a2b8;">Testing loadContracts()...</div>';
+            try {
+                if (typeof loadContracts === 'function') {
+                    loadContracts();
+                    buttonResult.innerHTML = '<div class="ok">✅ loadContracts() EXECUTED successfully!</div>';
+                } else {
+                    throw new Error('loadContracts is not a function');
+                }
+            } catch (error) {
+                buttonResult.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        function testExportData() {
+            buttonResult.innerHTML = '<div style="color: #17a2b8;">Testing exportAllData()...</div>';
+            try {
+                if (typeof exportAllData === 'function') {
+                    exportAllData();
+                    buttonResult.innerHTML = '<div class="ok">✅ exportAllData() EXECUTED! Check your Downloads folder.</div>';
+                } else {
+                    throw new Error('exportAllData is not a function');
+                }
+            } catch (error) {
+                buttonResult.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

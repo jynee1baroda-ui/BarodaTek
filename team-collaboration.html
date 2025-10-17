@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Collaboration Hub - BarodaTek Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+        }
+        .collab-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1400px;
+        }
+        .editor-panel {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            min-height: 400px;
+            position: relative;
+        }
+        .video-panel {
+            background: #000;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .user-avatar:hover {
+            transform: scale(1.1);
+        }
+        .chat-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        .chat-message {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .project-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="collab-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1><i class="fas fa-users me-3"></i>Team Collaboration Hub</h1>
+                <p class="text-muted">Real-time code sharing, pair programming, team spaces</p>
+            </div>
+            <a href="index.html" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Home
+            </a>
+        </div>
+
+        <!-- Live Collaboration Section -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <i class="fas fa-code me-2"></i>Live Code Editor
+                        <span class="badge bg-success float-end">3 users online</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="editor-panel">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <span class="badge bg-primary me-2">JavaScript</span>
+                                    <span class="badge bg-info">main.js</span>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-success" onclick="runCode()">
+                                        <i class="fas fa-play me-1"></i>Run
+                                    </button>
+                                </div>
+                            </div>
+                            <textarea id="codeEditor" class="form-control bg-dark text-light border-0" style="min-height: 300px; font-family: 'Courier New';" oninput="simulateSync()">
+// Team Collaboration Demo - Try editing!
+function calculateTotal(items) {
+    return items.reduce((sum, item) => {
+        return sum + (item.price * item.quantity);
+    }, 0);
+}
+
+const cart = [
+    { name: 'API Subscription', price: 29, quantity: 1 },
+    { name: 'Pro Features', price: 49, quantity: 1 }
+];
+
+console.log('Total:', calculateTotal(cart));
+                            </textarea>
+                            <div class="mt-2 text-muted">
+                                <i class="fas fa-circle text-success"></i> <small>Auto-saved 2 seconds ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <!-- Video Call Panel -->
+                <div class="video-panel mb-3">
+                    <div>
+                        <h5><i class="fas fa-video me-2"></i>Video Call</h5>
+                        <div class="mb-3">
+                            <div class="user-avatar" title="You">JB</div>
+                            <div class="user-avatar" title="Team Member 1">AM</div>
+                            <div class="user-avatar" title="Team Member 2">SK</div>
+                        </div>
+                        <button class="btn btn-success me-2" onclick="toggleVideo()">
+                            <i class="fas fa-video"></i>
+                        </button>
+                        <button class="btn btn-warning me-2" onclick="toggleMic()">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="toggleScreen()">
+                            <i class="fas fa-desktop"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Screen Sharing Controls -->
+                <div class="card">
+                    <div class="card-body">
+                        <h6><i class="fas fa-desktop me-2"></i>Screen Sharing</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="shareMode" id="shareFullScreen">
+                            <label class="form-check-label" for="shareFullScreen">
+                                Full Screen
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="shareMode" id="shareWindow" checked>
+                            <label class="form-check-label" for="shareWindow">
+                                Application Window
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="shareMode" id="shareTab">
+                            <label class="form-check-label" for="shareTab">
+                                Browser Tab
+                            </label>
+                        </div>
+                        <button class="btn btn-primary w-100 mt-3" onclick="startSharing()">
+                            <i class="fas fa-share-square me-2"></i>Start Sharing
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat & Projects -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-comments me-2"></i>Team Chat
+                    </div>
+                    <div class="card-body">
+                        <div class="chat-box" id="chatBox">
+                            <!-- Chat messages will appear here -->
+                        </div>
+                        <div class="input-group mt-3">
+                            <input type="text" class="form-control" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendMessage()">
+                            <button class="btn btn-primary" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-folder me-2"></i>Active Projects
+                        <button class="btn btn-sm btn-success float-end" onclick="createProject()">
+                            <i class="fas fa-plus"></i> New Project
+                        </button>
+                    </div>
+                    <div class="card-body" id="projectsList">
+                        <!-- Projects will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize chat
+        const messages = [
+            { user: 'Alex M.', text: 'Hey team! Just pushed the latest changes.', time: '2m ago' },
+            { user: 'Sarah K.', text: 'Looking good! I\'ll review the PR now.', time: '1m ago' },
+            { user: 'You', text: 'Great work everyone! 🎉', time: 'Just now' }
+        ];
+
+        function populateChat() {
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML = messages.map(msg => `
+                <div class="chat-message">
+                    <strong>${msg.user}</strong> <small class="text-muted float-end">${msg.time}</small>
+                    <p class="mb-0">${msg.text}</p>
+                </div>
+            `).join('');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            if (input.value.trim()) {
+                messages.push({ user: 'You', text: input.value, time: 'Just now' });
+                input.value = '';
+                populateChat();
+            }
+        }
+
+        // Initialize projects
+        const projects = [
+            { name: 'BarodaTek API v2', members: 3, status: 'Active', files: 42 },
+            { name: 'Mobile App Integration', members: 2, status: 'In Review', files: 28 },
+            { name: 'Database Optimization', members: 4, status: 'Planning', files: 15 }
+        ];
+
+        function populateProjects() {
+            const projectsList = document.getElementById('projectsList');
+            projectsList.innerHTML = projects.map(proj => `
+                <div class="project-card" onclick="openProject('${proj.name}')">
+                    <h5>${proj.name}</h5>
+                    <div class="d-flex justify-content-between">
+                        <span><i class="fas fa-users me-1"></i>${proj.members} members</span>
+                        <span><i class="fas fa-file-code me-1"></i>${proj.files} files</span>
+                    </div>
+                    <span class="badge bg-light text-dark mt-2">${proj.status}</span>
+                </div>
+            `).join('');
+        }
+
+        function createProject() {
+            const name = prompt('Enter project name:');
+            if (name) {
+                projects.push({ name, members: 1, status: 'Active', files: 0 });
+                populateProjects();
+            }
+        }
+
+        function openProject(name) {
+            alert(`Opening project: ${name}\n\nThis would open the project workspace with:\n- All project files\n- Active collaborators\n- Version history\n- Task board`);
+        }
+
+        function runCode() {
+            const code = document.getElementById('codeEditor').value;
+            try {
+                eval(code);
+                alert('Code executed successfully! Check the browser console for output.');
+            } catch (e) {
+                alert('Error: ' + e.message);
+            }
+        }
+
+        function simulateSync() {
+            // Simulate real-time synchronization
+            console.log('Syncing with team...');
+        }
+
+        function toggleVideo() {
+            alert('Video camera toggled! 📹\n\nIn production, this would:\n- Enable/disable your webcam\n- Stream video to team members\n- Adjust bandwidth usage');
+        }
+
+        function toggleMic() {
+            alert('Microphone toggled! 🎤\n\nIn production, this would:\n- Mute/unmute your audio\n- Show status to team\n- Enable push-to-talk mode');
+        }
+
+        function toggleScreen() {
+            alert('Screen sharing toggled! 🖥️\n\nIn production, this would:\n- Share your screen\n- Allow remote cursor control\n- Record session (optional)');
+        }
+
+        function startSharing() {
+            const mode = document.querySelector('input[name="shareMode"]:checked').id;
+            alert(`Screen sharing started in ${mode.replace('share', '')} mode!\n\nYour team can now see your screen.`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            populateChat();
+            populateProjects();
+        });
+    </script>
+</body>
+</html>

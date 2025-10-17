@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Deploy Pro - BarodaTek Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            min-height: 100vh;
+        }
+        .deploy-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1400px;
+        }
+        .pipeline-step {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid #28a745;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .pipeline-step:hover {
+            transform: translateX(10px);
+        }
+        .pipeline-step.running {
+            border-left-color: #ffc107;
+            animation: pulse 2s infinite;
+        }
+        .pipeline-step.failed {
+            border-left-color: #dc3545;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .deploy-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .deploy-button:hover {
+            transform: scale(1.05);
+        }
+        .deployment-history {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="deploy-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1><i class="fas fa-rocket me-3"></i>Auto Deploy Pro</h1>
+                <p class="text-muted">One-click deployments, CI/CD pipelines, multi-cloud support</p>
+            </div>
+            <a href="index.html" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Home
+            </a>
+        </div>
+
+        <!-- Quick Deploy -->
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <h3 class="mb-4">Deploy to Production</h3>
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <select class="form-select" id="branchSelect">
+                            <option value="main">main</option>
+                            <option value="develop">develop</option>
+                            <option value="feature/new-api">feature/new-api</option>
+                        </select>
+                        <small class="text-muted">Branch</small>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="envSelect">
+                            <option value="production">Production</option>
+                            <option value="staging">Staging</option>
+                            <option value="dev">Development</option>
+                        </select>
+                        <small class="text-muted">Environment</small>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="cloudSelect">
+                            <option value="vercel">Vercel</option>
+                            <option value="aws">AWS</option>
+                            <option value="azure">Azure</option>
+                            <option value="gcp">Google Cloud</option>
+                        </select>
+                        <small class="text-muted">Cloud Provider</small>
+                    </div>
+                </div>
+                <button class="deploy-button" onclick="startDeployment()">
+                    <i class="fas fa-rocket me-2"></i>Deploy Now
+                </button>
+            </div>
+        </div>
+
+        <!-- Pipeline Status -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-stream me-2"></i>CI/CD Pipeline</h5>
+                    </div>
+                    <div class="card-body" id="pipelineSteps">
+                        <!-- Pipeline steps will be populated here -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-chart-bar me-2"></i>Deploy Stats</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h2 class="text-success"><span id="deployCount">87</span>/100</h2>
+                            <small class="text-muted">Deploys this month</small>
+                        </div>
+                        <div class="mb-3">
+                            <h4 class="text-primary"><span id="successRate">94%</span></h4>
+                            <small class="text-muted">Success rate</small>
+                        </div>
+                        <div class="mb-3">
+                            <h4 class="text-info"><span id="avgTime">3.2</span>min</h4>
+                            <small class="text-muted">Average deploy time</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deployment History -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h5><i class="fas fa-history me-2"></i>Deployment History</h5>
+                <button class="btn btn-sm btn-outline-danger" onclick="rollback()">
+                    <i class="fas fa-undo me-1"></i>Rollback
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="deployment-history" id="deployHistory">
+                    <!-- History will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pipelineSteps = [
+            { name: 'Code Checkout', icon: 'code-branch', duration: '5s' },
+            { name: 'Install Dependencies', icon: 'download', duration: '45s' },
+            { name: 'Run Tests', icon: 'vial', duration: '1m 20s' },
+            { name: 'Build Application', icon: 'cogs', duration: '2m 10s' },
+            { name: 'Security Scan', icon: 'shield-alt', duration: '30s' },
+            { name: 'Deploy to Cloud', icon: 'cloud-upload-alt', duration: '1m 15s' },
+            { name: 'Health Check', icon: 'heartbeat', duration: '15s' }
+        ];
+
+        function renderPipeline(currentStep = -1) {
+            const container = document.getElementById('pipelineSteps');
+            container.innerHTML = pipelineSteps.map((step, index) => {
+                let status = index < currentStep ? '' : index === currentStep ? 'running' : '';
+                let statusIcon = index < currentStep ? 'check-circle text-success' : 
+                                index === currentStep ? 'spinner fa-spin text-warning' : 'circle text-muted';
+                
+                return `
+                    <div class="pipeline-step ${status}" onclick="showStepDetails('${step.name}')">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-${step.icon} me-2"></i>
+                                <strong>${step.name}</strong>
+                            </div>
+                            <div>
+                                <span class="badge bg-light text-dark me-2">${step.duration}</span>
+                                <i class="fas fa-${statusIcon}"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function startDeployment() {
+            const branch = document.getElementById('branchSelect').value;
+            const env = document.getElementById('envSelect').value;
+            const cloud = document.getElementById('cloudSelect').value;
+
+            if (!confirm(`Deploy ${branch} to ${env} on ${cloud}?`)) return;
+
+            let currentStep = 0;
+            renderPipeline(currentStep);
+
+            const interval = setInterval(() => {
+                currentStep++;
+                if (currentStep > pipelineSteps.length) {
+                    clearInterval(interval);
+                    addToHistory(branch, env, cloud, 'success');
+                    alert('🎉 Deployment Successful!\n\nYour application is now live!');
+                    document.getElementById('deployCount').textContent = 
+                        parseInt(document.getElementById('deployCount').textContent) + 1;
+                } else {
+                    renderPipeline(currentStep);
+                }
+            }, 2000);
+        }
+
+        const deployments = [
+            { time: '5 min ago', branch: 'main', env: 'production', status: 'success', cloud: 'Vercel' },
+            { time: '2 hours ago', branch: 'develop', env: 'staging', status: 'success', cloud: 'Vercel' },
+            { time: '5 hours ago', branch: 'feature/api', env: 'dev', status: 'success', cloud: 'AWS' },
+            { time: '1 day ago', branch: 'main', env: 'production', status: 'success', cloud: 'Vercel' }
+        ];
+
+        function renderHistory() {
+            const container = document.getElementById('deployHistory');
+            container.innerHTML = deployments.map(dep => {
+                const badge = dep.status === 'success' ? 'success' : 'danger';
+                const icon = dep.status === 'success' ? 'check' : 'times';
+                return `
+                    <div class="card mb-2">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>${dep.branch}</strong> → ${dep.env}
+                                    <br>
+                                    <small class="text-muted">${dep.time} • ${dep.cloud}</small>
+                                </div>
+                                <span class="badge bg-${badge}">
+                                    <i class="fas fa-${icon}"></i> ${dep.status}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addToHistory(branch, env, cloud, status) {
+            deployments.unshift({ 
+                time: 'Just now', 
+                branch, 
+                env, 
+                status, 
+                cloud 
+            });
+            renderHistory();
+        }
+
+        function rollback() {
+            if (confirm('Rollback to previous deployment?\n\nThis will restore the last successful deployment.')) {
+                alert('✅ Rollback initiated!\n\nRestoring previous version...\n\nThis would take approximately 2 minutes.');
+            }
+        }
+
+        function showStepDetails(stepName) {
+            alert(`${stepName} Details:\n\nThis step handles:\n- Automated processing\n- Quality checks\n- Performance optimization\n\nClick 'View Logs' to see detailed output.`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPipeline();
+            renderHistory();
+        });
+    </script>
+</body>
+</html>

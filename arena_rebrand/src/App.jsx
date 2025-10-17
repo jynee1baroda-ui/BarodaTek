@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import ArenaChatbot from './components/ArenaChatbot';
+import HomePage from './pages/HomePage';
+import ArenaGames from './pages/ArenaGames';
+import ArenaCoding from './pages/ArenaCoding';
+import ArenaTutorials from './pages/ArenaTutorials';
+import ArenaAppeal from './pages/ArenaAppeal';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="min-h-screen bg-arena-black text-arena-text">
+        <Navbar />
+        <main className="pt-16">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/games" element={<ArenaGames />} />
+            <Route path="/coding" element={<ArenaCoding />} />
+            <Route path="/tutorials" element={<ArenaTutorials />} />
+            <Route path="/appeal" element={<ArenaAppeal />} />
+          </Routes>
+        </main>
+        <Footer />
+        <ArenaChatbot isDisabled={false} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;

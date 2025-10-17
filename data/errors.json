@@ -114,5 +114,3065 @@
       "page": "http://localhost:8080/#about"
     },
     "resolved": false
+  },
+  {
+    "id": 9,
+    "timestamp": "2025-10-16T23:51:38.768Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 10,
+    "timestamp": "2025-10-16T23:51:39.752Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 11,
+    "timestamp": "2025-10-16T23:51:40.753Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 12,
+    "timestamp": "2025-10-16T23:51:41.744Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 13,
+    "timestamp": "2025-10-16T23:51:42.746Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 14,
+    "timestamp": "2025-10-16T23:51:43.743Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 15,
+    "timestamp": "2025-10-16T23:51:44.739Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 16,
+    "timestamp": "2025-10-16T23:51:45.749Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 17,
+    "timestamp": "2025-10-16T23:51:46.753Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 18,
+    "timestamp": "2025-10-16T23:51:47.741Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 19,
+    "timestamp": "2025-10-16T23:51:48.747Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 20,
+    "timestamp": "2025-10-16T23:51:49.752Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 21,
+    "timestamp": "2025-10-16T23:51:50.745Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 22,
+    "timestamp": "2025-10-16T23:51:51.738Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 23,
+    "timestamp": "2025-10-16T23:51:52.753Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 24,
+    "timestamp": "2025-10-16T23:51:53.747Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 25,
+    "timestamp": "2025-10-16T23:51:54.742Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 26,
+    "timestamp": "2025-10-16T23:51:55.743Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 27,
+    "timestamp": "2025-10-16T23:51:56.743Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 28,
+    "timestamp": "2025-10-16T23:51:57.754Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 29,
+    "timestamp": "2025-10-16T23:51:58.745Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 30,
+    "timestamp": "2025-10-16T23:51:59.751Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 31,
+    "timestamp": "2025-10-16T23:52:00.744Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 32,
+    "timestamp": "2025-10-16T23:52:01.748Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 33,
+    "timestamp": "2025-10-16T23:52:02.752Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 34,
+    "timestamp": "2025-10-16T23:52:03.742Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 35,
+    "timestamp": "2025-10-16T23:52:04.748Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 36,
+    "timestamp": "2025-10-16T23:52:05.741Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 37,
+    "timestamp": "2025-10-16T23:52:06.741Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 38,
+    "timestamp": "2025-10-16T23:52:07.738Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 39,
+    "timestamp": "2025-10-16T23:52:08.742Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 40,
+    "timestamp": "2025-10-16T23:52:09.739Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 41,
+    "timestamp": "2025-10-16T23:52:10.749Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 42,
+    "timestamp": "2025-10-16T23:52:11.752Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 43,
+    "timestamp": "2025-10-16T23:52:12.751Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 44,
+    "timestamp": "2025-10-16T23:52:13.742Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 45,
+    "timestamp": "2025-10-16T23:52:14.745Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 46,
+    "timestamp": "2025-10-16T23:52:15.751Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 47,
+    "timestamp": "2025-10-16T23:52:16.742Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 48,
+    "timestamp": "2025-10-16T23:52:17.747Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 49,
+    "timestamp": "2025-10-16T23:52:18.740Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 50,
+    "timestamp": "2025-10-16T23:52:19.748Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 51,
+    "timestamp": "2025-10-16T23:52:20.744Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 52,
+    "timestamp": "2025-10-16T23:52:21.747Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 53,
+    "timestamp": "2025-10-16T23:52:22.741Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 54,
+    "timestamp": "2025-10-16T23:52:23.745Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 55,
+    "timestamp": "2025-10-16T23:52:24.744Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 56,
+    "timestamp": "2025-10-16T23:52:25.751Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 57,
+    "timestamp": "2025-10-16T23:52:26.741Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 58,
+    "timestamp": "2025-10-16T23:52:27.741Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 59,
+    "timestamp": "2025-10-16T23:52:28.745Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 60,
+    "timestamp": "2025-10-16T23:52:29.740Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 61,
+    "timestamp": "2025-10-16T23:52:30.741Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 62,
+    "timestamp": "2025-10-16T23:52:31.748Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 63,
+    "timestamp": "2025-10-16T23:52:32.738Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 64,
+    "timestamp": "2025-10-16T23:52:33.750Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 65,
+    "timestamp": "2025-10-16T23:52:34.753Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 66,
+    "timestamp": "2025-10-16T23:52:35.751Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 67,
+    "timestamp": "2025-10-16T23:52:36.743Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 68,
+    "timestamp": "2025-10-16T23:52:37.748Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 69,
+    "timestamp": "2025-10-16T23:52:38.752Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 70,
+    "timestamp": "2025-10-16T23:52:39.740Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 71,
+    "timestamp": "2025-10-16T23:52:40.751Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 72,
+    "timestamp": "2025-10-16T23:52:41.737Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 73,
+    "timestamp": "2025-10-16T23:52:42.741Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 74,
+    "timestamp": "2025-10-16T23:52:43.748Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 75,
+    "timestamp": "2025-10-16T23:52:44.752Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 76,
+    "timestamp": "2025-10-16T23:52:45.738Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 77,
+    "timestamp": "2025-10-16T23:52:46.740Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 78,
+    "timestamp": "2025-10-16T23:52:47.745Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 79,
+    "timestamp": "2025-10-16T23:52:48.744Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 80,
+    "timestamp": "2025-10-16T23:52:49.750Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 81,
+    "timestamp": "2025-10-16T23:52:50.741Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 82,
+    "timestamp": "2025-10-16T23:52:51.748Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 83,
+    "timestamp": "2025-10-16T23:52:52.739Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 84,
+    "timestamp": "2025-10-16T23:52:53.744Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 85,
+    "timestamp": "2025-10-16T23:52:54.743Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 86,
+    "timestamp": "2025-10-16T23:52:55.747Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 87,
+    "timestamp": "2025-10-16T23:52:56.743Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 88,
+    "timestamp": "2025-10-16T23:52:57.751Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 89,
+    "timestamp": "2025-10-16T23:52:58.745Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 90,
+    "timestamp": "2025-10-16T23:52:59.744Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 91,
+    "timestamp": "2025-10-16T23:53:00.746Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 92,
+    "timestamp": "2025-10-16T23:53:01.749Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 93,
+    "timestamp": "2025-10-16T23:53:02.750Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 94,
+    "timestamp": "2025-10-16T23:53:03.740Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 95,
+    "timestamp": "2025-10-16T23:53:04.742Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 96,
+    "timestamp": "2025-10-16T23:53:05.743Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 97,
+    "timestamp": "2025-10-16T23:53:06.743Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 98,
+    "timestamp": "2025-10-16T23:53:07.740Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 99,
+    "timestamp": "2025-10-16T23:53:08.753Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 100,
+    "timestamp": "2025-10-16T23:53:09.745Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 101,
+    "timestamp": "2025-10-16T23:53:10.748Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 102,
+    "timestamp": "2025-10-16T23:53:11.753Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 103,
+    "timestamp": "2025-10-16T23:53:12.739Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 104,
+    "timestamp": "2025-10-16T23:53:13.747Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 105,
+    "timestamp": "2025-10-16T23:53:14.739Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 106,
+    "timestamp": "2025-10-16T23:53:15.743Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 107,
+    "timestamp": "2025-10-16T23:53:16.745Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 108,
+    "timestamp": "2025-10-16T23:53:17.747Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 109,
+    "timestamp": "2025-10-16T23:53:18.750Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 110,
+    "timestamp": "2025-10-16T23:53:19.739Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 111,
+    "timestamp": "2025-10-16T23:53:20.748Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 112,
+    "timestamp": "2025-10-16T23:53:21.747Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 113,
+    "timestamp": "2025-10-16T23:53:22.751Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 114,
+    "timestamp": "2025-10-16T23:53:23.745Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 115,
+    "timestamp": "2025-10-16T23:53:24.748Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 116,
+    "timestamp": "2025-10-16T23:53:25.742Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 117,
+    "timestamp": "2025-10-16T23:53:26.745Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 118,
+    "timestamp": "2025-10-16T23:53:27.749Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 119,
+    "timestamp": "2025-10-16T23:53:28.742Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 120,
+    "timestamp": "2025-10-16T23:53:29.750Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 121,
+    "timestamp": "2025-10-16T23:53:30.742Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 122,
+    "timestamp": "2025-10-16T23:53:31.752Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 123,
+    "timestamp": "2025-10-16T23:53:32.744Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 124,
+    "timestamp": "2025-10-16T23:53:33.751Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 125,
+    "timestamp": "2025-10-16T23:53:34.752Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 126,
+    "timestamp": "2025-10-16T23:53:35.738Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 127,
+    "timestamp": "2025-10-16T23:53:36.746Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 128,
+    "timestamp": "2025-10-16T23:53:37.749Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 129,
+    "timestamp": "2025-10-16T23:53:38.749Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 130,
+    "timestamp": "2025-10-16T23:53:39.744Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 131,
+    "timestamp": "2025-10-16T23:53:40.747Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 132,
+    "timestamp": "2025-10-16T23:53:41.746Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 133,
+    "timestamp": "2025-10-16T23:53:42.751Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 134,
+    "timestamp": "2025-10-16T23:53:43.740Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 135,
+    "timestamp": "2025-10-16T23:53:44.741Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 136,
+    "timestamp": "2025-10-16T23:53:45.746Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 137,
+    "timestamp": "2025-10-16T23:53:46.752Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 138,
+    "timestamp": "2025-10-16T23:53:47.743Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 139,
+    "timestamp": "2025-10-16T23:53:48.752Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 140,
+    "timestamp": "2025-10-16T23:53:49.743Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 141,
+    "timestamp": "2025-10-16T23:53:50.743Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 142,
+    "timestamp": "2025-10-16T23:53:51.747Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 143,
+    "timestamp": "2025-10-16T23:53:52.746Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 144,
+    "timestamp": "2025-10-16T23:53:53.752Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 145,
+    "timestamp": "2025-10-16T23:53:54.740Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 146,
+    "timestamp": "2025-10-16T23:53:55.748Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 147,
+    "timestamp": "2025-10-16T23:53:56.739Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 148,
+    "timestamp": "2025-10-16T23:53:57.748Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 149,
+    "timestamp": "2025-10-16T23:53:58.752Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 150,
+    "timestamp": "2025-10-16T23:53:59.747Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 151,
+    "timestamp": "2025-10-16T23:54:00.742Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 152,
+    "timestamp": "2025-10-16T23:54:01.747Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 153,
+    "timestamp": "2025-10-16T23:54:02.741Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 154,
+    "timestamp": "2025-10-16T23:54:03.747Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 155,
+    "timestamp": "2025-10-16T23:54:04.752Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 156,
+    "timestamp": "2025-10-16T23:54:05.750Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 157,
+    "timestamp": "2025-10-16T23:54:06.738Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 158,
+    "timestamp": "2025-10-16T23:54:07.743Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 159,
+    "timestamp": "2025-10-16T23:54:08.746Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 160,
+    "timestamp": "2025-10-16T23:57:38.753Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 161,
+    "timestamp": "2025-10-16T23:57:39.742Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 162,
+    "timestamp": "2025-10-16T23:57:40.747Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 163,
+    "timestamp": "2025-10-16T23:57:41.742Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 164,
+    "timestamp": "2025-10-16T23:57:42.751Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 165,
+    "timestamp": "2025-10-16T23:57:43.753Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 166,
+    "timestamp": "2025-10-16T23:57:44.752Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 167,
+    "timestamp": "2025-10-16T23:57:45.747Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 168,
+    "timestamp": "2025-10-16T23:57:46.740Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 169,
+    "timestamp": "2025-10-16T23:57:47.746Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 170,
+    "timestamp": "2025-10-16T23:57:48.742Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 171,
+    "timestamp": "2025-10-16T23:57:49.753Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 172,
+    "timestamp": "2025-10-16T23:57:50.739Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 173,
+    "timestamp": "2025-10-16T23:57:51.743Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 174,
+    "timestamp": "2025-10-16T23:57:52.745Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 175,
+    "timestamp": "2025-10-16T23:57:53.744Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 176,
+    "timestamp": "2025-10-16T23:57:54.749Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 177,
+    "timestamp": "2025-10-16T23:57:55.753Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 178,
+    "timestamp": "2025-10-16T23:57:56.752Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 179,
+    "timestamp": "2025-10-16T23:57:57.747Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 180,
+    "timestamp": "2025-10-16T23:57:58.753Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 181,
+    "timestamp": "2025-10-16T23:57:59.744Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 182,
+    "timestamp": "2025-10-16T23:58:00.742Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 183,
+    "timestamp": "2025-10-16T23:58:01.747Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 184,
+    "timestamp": "2025-10-16T23:58:02.753Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 185,
+    "timestamp": "2025-10-16T23:58:03.753Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 186,
+    "timestamp": "2025-10-16T23:58:04.741Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 187,
+    "timestamp": "2025-10-16T23:58:05.749Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 188,
+    "timestamp": "2025-10-16T23:58:06.741Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 189,
+    "timestamp": "2025-10-16T23:58:07.747Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 190,
+    "timestamp": "2025-10-16T23:58:08.747Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 191,
+    "timestamp": "2025-10-16T23:58:09.739Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 192,
+    "timestamp": "2025-10-16T23:58:10.747Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 193,
+    "timestamp": "2025-10-16T23:58:11.751Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 194,
+    "timestamp": "2025-10-16T23:58:12.741Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 195,
+    "timestamp": "2025-10-16T23:58:13.746Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 196,
+    "timestamp": "2025-10-16T23:58:14.742Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 197,
+    "timestamp": "2025-10-16T23:58:15.751Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 198,
+    "timestamp": "2025-10-16T23:58:16.750Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 199,
+    "timestamp": "2025-10-16T23:58:17.741Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 200,
+    "timestamp": "2025-10-16T23:58:18.746Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 201,
+    "timestamp": "2025-10-17T00:36:46.561Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 202,
+    "timestamp": "2025-10-17T00:36:46.744Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 203,
+    "timestamp": "2025-10-17T00:36:47.751Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 204,
+    "timestamp": "2025-10-17T00:36:48.748Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 205,
+    "timestamp": "2025-10-17T00:36:49.744Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 206,
+    "timestamp": "2025-10-17T00:36:50.741Z",
+    "message": "HTTP 405: Method Not Allowed",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "http://localhost:8080/api/errors/log",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 405,
+      "statusText": "Method Not Allowed",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 207,
+    "timestamp": "2025-10-17T17:40:00.508Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "/api/stats",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 208,
+    "timestamp": "2025-10-17T17:40:54.506Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "/api/stats",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 209,
+    "timestamp": "2025-10-17T17:41:13.493Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "/api/stats",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 210,
+    "timestamp": "2025-10-17T17:41:30.306Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "/api/stats",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 211,
+    "timestamp": "2025-10-17T17:44:47.187Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "/api/stats",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
+  },
+  {
+    "id": 212,
+    "timestamp": "2025-10-17T17:45:33.915Z",
+    "message": "HTTP 500: Internal Server Error",
+    "stack": null,
+    "type": "NetworkError",
+    "url": "/api/stats",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "context": {
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "page": "http://localhost:8080/"
+    },
+    "resolved": false
   }
 ]

@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - BarodaTek.com | Innovative Development Solutions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(102, 126, 234, 0.8) 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="white" opacity="0.15"/><circle cx="40" cy="80" r="1.5" fill="white" opacity="0.1"/><circle cx="90" cy="10" r="1" fill="white" opacity="0.2"/><circle cx="10" cy="90" r="2" fill="white" opacity="0.1"/></svg>');
+            animation: floatBackground 20s infinite linear;
+        }
+        
+        @keyframes floatBackground {
+            0% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-20px) translateY(-10px); }
+            50% { transform: translateX(-10px) translateY(-20px); }
+            75% { transform: translateX(-30px) translateY(-5px); }
+            100% { transform: translateX(0) translateY(0); }
+        }
+        
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            margin: -50px auto 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+        
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .profile-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .skill-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .skill-card:hover::before {
+            left: 100%;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .skill-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background: inherit;
+            width: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -17px;
+            background: white;
+            border: 4px solid #667eea;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item:nth-child(even)::after {
+            left: -16px;
+        }
+        
+        .timeline-content {
+            padding: 20px 30px;
+            background: white;
+            position: relative;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-content:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .achievement-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .achievement-badge {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .achievement-badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .contact-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .contact-link {
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            margin: 10px 15px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .contact-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+            color: white;
+        }
+        
+        .stats-counter {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .counter-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ffd700;
+            display: block;
+        }
+        
+        .counter-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .analytics-dashboard {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .analytics-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .analytics-card:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-5px);
+        }
+        
+        .analytics-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        
+        .analytics-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::before {
+                left: 60px;
+                border: medium solid white;
+                border-width: 10px 10px 10px 0;
+                border-color: transparent white transparent transparent;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0%;
+            }
+            
+            .timeline-item:nth-child(even)::after {
+                left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-rocket"></i> BarodaTek.com
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/mini-game.html">Game</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/chatbot.html">AI Chat</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/dev-tools.html">Dev Tools</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <!-- JBaroda Profile Photo - Using reliable avatar service -->
+                    <img src="https://ui-avatars.com/api/?name=JBaroda&size=400&background=667eea&color=fff&bold=true&font-size=0.4" 
+                         alt="JBaroda - Creator of BarodaTek.com" 
+                         class="profile-image mb-4"
+                         data-action="loadProfileImage">
+                    <div class="text-center mt-3">
+                        <p class="text-white-50 small">
+                            📍 California, USA | 27 years old<br>
+                            <strong>"From tech newbie to platform creator!"</strong>
+                        </p>
+                        <div class="social-links mt-2">
+                            <a href="https://www.facebook.com/profile.php" target="_blank" class="btn btn-sm btn-outline-light me-2">
+                                <i class="fab fa-facebook"></i> Facebook
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <h1 class="display-4 fw-bold mb-4">Meet JBaroda - Creator of BarodaTek.com</h1>
+                    <p class="lead mb-4">California native, tech enthusiast, platform creator 🌞</p>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-warning mb-3">💫 My Journey</h5>
+                        <p class="fs-6">
+                            Hey there! I'm JBaroda, a 27-year-old woman from beautiful California, and I have an incredible story to share with you! 
+                            I made some amazing friends with tech heads who completely opened my eyes to the fascinating world of AI and coding. 🤖✨
+                        </p>
+                        
+                        <p class="fs-6">
+                            I've been sitting in on their front-end and back-end development meetings, soaking up knowledge about 
+                            tech bottlenecks, architecture decisions, and all the challenges developers face every day. 
+                            It was like getting a front-row seat to the future! 🎭
+                        </p>
+                        
+                        <p class="fs-6">
+                            <strong>But here's the thing:</strong> I didn't just want to watch from the sidelines. 
+                            I built BarodaTek.com to impress myself AND to show the world that you can step up and learn things you don't know! 💪
+                        </p>
+                        
+                        <div class="alert alert-info mt-4">
+                            <h6 class="mb-2">🎯 My Mission</h6>
+                            <p class="mb-0">
+                                AI is ever-changing but absolutely awesome. I want to inspire others to dive into new technologies, 
+                                start building, and surprise themselves with what they can achieve. 
+                                <strong>If I can go from listening in on dev meetings to creating this entire platform, so can you!</strong>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Real-time Analytics Dashboard -->
+                    <div class="analytics-dashboard mt-4" id="analytics-dashboard">
+                        <h6 class="text-white mb-3">🚀 Live Analytics</h6>
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <div class="analytics-value" id="live-page-views">0</div>
+                                <div class="analytics-label">Page Views</div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-value" id="live-interactions">0</div>
+                                <div class="analytics-label">Interactions</div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-value" id="live-downloads">0</div>
+                                <div class="analytics-label">Downloads</div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-value" id="active-users">1</div>
+                                <div class="analytics-label">Active Users</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="content-section p-5">
+            <!-- Mission Statement -->
+            <section class="text-center mb-5" data-aos="fade-up">
+                <h2 class="display-5 fw-bold mb-4">My Mission & Philosophy</h2>
+                <p class="lead">
+                    Hi! I'm JBaroda, and BarodaTek.com represents my journey from curious observer to confident creator. 
+                    My mission is simple: <strong>show the world that anyone can step up and learn technologies they don't know.</strong>
+                </p>
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card border-0 bg-light h-100">
+                            <div class="card-body text-center">
+                                <h5 class="text-primary">🌟 Learning Mindset</h5>
+                                <p>I went from listening in on dev meetings to building this entire platform. If I can do it, so can you!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 bg-light h-100">
+                            <div class="card-body text-center">
+                                <h5 class="text-success">🤝 Community Power</h5>
+                                <p>My tech-head friends opened my eyes to this amazing world. Surround yourself with passionate people!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 bg-light h-100">
+                            <div class="card-body text-center">
+                                <h5 class="text-warning">🚀 AI is Awesome</h5>
+                                <p>AI is ever-changing but incredible. It's not intimidating—it's your new superpower for learning and creating!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section class="mb-5" data-aos="fade-up">
+                <h3 class="text-center mb-4">Core Expertise</h3>
+                <div class="skills-grid">
+                    <div class="skill-card" data-aos="zoom-in" data-aos-delay="100">
+                        <i class="fas fa-code skill-icon"></i>
+                        <h5>Full-Stack Development</h5>
+                        <p>Modern web applications using React, Node.js, Express, and cutting-edge technologies.</p>
+                    </div>
+                    <div class="skill-card" data-aos="zoom-in" data-aos-delay="200">
+                        <i class="fas fa-robot skill-icon"></i>
+                        <h5>AI Integration</h5>
+                        <p>Smart chatbots, machine learning solutions, and AI-powered analytics systems.</p>
+                    </div>
+                    <div class="skill-card" data-aos="zoom-in" data-aos-delay="300">
+                        <i class="fas fa-broadcast-tower skill-icon"></i>
+                        <h5>Real-Time Systems</h5>
+                        <p>WebSocket implementations, live data streaming, and collaborative platforms.</p>
+                    </div>
+                    <div class="skill-card" data-aos="zoom-in" data-aos-delay="400">
+                        <i class="fas fa-chart-line skill-icon"></i>
+                        <h5>Analytics & Monitoring</h5>
+                        <p>Advanced analytics, performance monitoring, and data visualization solutions.</p>
+                    </div>
+                    <div class="skill-card" data-aos="zoom-in" data-aos-delay="500">
+                        <i class="fas fa-cloud skill-icon"></i>
+                        <h5>Cloud Architecture</h5>
+                        <p>Scalable cloud solutions, microservices, and DevOps best practices.</p>
+                    </div>
+                    <div class="skill-card" data-aos="zoom-in" data-aos-delay="600">
+                        <i class="fas fa-shield-alt skill-icon"></i>
+                        <h5>Security & Performance</h5>
+                        <p>Enterprise-grade security implementations and performance optimization.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Timeline Section -->
+            <section class="mb-5" data-aos="fade-up">
+                <h3 class="text-center mb-5">My Learning Journey</h3>
+                <div class="timeline">
+                    <div class="timeline-item" data-aos="fade-right">
+                        <div class="timeline-content">
+                            <h5>🚀 October 2025 - BarodaTek.com Launch</h5>
+                            <p>Created this entire platform from scratch! Features real-time analytics, AI chatbot, interactive games, and comprehensive developer tools.</p>
+                            <small class="text-muted">Full-stack development • WebSocket integration • AI implementation • Modern UI/UX</small>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-aos="fade-left">
+                        <div class="timeline-content">
+                            <h5>🧠 2025 - Deep Dive into AI & Development</h5>
+                            <p>Attended countless dev meetings with my tech friends, learned about front-end, back-end, bottlenecks, and architecture decisions.</p>
+                            <small class="text-muted">React • Node.js • API design • Database architecture • Real-time systems</small>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-aos="fade-right">
+                        <div class="timeline-content">
+                            <h5>👥 2024 - Meeting the Tech Community</h5>
+                            <p>Made amazing friends with tech heads in California who introduced me to the fascinating world of AI and coding.</p>
+                            <small class="text-muted">Community learning • Mentorship • Networking • Collaborative growth</small>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-aos="fade-left">
+                        <div class="timeline-content">
+                            <h5>🌟 The Beginning - Curious California Dreamer</h5>
+                            <p>Started as someone completely outside the tech world, curious about innovation and ready to learn something completely new.</p>
+                            <small class="text-muted">Growth mindset • Curiosity • Determination • Willingness to learn</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Achievements -->
+            <section class="mb-5" data-aos="fade-up">
+                <h3 class="text-center mb-4">Achievements & Recognition</h3>
+                <div class="achievement-badges">
+                    <span class="achievement-badge" data-bs-toggle="tooltip" title="Innovative API Design">🏆 API Innovation Award</span>
+                    <span class="achievement-badge" data-bs-toggle="tooltip" title="Real-time System Excellence">⚡ Real-Time Expert</span>
+                    <span class="achievement-badge" data-bs-toggle="tooltip" title="AI Integration Specialist">🤖 AI Pioneer</span>
+                    <span class="achievement-badge" data-bs-toggle="tooltip" title="Performance Optimization">🚀 Performance Champion</span>
+                    <span class="achievement-badge" data-bs-toggle="tooltip" title="Open Source Contributor">💻 Open Source Advocate</span>
+                    <span class="achievement-badge" data-bs-toggle="tooltip" title="Cloud Architecture Mastery">☁️ Cloud Architect</span>
+                    <span class="achievement-badge" data-bs-toggle="tooltip" title="Security Implementation">🔒 Security Expert</span>
+                    <span class="achievement-badge" data-bs-toggle="tooltip" title="Developer Experience Focus">👨‍💻 DX Specialist</span>
+                </div>
+            </section>
+
+            <!-- Project Statistics -->
+            <section class="mb-5" data-aos="fade-up">
+                <h3 class="text-center mb-4">Project Impact</h3>
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="stats-counter">
+                            <span class="counter-number" data-target="50">0</span>
+                            <span class="counter-label">Projects Completed</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-counter">
+                            <span class="counter-number" data-target="10000">0</span>
+                            <span class="counter-label">Lines of Code</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-counter">
+                            <span class="counter-number" data-target="100">0</span>
+                            <span class="counter-label">Happy Clients</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-counter">
+                            <span class="counter-number" data-target="99">0</span>
+                            <span class="counter-label">Uptime %</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="contact-card" data-aos="fade-up">
+                <h3 class="mb-4">Get In Touch</h3>
+                <p class="mb-4">Ready to bring your ideas to life? Let's collaborate on your next project!</p>
+                <div class="d-flex flex-wrap justify-content-center">
+                    <a href="https://barodatek.com" class="contact-link" target="_blank">
+                        <i class="fas fa-globe me-2"></i> Visit BarodaTek.com
+                    </a>
+                    <a href="mailto:hello@barodatek.com" class="contact-link">
+                        <i class="fas fa-envelope me-2"></i> hello@barodatek.com
+                    </a>
+                    <a href="https://github.com/barodatek" class="contact-link" target="_blank">
+                        <i class="fab fa-github me-2"></i> GitHub Portfolio
+                    </a>
+                    <a href="https://linkedin.com/company/barodatek" class="contact-link" target="_blank">
+                        <i class="fab fa-linkedin me-2"></i> LinkedIn
+                    </a>
+                </div>
+                
+                <div class="mt-4">
+                    <button class="btn btn-light btn-lg" data-action="downloadPortfolio">
+                        <i class="fas fa-download me-2"></i> Download Portfolio
+                    </button>
+                    <button class="btn btn-outline-light btn-lg ms-2" data-action="scheduleConsultation">
+                        <i class="fas fa-calendar me-2"></i> Schedule Consultation
+                    </button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-2">&copy; 2024 BarodaTek.com - Innovative Development Solutions</p>
+            <p class="mb-0">
+                <a href="/" class="text-white-50 me-3">Home</a>
+                <a href="/docs" class="text-white-50 me-3">API Docs</a>
+                <a href="/mini-game.html" class="text-white-50 me-3">Mini Game</a>
+                <a href="/chatbot.html" class="text-white-50">AI Assistant</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="barodatek-analytics.js"></script>
+    <script>
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // Counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter-number');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.floor(current).toLocaleString();
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target.toLocaleString();
+                    }
+                };
+                
+                updateCounter();
+            });
+        }
+
+        // Trigger counter animation when section is visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const statsSection = document.querySelector('.stats-counter').parentElement.parentElement;
+            observer.observe(statsSection);
+        });
+
+        // Download portfolio function
+        function downloadPortfolio() {
+            const portfolioData = {
+                company: "BarodaTek.com",
+                description: "Innovative Development Solutions",
+                skills: [
+                    "Full-Stack Development",
+                    "AI Integration", 
+                    "Real-Time Systems",
+                    "Analytics & Monitoring",
+                    "Cloud Architecture",
+                    "Security & Performance"
+                ],
+                projects: [
+                    {
+                        name: "API Mock Contract MVP",
+                        description: "Comprehensive API platform with real-time features, AI chatbot, and developer tools",
+                        technologies: ["Node.js", "Express", "WebSocket", "AI Integration", "Real-time Analytics"],
+                        features: ["Real-time updates", "AI chatbot", "Developer tools", "Analytics dashboard", "Mini game"]
+                    }
+                ],
+                contact: {
+                    website: "https://barodatek.com",
+                    email: "hello@barodatek.com",
+                    github: "https://github.com/barodatek"
+                },
+                achievements: [
+                    "API Innovation Award",
+                    "Real-Time Expert",
+                    "AI Pioneer",
+                    "Performance Champion",
+                    "Open Source Advocate"
+                ],
+                stats: {
+                    projectsCompleted: 50,
+                    linesOfCode: 10000,
+                    happyClients: 100,
+                    uptime: 99
+                }
+            };
+
+            const dataStr = JSON.stringify(portfolioData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'barodatek-portfolio.json';
+            link.click();
+            URL.revokeObjectURL(url);
+
+            // Track download
+            if (window.barodaTekAnalytics) {
+                window.barodaTekAnalytics.trackDownload('barodatek-portfolio.json', 'json', dataBlob.size);
+            }
+        }
+
+        // Schedule consultation function
+        function scheduleConsultation() {
+            // Create a simple consultation form
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.innerHTML = `
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Schedule Consultation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="consultationForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Project Type</label>
+                                    <select class="form-select" name="projectType" required>
+                                        <option value="">Select project type</option>
+                                        <option value="web-app">Web Application</option>
+                                        <option value="api">API Development</option>
+                                        <option value="ai-integration">AI Integration</option>
+                                        <option value="real-time">Real-time System</option>
+                                        <option value="cloud">Cloud Architecture</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Message</label>
+                                    <textarea class="form-control" name="message" rows="3" placeholder="Tell us about your project..."></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-action="submitConsultation">Schedule</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            const bootstrapModal = new bootstrap.Modal(modal);
+            bootstrapModal.show();
+            
+            modal.addEventListener('hidden.bs.modal', () => {
+                modal.remove();
+            });
+        }
+
+        function submitConsultation() {
+            const form = document.getElementById('consultationForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Track consultation request
+            if (window.barodaTekAnalytics) {
+                window.barodaTekAnalytics.trackCustomEvent('consultation_requested', data);
+            }
+            
+            // Simulate form submission (in real app, this would send to server)
+            alert('Thank you! We will contact you within 24 hours to schedule your consultation.');
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.querySelector('.modal.show'));
+            modal.hide();
+        }
+
+        // Track page interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            // Track skill card interactions
+            document.querySelectorAll('.skill-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    if (window.barodaTekAnalytics) {
+                        window.barodaTekAnalytics.trackCustomEvent('skill_card_clicked', {
+                            skill: card.querySelector('h5').textContent
+                        });
+                    }
+                });
+            });
+
+            // Track achievement badge interactions
+            document.querySelectorAll('.achievement-badge').forEach(badge => {
+                badge.addEventListener('click', () => {
+                    if (window.barodaTekAnalytics) {
+                        window.barodaTekAnalytics.trackCustomEvent('achievement_clicked', {
+                            achievement: badge.textContent
+                        });
+                    }
+                });
+            });
+
+            // Track social links
+            document.querySelectorAll('.contact-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.barodaTekAnalytics) {
+                        window.barodaTekAnalytics.trackCustomEvent('social_link_clicked', {
+                            platform: link.textContent.trim()
+                        });
+                    }
+                });
+            });
+            
+            // CSP-safe delegated event handling
+            document.addEventListener('click', function(e) {
+                const actionEl = e.target.closest('[data-action]');
+                if (!actionEl) return;
+                
+                const action = actionEl.getAttribute('data-action');
+                
+                if (action === 'downloadPortfolio') downloadPortfolio();
+                if (action === 'scheduleConsultation') scheduleConsultation();
+                if (action === 'submitConsultation') submitConsultation();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -27,14 +27,20 @@ export default function ArenaAppeal() {
   return (
     <div className="min-h-screen pt-24 pb-20">
       <div className="section-container">
-        {/* Hero Section */}
+        {/* Hero Section with Profile */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <div className="text-8xl mb-6">🏆</div>
+          <div className="flex justify-center mb-8">
+            <img 
+              src="/assets/profile.jpg" 
+              alt="BarodaTek Founder" 
+              className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-arena-red shadow-lg shadow-arena-red-glow object-cover"
+            />
+          </div>
           <h1 className="text-5xl md:text-7xl font-heading font-black mb-6">
             THE <span className="glow-text-red">ARENA</span> DIFFERENCE
           </h1>

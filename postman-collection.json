@@ -25,6 +25,11 @@
             "key": "baseURL",
             "value": "http://localhost:8080/api",
             "type": "string"
+        },
+        {
+            "key": "API_KEY",
+            "value": "barodatek_dev_12345",
+            "type": "string"
         }
     ],
     "item": [
@@ -303,6 +308,71 @@
                 "description": "Delete a contract by ID (uses the last created contract ID)"
             },
             "response": []
+        },
+        {
+            "name": "Matchmaking",
+            "item": [
+                {
+                    "name": "Create Lobby",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {"key":"Content-Type","value":"application/json"},
+                            {"key":"X-API-Key","value":"{{API_KEY}}"}
+                        ],
+                        "body": {"mode":"raw","raw":"{\n  \"gameMode\": \"ranked\",\n  \"region\": \"us-east\",\n  \"maxPlayers\": 10,\n  \"hostPlayerId\": \"player-001\",\n  \"hostUsername\": \"ProGamer\",\n  \"hostElo\": 1850\n}"},
+                        "url": {"raw":"{{baseURL}}/matchmaking/lobby","host":["{{baseURL}}"],"path":["matchmaking","lobby"]}
+                    }
+                },
+                {
+                    "name": "List Lobbies",
+                    "request": {
+                        "method": "GET",
+                        "header": [ {"key":"X-API-Key","value":"{{API_KEY}}"} ],
+                        "url": {"raw":"{{baseURL}}/matchmaking/lobbies","host":["{{baseURL}}"],"path":["matchmaking","lobbies"]}
+                    }
+                },
+                {
+                    "name": "Update Lobby (Add Player)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {"key":"Content-Type","value":"application/json"},
+                            {"key":"X-API-Key","value":"{{API_KEY}}"}
+                        ],
+                        "body": {"mode":"raw","raw":"{\n  \"action\": \"add-player\",\n  \"playerId\": \"player-002\",\n  \"username\": \"SkillShot\",\n  \"elo\": 1875\n}"},
+                        "url": {"raw":"{{baseURL}}/matchmaking/lobby/{{LOBBY_ID}}","host":["{{baseURL}}"],"path":["matchmaking","lobby","{{LOBBY_ID}}"]}
+                    }
+                },
+                {
+                    "name": "Delete Lobby",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [ {"key":"X-API-Key","value":"{{API_KEY}}"} ],
+                        "url": {"raw":"{{baseURL}}/matchmaking/lobby/{{LOBBY_ID}}","host":["{{baseURL}}"],"path":["matchmaking","lobby","{{LOBBY_ID}}"]}
+                    }
+                },
+                {
+                    "name": "Join Queue",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {"key":"Content-Type","value":"application/json"},
+                            {"key":"X-API-Key","value":"{{API_KEY}}"}
+                        ],
+                        "body": {"mode":"raw","raw":"{\n  \"playerId\": \"player-101\",\n  \"username\": \"Alpha\",\n  \"elo\": 1500,\n  \"gameMode\": \"ranked\",\n  \"region\": \"us-east\"\n}"},
+                        "url": {"raw":"{{baseURL}}/matchmaking/queue","host":["{{baseURL}}"],"path":["matchmaking","queue"]}
+                    }
+                },
+                {
+                    "name": "Leave Queue",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [ {"key":"X-API-Key","value":"{{API_KEY}}"} ],
+                        "url": {"raw":"{{baseURL}}/matchmaking/queue?playerId={{PLAYER_ID}}","host":["{{baseURL}}"],"path":["matchmaking","queue"],"query":[{"key":"playerId","value":"{{PLAYER_ID}}"}]}
+                    }
+                }
+            ]
         }
     ]
 }

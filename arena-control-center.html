@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 BARODATEK ARENA - Live Control Center</title>
+    <link rel="icon" type="image/png" href="barodatek-logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="arena-control-center.css">
+</head>
+<body>
+    <!-- Arena Header -->
+    <header class="arena-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="barodatek-logo.png" alt="BarodaTek" class="arena-logo">
+                    <h1>ARENA CONTROL CENTER</h1>
+                </div>
+                <div class="status-badge">
+                    <span class="pulse-dot"></span>
+                    <span id="systemStatus">OPERATIONAL</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="arena-dashboard">
+        <div class="container">
+            
+            <!-- Live Stats Grid -->
+            <section class="stats-grid" id="liveStatsGrid">
+                <div class="stat-card" data-stat="active-users">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-content">
+                        <h3>Active Users</h3>
+                        <div class="stat-value" id="activeUsers">
+                            <span class="loading">Loading...</span>
+                        </div>
+                        <div class="stat-label">LIVE NOW</div>
+                    </div>
+                    <canvas class="stat-chart" id="usersChart"></canvas>
+                </div>
+
+                <div class="stat-card" data-stat="page-views">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <h3>Page Views</h3>
+                        <div class="stat-value" id="pageViews">
+                            <span class="loading">Loading...</span>
+                        </div>
+                        <div class="stat-label">TODAY</div>
+                    </div>
+                    <canvas class="stat-chart" id="viewsChart"></canvas>
+                </div>
+
+                <div class="stat-card" data-stat="api-requests">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-content">
+                        <h3>API Requests</h3>
+                        <div class="stat-value" id="apiRequests">
+                            <span class="loading">Loading...</span>
+                        </div>
+                        <div class="stat-label">PER MINUTE</div>
+                    </div>
+                    <canvas class="stat-chart" id="requestsChart"></canvas>
+                </div>
+
+                <div class="stat-card" data-stat="uptime">
+                    <div class="stat-icon">🛡️</div>
+                    <div class="stat-content">
+                        <h3>System Uptime</h3>
+                        <div class="stat-value" id="uptime">
+                            <span class="loading">Loading...</span>
+                        </div>
+                        <div class="stat-label">LAST 30 DAYS</div>
+                    </div>
+                    <canvas class="stat-chart" id="uptimeChart"></canvas>
+                </div>
+
+                <div class="stat-card" data-stat="port-status">
+                    <div class="stat-icon">🔌</div>
+                    <div class="stat-content">
+                        <h3>Port Status</h3>
+                        <div class="stat-value port-info">
+                            <span id="portNumber">443</span>
+                            <span class="port-status" id="portStatus">LIVE</span>
+                        </div>
+                        <div class="stat-label">HTTPS SECURE</div>
+                    </div>
+                </div>
+
+                <div class="stat-card" data-stat="response-time">
+                    <div class="stat-icon">⚙️</div>
+                    <div class="stat-content">
+                        <h3>Avg Response</h3>
+                        <div class="stat-value" id="responseTime">
+                            <span class="loading">Loading...</span>
+                        </div>
+                        <div class="stat-label">MILLISECONDS</div>
+                    </div>
+                    <canvas class="stat-chart" id="responseChart"></canvas>
+                </div>
+            </section>
+
+            <!-- AI Monitor Bot Section -->
+            <section class="ai-monitor-section" id="aiMonitorSection">
+                <div class="section-header">
+                    <h2>🤖 ARENA OVERWATCH - AI MONITOR BOT v6.1.2</h2>
+                    <button class="btn-demo" id="btnAIDemo">AI DEMO MODE</button>
+                </div>
+                
+                <div class="ai-dashboard">
+                    <!-- AI Status Panel -->
+                    <div class="ai-panel">
+                        <h3>🧠 AI System Status</h3>
+                        <div class="ai-status-grid">
+                            <div class="ai-metric">
+                                <span class="ai-label">Monitoring Status</span>
+                                <span class="ai-value active" id="aiMonitorStatus">ACTIVE</span>
+                            </div>
+                            <div class="ai-metric">
+                                <span class="ai-label">Confidence Level</span>
+                                <span class="ai-value" id="aiConfidence">98.7%</span>
+                            </div>
+                            <div class="ai-metric">
+                                <span class="ai-label">Learning Mode</span>
+                                <span class="ai-value" id="aiLearning">ENABLED</span>
+                            </div>
+                            <div class="ai-metric">
+                                <span class="ai-label">Auto-Fix</span>
+                                <span class="ai-value" id="aiAutoFix">ARMED</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Reasoning Console -->
+                    <div class="ai-panel">
+                        <h3>💭 AI Reasoning Log</h3>
+                        <div class="ai-console" id="aiReasoningLog">
+                            <div class="console-entry">
+                                <span class="timestamp">[15:45:23]</span>
+                                <span class="type info">INFO</span>
+                                <span class="message">System monitoring initialized. All endpoints responding normally.</span>
+                            </div>
+                            <div class="console-entry">
+                                <span class="timestamp">[15:45:24]</span>
+                                <span class="type success">LEARN</span>
+                                <span class="message">Pattern recognition: Normal traffic baseline established (±12 req/min).</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Actions Panel -->
+                    <div class="ai-panel">
+                        <h3>⚡ Recent AI Actions</h3>
+                        <div class="ai-actions-list" id="aiActionsList">
+                            <div class="action-item success">
+                                <div class="action-icon">✅</div>
+                                <div class="action-details">
+                                    <div class="action-title">Endpoint Health Check</div>
+                                    <div class="action-description">All 7 endpoints responding within acceptable latency</div>
+                                    <div class="action-time">2 minutes ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Endpoints Control -->
+            <section class="api-control-section">
+                <div class="section-header">
+                    <h2>🎯 API ENDPOINT OPERATIONS</h2>
+                    <button class="btn-demo" id="btnLiveDemo">LAUNCH LIVE DEMO</button>
+                </div>
+
+                <!-- Endpoint Cards -->
+                <div class="endpoints-grid">
+                    <!-- GET /contracts -->
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <span class="path">/api/contracts</span>
+                            <span class="status-indicator online"></span>
+                        </div>
+                        <p class="endpoint-desc">Retrieve all contracts from the system</p>
+                        <button class="btn-execute" onclick="executeEndpoint('getContracts')">EXECUTE</button>
+                        <div class="endpoint-response" id="response-getContracts"></div>
+                    </div>
+
+                    <!-- GET /contracts/:id -->
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <span class="path">/api/contracts/:id</span>
+                            <span class="status-indicator online"></span>
+                        </div>
+                        <p class="endpoint-desc">Retrieve a specific contract by ID</p>
+                        <div class="input-group">
+                            <input type="text" id="input-getContract" placeholder="Contract ID" class="arena-input">
+                            <button class="btn-execute" onclick="executeEndpoint('getContract')">EXECUTE</button>
+                        </div>
+                        <div class="endpoint-response" id="response-getContract"></div>
+                    </div>
+
+                    <!-- POST /contracts -->
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method post">POST</span>
+                            <span class="path">/api/contracts</span>
+                            <span class="status-indicator online"></span>
+                        </div>
+                        <p class="endpoint-desc">Create a new contract</p>
+                        <div class="form-group">
+                            <input type="text" id="input-title" placeholder="Contract Title" class="arena-input">
+                            <input type="text" id="input-client" placeholder="Client Name" class="arena-input">
+                            <input type="text" id="input-provider" placeholder="Provider Name" class="arena-input">
+                            <input type="number" id="input-amount" placeholder="Amount" class="arena-input">
+                            <button class="btn-execute" onclick="executeEndpoint('createContract')">CREATE</button>
+                        </div>
+                        <div class="endpoint-response" id="response-createContract"></div>
+                    </div>
+
+                    <!-- PUT /contracts/:id -->
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method put">PUT</span>
+                            <span class="path">/api/contracts/:id</span>
+                            <span class="status-indicator online"></span>
+                        </div>
+                        <p class="endpoint-desc">Update an existing contract</p>
+                        <div class="form-group">
+                            <input type="text" id="input-updateId" placeholder="Contract ID" class="arena-input">
+                            <input type="text" id="input-updateTitle" placeholder="New Title" class="arena-input">
+                            <input type="number" id="input-updateAmount" placeholder="New Amount" class="arena-input">
+                            <button class="btn-execute" onclick="executeEndpoint('updateContract')">UPDATE</button>
+                        </div>
+                        <div class="endpoint-response" id="response-updateContract"></div>
+                    </div>
+
+                    <!-- DELETE /contracts/:id -->
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method delete">DELETE</span>
+                            <span class="path">/api/contracts/:id</span>
+                            <span class="status-indicator online"></span>
+                        </div>
+                        <p class="endpoint-desc">Delete a contract</p>
+                        <div class="input-group">
+                            <input type="text" id="input-deleteId" placeholder="Contract ID" class="arena-input">
+                            <button class="btn-execute warning" onclick="executeEndpoint('deleteContract')">DELETE</button>
+                        </div>
+                        <div class="endpoint-response" id="response-deleteContract"></div>
+                    </div>
+
+                    <!-- GET /stats -->
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <span class="path">/api/stats</span>
+                            <span class="status-indicator online"></span>
+                        </div>
+                        <p class="endpoint-desc">Retrieve real-time system statistics</p>
+                        <button class="btn-execute" onclick="executeEndpoint('getStats')">EXECUTE</button>
+                        <div class="endpoint-response" id="response-getStats"></div>
+                    </div>
+
+                    <!-- GET /health -->
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <span class="path">/api/health</span>
+                            <span class="status-indicator online"></span>
+                        </div>
+                        <p class="endpoint-desc">Check system health status</p>
+                        <button class="btn-execute" onclick="executeEndpoint('getHealth')">EXECUTE</button>
+                        <div class="endpoint-response" id="response-getHealth"></div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Live Demo Modal -->
+    <div class="modal" id="liveDemoModal">
+        <div class="modal-content arena-modal">
+            <div class="modal-header">
+                <h2>🎮 LIVE ARENA DEMO - AI-GUIDED WALKTHROUGH</h2>
+                <button class="modal-close" onclick="closeDemoModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="demo-console" id="demoConsole">
+                    <div class="demo-message ai">
+                        <strong>ARENA AI:</strong> Welcome to the Live Arena Demo. I'll guide you through each endpoint with real data.
+                    </div>
+                </div>
+                <div class="demo-controls">
+                    <button class="btn-demo" onclick="nextDemoStep()">NEXT STEP</button>
+                    <button class="btn-demo secondary" onclick="closeDemoModal()">EXIT DEMO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="arena-control-center.js"></script>
+</body>
+</html>

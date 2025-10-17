@@ -28,9 +28,11 @@ body {
   --arena-shadow-strong: 0 4px 16px rgba(255, 26, 64, 0.2);
 }
 
-body.arena-theme {
-  background: linear-gradient(180deg, #0a0a0a 0%, #141414 100%);
-  color: var(--arena-text);
+/* Apply theme to ALL bodies (not just .arena-theme) */
+body.arena-theme,
+body {
+  background: linear-gradient(180deg, #0a0a0a 0%, #141414 100%) !important;
+  color: #ffffff !important;
   font-family: var(--arena-body-font);
   margin: 0;
   min-height: 100vh;
@@ -41,13 +43,18 @@ body.arena-theme {
 body.arena-theme section,
 body.arena-theme .section,
 body.arena-theme .container,
-body.arena-theme .container-fluid {
+body.arena-theme .container-fluid,
+body section,
+body .section,
+body .container,
+body .container-fluid {
   background-color: transparent !important;
-  color: var(--arena-text) !important;
+  color: #ffffff !important;
 }
 
 /* Ensure rows and columns don't have light backgrounds */
 body.arena-theme .row,
+body .row,
 body.arena-theme .col,
 body.arena-theme [class*="col-"] {
   background-color: transparent !important;
@@ -66,13 +73,15 @@ body.arena-theme * {
   z-index: inherit;
 }
 
-body.arena-theme a {
+body.arena-theme a,
+body a {
   color: var(--arena-red);
   text-decoration: none;
   transition: color var(--arena-transition), text-shadow var(--arena-transition);
 }
 
-body.arena-theme a:hover {
+body.arena-theme a:hover,
+body a:hover {
   color: #ff5271;
   text-shadow: none;
 }
@@ -82,7 +91,13 @@ body.arena-theme h2,
 body.arena-theme h3,
 body.arena-theme h4,
 body.arena-theme h5,
-body.arena-theme h6 {
+body.arena-theme h6,
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6 {
   font-family: var(--arena-heading-font);
   font-weight: 600;
   color: #ffffff !important;
@@ -129,8 +144,14 @@ body.arena-theme li,
 body.arena-theme span,
 body.arena-theme input,
 body.arena-theme textarea,
-body.arena-theme label {
-  color: var(--arena-text) !important;
+body.arena-theme label,
+body p,
+body li,
+body span,
+body input,
+body textarea,
+body label {
+  color: #ffffff !important;
 }
 
 body.arena-theme .text-muted,
@@ -584,4 +605,14 @@ body.arena-theme .api-endpoint code {
     width: 100%;
     justify-content: center;
   }
+}
+
+/* UNIVERSAL FALLBACK - Force ALL elements to white text */
+body *:not(.badge):not(.btn):not(button) {
+  color: #ffffff !important;
+}
+
+/* Specifically target text elements */
+p, span, div, li, a, h1, h2, h3, h4, h5, h6, label, small {
+  color: #ffffff !important;
 }

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Admin Dashboard - BarodaTek</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🦙</text></svg>">
+    <style>
+        :root {
+            --primary-cyan: #00d9ff;
+            --primary-pink: #ff0080;
+            --accent-yellow: #ffd700;
+            --accent-green: #00ff88;
+            --dark-bg: #0a0014;
+            --darker-bg: #050008;
+        }
+        
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Space Mono', monospace;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .login-box {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .order-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .order-card.pending {
+            border-color: var(--accent-yellow);
+        }
+        
+        .order-card.verified {
+            border-color: var(--accent-green);
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            display: inline-block;
+        }
+        
+        .status-pending {
+            background: var(--accent-yellow);
+            color: black;
+        }
+        
+        .status-verified {
+            background: var(--accent-green);
+            color: black;
+        }
+        
+        .btn-verify {
+            background: var(--accent-green);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        
+        .btn-verify:hover {
+            background: var(--accent-yellow);
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--primary-cyan);
+            border-radius: 8px;
+            color: white;
+            font-family: 'IBM Plex Mono', monospace;
+            margin-bottom: 15px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--accent-yellow);
+        }
+        
+        button {
+            background: var(--primary-cyan);
+            color: black;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+        }
+        
+        button:hover {
+            background: var(--accent-yellow);
+        }
+        
+        table {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        th {
+            background: var(--primary-cyan);
+            color: black;
+            padding: 15px;
+            font-weight: 700;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="loginScreen" class="login-box">
+        <div style="font-size: 60px; margin-bottom: 20px;">🔐</div>
+        <h2 style="color: var(--primary-cyan); margin-bottom: 30px;">Admin Access</h2>
+        <input type="password" id="adminKey" placeholder="Enter Admin Key">
+        <button onclick="login()">Login</button>
+    </div>
+    
+    <div id="adminDashboard" style="display: none;">
+        <div class="admin-container">
+            <div class="text-center" style="margin-bottom: 40px;">
+                <div style="font-size: 60px;">🦙</div>
+                <h1 style="color: var(--primary-cyan);">Admin Dashboard</h1>
+                <p style="color: var(--light-text);">
+                    Business Email: barodatek.services@gmail.com | Cash App: $baroda98
+                </p>
+                <button onclick="logout()" style="background: var(--primary-pink);">Logout</button>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div style="background: rgba(0,217,255,0.1); border: 2px solid var(--primary-cyan); border-radius: 12px; padding: 20px; text-align: center;">
+                        <h3 style="color: var(--primary-cyan);" id="totalOrders">0</h3>
+                        <p>Total Orders</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div style="background: rgba(255,215,0,0.1); border: 2px solid var(--accent-yellow); border-radius: 12px; padding: 20px; text-align: center;">
+                        <h3 style="color: var(--accent-yellow);" id="pendingOrders">0</h3>
+                        <p>Pending</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div style="background: rgba(0,255,136,0.1); border: 2px solid var(--accent-green); border-radius: 12px; padding: 20px; text-align: center;">
+                        <h3 style="color: var(--accent-green);" id="verifiedOrders">0</h3>
+                        <p>Verified</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div style="background: rgba(255,0,128,0.1); border: 2px solid var(--primary-pink); border-radius: 12px; padding: 20px; text-align: center;">
+                        <h3 style="color: var(--primary-pink);" id="totalRevenue">$0</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 style="color: var(--primary-cyan); margin-bottom: 20px;">📋 Recent Orders</h2>
+            
+            <div id="ordersList"></div>
+        </div>
+    </div>
+    
+    <script>
+        let adminKey = null;
+        
+        function login() {
+            const key = document.getElementById('adminKey').value;
+            
+            if (key === 'barodatek-admin-2024' || key === process.env.ADMIN_KEY) {
+                adminKey = key;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                loadOrders();
+            } else {
+                alert('Invalid admin key!');
+            }
+        }
+        
+        function logout() {
+            adminKey = null;
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('adminDashboard').style.display = 'none';
+        }
+        
+        async function loadOrders() {
+            try {
+                const response = await fetch(`/api/admin/orders?adminKey=${adminKey}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const orders = data.orders;
+                    
+                    // Update stats
+                    document.getElementById('totalOrders').textContent = orders.length;
+                    document.getElementById('pendingOrders').textContent = orders.filter(o => o.status === 'pending').length;
+                    document.getElementById('verifiedOrders').textContent = orders.filter(o => o.status === 'verified').length;
+                    
+                    const revenue = orders
+                        .filter(o => o.status === 'verified')
+                        .reduce((sum, o) => sum + o.totalAmount, 0);
+                    document.getElementById('totalRevenue').textContent = `$${revenue}`;
+                    
+                    // Display orders
+                    const ordersList = document.getElementById('ordersList');
+                    ordersList.innerHTML = '';
+                    
+                    orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).forEach(order => {
+                        const orderCard = document.createElement('div');
+                        orderCard.className = `order-card ${order.status}`;
+                        orderCard.innerHTML = `
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h4 style="color: var(--primary-cyan);">${order.itemName}</h4>
+                                    <p>
+                                        <strong>Order ID:</strong> <code>${order.orderId}</code><br>
+                                        <strong>Customer:</strong> ${order.customerName} (${order.customerEmail})<br>
+                                        <strong>Amount:</strong> $${order.totalAmount}<br>
+                                        <strong>Type:</strong> ${order.type}<br>
+                                        <strong>Created:</strong> ${new Date(order.createdAt).toLocaleString()}<br>
+                                        ${order.verifiedAt ? `<strong>Verified:</strong> ${new Date(order.verifiedAt).toLocaleString()}<br>` : ''}
+                                        ${order.accessToken ? `<strong>Access Token:</strong> <code>${order.accessToken}</code><br>` : ''}
+                                    </p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <span class="status-badge status-${order.status}">${order.status.toUpperCase()}</span>
+                                    ${order.status === 'pending' ? `
+                                        <button class="btn-verify" onclick="verifyOrder('${order.orderId}')" style="margin-top: 20px; display: block; width: 100%;">
+                                            <i class="fas fa-check"></i> Verify Payment
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                        ordersList.appendChild(orderCard);
+                    });
+                } else {
+                    alert('Failed to load orders: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Failed to load orders:', error);
+                alert('Failed to load orders');
+            }
+        }
+        
+        async function verifyOrder(orderId) {
+            const notes = prompt('Enter verification notes (optional):');
+            
+            try {
+                const response = await fetch(`/api/admin/verify/${orderId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        adminKey,
+                        notes
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('✅ Payment verified! Access credentials sent to customer.');
+                    loadOrders(); // Reload orders
+                } else {
+                    alert('Failed to verify: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                alert('Failed to verify payment');
+            }
+        }
+        
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            if (adminKey) {
+                loadOrders();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

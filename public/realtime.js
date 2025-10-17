@@ -6,6 +6,7 @@ class RealtimeService {
         this.reconnectAttempts = 0;
         this.maxReconnectAttempts = 5;
         this.eventHandlers = new Map();
+        this.wsUrl = null;
         this.init();
     }
 
@@ -15,11 +16,16 @@ class RealtimeService {
     }
 
     connect() {
+        const wsUrl = this.resolveWebSocketUrl();
+        if (!wsUrl) {
+            console.info('ℹ️ RealtimeService: WebSocket disabled or not configured for this environment');
+            return;
+        }
+
+        this.wsUrl = wsUrl;
+
         try {
-            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsUrl = `${protocol}//${window.location.host}`;
-            
-            this.socket = new WebSocket(wsUrl);
+            this.socket = new WebSocket(this.wsUrl);
             
             this.socket.onopen = () => {
                 console.log('🟢 WebSocket connected');
@@ -55,6 +61,15 @@ class RealtimeService {
     }
 
     attemptReconnect() {
+        const nextUrl = this.resolveWebSocketUrl();
+        if (!nextUrl) {
+            this.wsUrl = null;
+            console.info('ℹ️ RealtimeService: skipping reconnection because WebSocket is disabled');
+            return;
+        }
+
+        this.wsUrl = nextUrl;
+
         if (this.reconnectAttempts >= this.maxReconnectAttempts) {
             console.log('❌ Max reconnection attempts reached');
             this.showConnectionStatus('failed');
@@ -100,6 +115,29 @@ class RealtimeService {
             default:
                 this.emit(data.type, data.payload);
         }
+    }
+
+    resolveWebSocketUrl() {
+        if (typeof window === 'undefined') {
+            return null;
+        }
+
+        if (window.__WS_URL) {
+            return window.__WS_URL;
+        }
+
+        if (window.__ENABLE_REALTIME_WS__ === true) {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            return `${protocol}//${window.location.host}`;
+        }
+
+        const localHosts = ['localhost', '127.0.0.1', '::1'];
+        if (localHosts.includes(window.location.hostname)) {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            return `${protocol}//${window.location.host}`;
+        }
+
+        return null;
     }
 
     handleContractCreated(contract) {

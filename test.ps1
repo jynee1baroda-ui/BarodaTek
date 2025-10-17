@@ -53,4 +53,16 @@ Write-Host "`n🎉 API testing completed!" -ForegroundColor Green
 Write-Host "`n🌐 Web interface: http://localhost:8080" -ForegroundColor Cyan
 Write-Host "🔗 API documentation: http://localhost:8080/#api" -ForegroundColor Cyan
 
+# Optional: Run matchmaking tests via orchestrator
+Write-Host "`nWould you like to run the matchmaking test workflow now? (y/n)" -ForegroundColor Yellow
+$key = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
+if ($key.Character -eq 'y' -or $key.Character -eq 'Y') {
+    Write-Host "`nStarting matchmaking test workflow..." -ForegroundColor Cyan
+    try {
+        & powershell -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'run-matchmaking-tests.ps1')
+    } catch {
+        Write-Host "Matchmaking workflow failed: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
 pause

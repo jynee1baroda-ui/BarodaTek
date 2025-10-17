@@ -6,6 +6,7 @@ class ErrorTracker {
         this.apiUrl = window.location.origin + '/api/errors/log';
         this.errorQueue = [];
         this.isProcessing = false;
+        this.remoteLoggingEnabled = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
         
         this.init();
     }
@@ -66,12 +67,21 @@ class ErrorTracker {
     monitorNetworkErrors() {
         // Monitor fetch errors
         const originalFetch = window.fetch;
+        const isErrorLoggingCall = (target) => {
+            try {
+                const url = new URL(target, window.location.origin);
+                return url.pathname === '/api/errors/log';
+            } catch (err) {
+                return false;
+            }
+        };
+
         window.fetch = async (...args) => {
             try {
                 const response = await originalFetch(...args);
                 
                 // Log failed responses
-                if (!response.ok) {
+                if (!response.ok && !isErrorLoggingCall(args[0])) {
                     this.logError({
                         message: `HTTP ${response.status}: ${response.statusText}`,
                         type: 'NetworkError',
@@ -86,7 +96,8 @@ class ErrorTracker {
                 
                 return response;
             } catch (error) {
-                this.logError({
+                if (!isErrorLoggingCall(args[0])) {
+                    this.logError({
                     message: error.message,
                     stack: error.stack,
                     type: 'FetchError',
@@ -95,6 +106,7 @@ class ErrorTracker {
                         page: window.location.href
                     }
                 });
+                }
                 throw error;
             }
         };
@@ -125,6 +137,13 @@ class ErrorTracker {
         const error = this.errorQueue.shift();
         
         try {
+            if (!this.remoteLoggingEnabled) {
+                this.storeErrorLocally(error);
+                this.errorQueue.length = 0;
+                this.isProcessing = false;
+                return;
+            }
+
             const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {
@@ -135,21 +154,18 @@ class ErrorTracker {
             
             if (response.ok) {
                 console.log('📝 Error logged to server:', error.type);
+            } else if (response.status === 404) {
+                console.warn('Error logging endpoint unavailable (404). Disabling remote logging to prevent loops.');
+                this.remoteLoggingEnabled = false;
+                this.storeErrorLocally(error);
+                this.errorQueue.length = 0;
+                this.isProcessing = false;
+                return;
             }
         } catch (err) {
             console.warn('Failed to log error to server:', err.message);
             // Store in localStorage as fallback
-            try {
-                const storedErrors = JSON.parse(localStorage.getItem('error_log') || '[]');
-                storedErrors.push(error);
-                // Keep only last 50 errors
-                if (storedErrors.length > 50) {
-                    storedErrors.shift();
-                }
-                localStorage.setItem('error_log', JSON.stringify(storedErrors));
-            } catch (storageError) {
-                console.warn('Failed to store error locally:', storageError.message);
-            }
+            this.storeErrorLocally(error);
         }
         
         // Process next error
@@ -182,6 +198,19 @@ class ErrorTracker {
             console.log('✅ Stored errors cleared');
         } catch (error) {
             console.warn('Failed to clear stored errors:', error.message);
+        }
+    }
+
+    storeErrorLocally(error) {
+        try {
+            const storedErrors = JSON.parse(localStorage.getItem('error_log') || '[]');
+            storedErrors.push(error);
+            if (storedErrors.length > 50) {
+                storedErrors.shift();
+            }
+            localStorage.setItem('error_log', JSON.stringify(storedErrors));
+        } catch (storageError) {
+            console.warn('Failed to store error locally:', storageError.message);
         }
     }
 }

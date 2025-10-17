@@ -1,0 +1,33 @@
+{
+  "deploymentId": "deploy-20251016",
+  "timestamp": "2025-10-16T15:18:58.960Z",
+  "files": [
+    {
+      "name": "index.html",
+      "size": 202152,
+      "modified": "2025-10-16T15:09:20.847Z"
+    },
+    {
+      "name": "barodatek-logo.png",
+      "size": 90921,
+      "modified": "2025-10-14T12:09:06.886Z"
+    },
+    {
+      "name": "profile.jpg",
+      "size": 170011,
+      "modified": "2025-10-14T06:23:22.813Z"
+    },
+    {
+      "name": "vercel.json",
+      "size": 120,
+      "modified": "2025-10-16T14:41:18.540Z"
+    }
+  ],
+  "notes": "BarodaTek Arena - Bootstrap Edition (No build process)",
+  "tech": [
+    "HTML",
+    "Bootstrap 5",
+    "Vanilla JavaScript",
+    "Plain CSS"
+  ]
+}

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 API Playground - BarodaTek</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .playground-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin: 20px auto;
+            max-width: 1400px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+        
+        .request-panel {
+            background: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            padding: 20px;
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+        
+        .response-panel {
+            padding: 20px;
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+        
+        .method-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .method-badge.GET { background: #10b981; color: white; }
+        .method-badge.POST { background: #3b82f6; color: white; }
+        .method-badge.PUT { background: #f59e0b; color: white; }
+        .method-badge.DELETE { background: #ef4444; color: white; }
+        .method-badge.selected { box-shadow: 0 0 0 3px rgba(0,0,0,0.2); }
+        
+        .url-input {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .send-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 10px 30px;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+        
+        .response-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .response-status.success { background: #10b981; color: white; }
+        .response-status.error { background: #ef4444; color: white; }
+        
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 8px 20px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            position: relative;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .header-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .header-row input {
+            flex: 1;
+        }
+        
+        .example-apis {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .example-api {
+            background: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .example-api:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .response-time {
+            color: #10b981;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="playground-container">
+        <div class="header">
+            <h1><i class="fas fa-rocket"></i> API Playground</h1>
+            <p>Test APIs in real-time • Generate code examples • Powered by BarodaTek</p>
+        </div>
+        
+        <div class="row g-0">
+            <!-- Request Panel -->
+            <div class="col-md-6 request-panel">
+                <h4 class="mb-3"><i class="fas fa-paper-plane"></i> Request</h4>
+                
+                <!-- Example APIs -->
+                <div class="example-apis">
+                    <strong><i class="fas fa-star"></i> Quick Examples:</strong>
+                    <div class="example-api" onclick="loadExample('https://jsonplaceholder.typicode.com/posts/1', 'GET')">
+                        <strong>GET</strong> JSONPlaceholder - Sample Post
+                    </div>
+                    <div class="example-api" onclick="loadExample('https://api.github.com/users/github', 'GET')">
+                        <strong>GET</strong> GitHub API - User Info
+                    </div>
+                    <div class="example-api" onclick="loadExample(window.location.origin + '/api/contracts', 'GET')">
+                        <strong>GET</strong> BarodaTek API - Contracts
+                    </div>
+                </div>
+                
+                <!-- HTTP Method -->
+                <div class="mb-3">
+                    <label class="form-label"><strong>HTTP Method:</strong></label><br>
+                    <span class="method-badge GET selected" onclick="selectMethod('GET')">GET</span>
+                    <span class="method-badge POST" onclick="selectMethod('POST')">POST</span>
+                    <span class="method-badge PUT" onclick="selectMethod('PUT')">PUT</span>
+                    <span class="method-badge DELETE" onclick="selectMethod('DELETE')">DELETE</span>
+                </div>
+                
+                <!-- URL -->
+                <div class="mb-3">
+                    <label class="form-label"><strong>Request URL:</strong></label>
+                    <input type="text" class="form-control url-input" id="apiUrl" 
+                           placeholder="https://barodatek-79j1mznjj-jynee1baroda-6483s-projects.vercel.app/api/health"
+                           value="">
+                </div>
+                
+                <!-- Tabs for Headers/Body/Auth -->
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="showTab('headers')">Headers</button>
+                    <button class="tab-btn" onclick="showTab('body')">Body</button>
+                    <button class="tab-btn" onclick="showTab('auth')">Auth</button>
+                    <button class="tab-btn" onclick="showTab('params')">Query Params</button>
+                </div>
+                
+                <!-- Headers Tab -->
+                <div id="headers-tab" class="tab-content">
+                    <label class="form-label"><strong>Headers:</strong></label>
+                    <div id="headers-container">
+                        <div class="header-row">
+                            <input type="text" class="form-control" placeholder="Key" value="Content-Type">
+                            <input type="text" class="form-control" placeholder="Value" value="application/json">
+                            <button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="addHeader()">
+                        <i class="fas fa-plus"></i> Add Header
+                    </button>
+                </div>
+                
+                <!-- Body Tab -->
+                <div id="body-tab" class="tab-content" style="display:none;">
+                    <label class="form-label"><strong>Request Body (JSON):</strong></label>
+                    <textarea class="form-control" id="requestBody" rows="10" 
+                              placeholder='{"key": "value"}'></textarea>
+                </div>
+                
+                <!-- Auth Tab -->
+                <div id="auth-tab" class="tab-content" style="display:none;">
+                    <label class="form-label"><strong>Authorization:</strong></label>
+                    <select class="form-select mb-3" id="authType">
+                        <option>No Auth</option>
+                        <option>Bearer Token</option>
+                        <option>API Key</option>
+                        <option>Basic Auth</option>
+                    </select>
+                    <input type="text" class="form-control" id="authValue" placeholder="Enter token/key">
+                </div>
+                
+                <!-- Query Params Tab -->
+                <div id="params-tab" class="tab-content" style="display:none;">
+                    <label class="form-label"><strong>Query Parameters:</strong></label>
+                    <div id="params-container">
+                        <div class="header-row">
+                            <input type="text" class="form-control" placeholder="Key">
+                            <input type="text" class="form-control" placeholder="Value">
+                            <button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="addParam()">
+                        <i class="fas fa-plus"></i> Add Parameter
+                    </button>
+                </div>
+                
+                <!-- Send Button -->
+                <div class="mt-4 text-center">
+                    <button class="send-btn" onclick="sendRequest()">
+                        <i class="fas fa-rocket"></i> Send Request
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Response Panel -->
+            <div class="col-md-6 response-panel">
+                <h4 class="mb-3" style="color: white;"><i class="fas fa-code"></i> Response</h4>
+                
+                <div id="response-container">
+                    <div class="text-center" style="color: #888; padding: 50px;">
+                        <i class="fas fa-satellite-dish fa-3x mb-3"></i>
+                        <p>Send a request to see the response here</p>
+                    </div>
+                </div>
+                
+                <!-- Code Examples -->
+                <div id="code-examples" style="display:none;">
+                    <h5 class="mt-4" style="color: white;">📋 Code Examples:</h5>
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="showCodeTab('curl')">cURL</button>
+                        <button class="tab-btn" onclick="showCodeTab('javascript')">JavaScript</button>
+                        <button class="tab-btn" onclick="showCodeTab('python')">Python</button>
+                        <button class="tab-btn" onclick="showCodeTab('node')">Node.js</button>
+                    </div>
+                    
+                    <div id="curl-code" class="code-tab">
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode('curl-code-text')">📋 Copy</button>
+                            <pre id="curl-code-text"></pre>
+                        </div>
+                    </div>
+                    
+                    <div id="javascript-code" class="code-tab" style="display:none;">
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode('js-code-text')">📋 Copy</button>
+                            <pre id="js-code-text"></pre>
+                        </div>
+                    </div>
+                    
+                    <div id="python-code" class="code-tab" style="display:none;">
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode('py-code-text')">📋 Copy</button>
+                            <pre id="py-code-text"></pre>
+                        </div>
+                    </div>
+                    
+                    <div id="node-code" class="code-tab" style="display:none;">
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode('node-code-text')">📋 Copy</button>
+                            <pre id="node-code-text"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script>
+        let currentMethod = 'GET';
+        let responseTime = 0;
+        
+        function selectMethod(method) {
+            document.querySelectorAll('.method-badge').forEach(badge => {
+                badge.classList.remove('selected');
+            });
+            document.querySelector(`.method-badge.${method}`).classList.add('selected');
+            currentMethod = method;
+        }
+        
+        function showTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`${tab}-tab`).style.display = 'block';
+            event.target.classList.add('active');
+        }
+        
+        function showCodeTab(lang) {
+            document.querySelectorAll('.code-tab').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            document.querySelectorAll('#code-examples .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`${lang}-code`).style.display = 'block';
+            event.target.classList.add('active');
+        }
+        
+        function addHeader() {
+            const container = document.getElementById('headers-container');
+            const row = document.createElement('div');
+            row.className = 'header-row';
+            row.innerHTML = `
+                <input type="text" class="form-control" placeholder="Key">
+                <input type="text" class="form-control" placeholder="Value">
+                <button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+            `;
+            container.appendChild(row);
+        }
+        
+        function addParam() {
+            const container = document.getElementById('params-container');
+            const row = document.createElement('div');
+            row.className = 'header-row';
+            row.innerHTML = `
+                <input type="text" class="form-control" placeholder="Key">
+                <input type="text" class="form-control" placeholder="Value">
+                <button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+            `;
+            container.appendChild(row);
+        }
+        
+        function loadExample(url, method) {
+            document.getElementById('apiUrl').value = url;
+            selectMethod(method);
+        }
+        
+        async function sendRequest() {
+            const url = document.getElementById('apiUrl').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('response-container').innerHTML = `
+                <div class="text-center" style="padding: 50px;">
+                    <div class="loading"></div>
+                    <p style="color: #888; margin-top: 20px;">Sending request...</p>
+                </div>
+            `;
+            
+            // Collect headers
+            const headers = {};
+            document.querySelectorAll('#headers-container .header-row').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                const key = inputs[0].value.trim();
+                const value = inputs[1].value.trim();
+                if (key) headers[key] = value;
+            });
+            
+            // Collect query params
+            let queryParams = [];
+            document.querySelectorAll('#params-container .header-row').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                const key = inputs[0].value.trim();
+                const value = inputs[1].value.trim();
+                if (key) queryParams.push(`${key}=${encodeURIComponent(value)}`);
+            });
+            
+            let finalUrl = url;
+            if (queryParams.length > 0) {
+                finalUrl += (url.includes('?') ? '&' : '?') + queryParams.join('&');
+            }
+            
+            // Prepare request
+            const options = {
+                method: currentMethod,
+                headers: headers
+            };
+            
+            // Add body for POST/PUT
+            if ((currentMethod === 'POST' || currentMethod === 'PUT') && document.getElementById('requestBody').value) {
+                options.body = document.getElementById('requestBody').value;
+            }
+            
+            // Add auth
+            const authType = document.getElementById('authType').value;
+            const authValue = document.getElementById('authValue').value;
+            if (authValue) {
+                if (authType === 'Bearer Token') {
+                    options.headers['Authorization'] = `Bearer ${authValue}`;
+                } else if (authType === 'API Key') {
+                    options.headers['X-API-Key'] = authValue;
+                }
+            }
+            
+            // Send request
+            const startTime = performance.now();
+            try {
+                const response = await fetch(finalUrl, options);
+                const endTime = performance.now();
+                responseTime = Math.round(endTime - startTime);
+                
+                const contentType = response.headers.get('content-type');
+                let data;
+                
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    data = await response.text();
+                }
+                
+                displayResponse(response, data);
+                generateCodeExamples(finalUrl, options);
+                
+            } catch (error) {
+                displayError(error);
+            }
+        }
+        
+        function displayResponse(response, data) {
+            const statusClass = response.ok ? 'success' : 'error';
+            
+            document.getElementById('response-container').innerHTML = `
+                <div>
+                    <span class="response-status ${statusClass}">
+                        ${response.status} ${response.statusText}
+                    </span>
+                    <span class="response-time">⚡ ${responseTime}ms</span>
+                    <div class="code-block mt-3">
+                        <button class="copy-btn" onclick="copyCode('response-data')">📋 Copy</button>
+                        <pre id="response-data">${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('code-examples').style.display = 'block';
+        }
+        
+        function displayError(error) {
+            document.getElementById('response-container').innerHTML = `
+                <div>
+                    <span class="response-status error">Error</span>
+                    <div class="code-block mt-3">
+                        <pre>${error.message}</pre>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateCodeExamples(url, options) {
+            // cURL
+            let curlCmd = `curl -X ${currentMethod} "${url}"`;
+            if (options.headers) {
+                for (const [key, value] of Object.entries(options.headers)) {
+                    curlCmd += `\n  -H "${key}: ${value}"`;
+                }
+            }
+            if (options.body) {
+                curlCmd += `\n  -d '${options.body}'`;
+            }
+            document.getElementById('curl-code-text').textContent = curlCmd;
+            
+            // JavaScript
+            const jsCode = `fetch('${url}', ${JSON.stringify(options, null, 2)})
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));`;
+            document.getElementById('js-code-text').textContent = jsCode;
+            
+            // Python
+            const pyCode = `import requests
+
+response = requests.${currentMethod.toLowerCase()}(
+    '${url}',
+    headers=${JSON.stringify(options.headers || {}, null, 4)},
+    ${options.body ? `json=${options.body}` : ''}
+)
+
+print(response.json())`;
+            document.getElementById('py-code-text').textContent = pyCode;
+            
+            // Node.js
+            const nodeCode = `const axios = require('axios');
+
+axios({
+    method: '${currentMethod}',
+    url: '${url}',
+    headers: ${JSON.stringify(options.headers || {}, null, 4)},
+    ${options.body ? `data: ${options.body}` : ''}
+})
+.then(response => console.log(response.data))
+.catch(error => console.error('Error:', error));`;
+            document.getElementById('node-code-text').textContent = nodeCode;
+        }
+        
+        function copyCode(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    btn.textContent = '📋 Copy';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
+<script>
+    (function(){
+        var input = document.querySelector('input[type="text"][name="api-url"], #api-url');
+        if (!input) input = document.querySelector('input[value=""]');
+        if (input && !input.value) input.value = window.location.origin + '/api/contracts';
+    })();
+</script>

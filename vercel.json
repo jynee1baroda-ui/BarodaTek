@@ -2,11 +2,28 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.js",
-      "use": "@vercel/node",
-      "config": {
-        "maxDuration": 30
-      }
+      "src": "api/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.{jpg,jpeg,png,gif,svg,ico}",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.json",
+      "use": "@vercel/static"
     },
     {
       "src": "public/**",
@@ -16,30 +33,15 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/server.js",
-      "headers": {
-        "X-Robots-Tag": "all",
-        "Cache-Control": "public, max-age=0"
-      }
+      "dest": "/api/index.js"
     },
     {
-      "src": "/admin",
-      "dest": "/public/ai-monitor-dashboard.html"
+      "src": "/",
+      "dest": "/index.html"
     },
     {
-      "src": "/(.*\\..+)",
-      "dest": "/public/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=3600"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
+      "src": "/(.*\\.(html|css|js|png|jpg|jpeg|gif|svg|ico))",
+      "dest": "/$1"
     }
-  ],
-  "public": true,
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }

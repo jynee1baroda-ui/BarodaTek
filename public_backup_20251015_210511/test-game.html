@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BarodaTek Button Test</title>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('=== DIAGNOSTIC TEST ===');
+            console.log('1. Checking if startGame exists:', typeof window.startGame);
+            console.log('2. Checking if Bootstrap is loaded:', typeof bootstrap);
+            console.log('3. Checking game elements...');
+            console.log('   - game-start:', document.getElementById('game-start') ? 'FOUND' : 'NOT FOUND');
+            console.log('   - question-container:', document.getElementById('question-container') ? 'FOUND' : 'NOT FOUND');
+            console.log('   - game-stats:', document.getElementById('game-stats') ? 'FOUND' : 'NOT FOUND');
+        });
+    </script>
+</head>
+<body>
+    <h1>BarodaTek Diagnostic Test</h1>
+    <button onclick="console.log('Button clicked!'); if(typeof startGame === 'function') { startGame(); } else { alert('startGame is not a function!'); }">Test Start Game</button>
+    <script src="app.js"></script>
+    <div id="game-start">Game Start Div</div>
+    <div id="question-container">Question Container</div>
+    <div id="game-stats">Game Stats</div>
+</body>
+</html>

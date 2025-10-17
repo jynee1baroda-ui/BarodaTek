@@ -35,9 +35,9 @@ if ($LASTEXITCODE -eq 0) {
 }
 
 Write-Host "`n🚀 Starting Docker container..." -ForegroundColor Yellow
-Write-Host "Application will be available at: http://localhost:3000" -ForegroundColor Green
+Write-Host "Application will be available at: http://localhost:8080" -ForegroundColor Green
 Write-Host "Press Ctrl+C to stop the container" -ForegroundColor Yellow
 Write-Host ""
 
 # Run the container
-docker run -p 3000:3000 --name api-mock-contract-instance api-mock-contract
+docker run -p 8080:8080 --name api-mock-contract-instance api-mock-contract

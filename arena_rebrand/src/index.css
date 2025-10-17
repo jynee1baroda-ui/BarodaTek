@@ -1,68 +1,182 @@
+@import "tailwindcss";
+
+@theme {
+  --color-arena-bg: #000000;
+  --color-arena-black: #0a0a0a;
+  --color-arena-red: #ff0033;
+  --color-arena-red-dark: #cc0029;
+  --color-arena-red-glow: rgba(255, 0, 51, 0.5);
+  --color-arena-text: #ffffff;
+  --color-arena-gray: #c0c0c0;
+  --color-arena-dark-gray: #1a1a1a;
+  --color-arena-mid-gray: #2a2a2a;
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  --arena-bg: #000000;
+  --arena-red: #ff0033;
+  --arena-text: #ffffff;
+  --arena-gray: #c0c0c0;
+  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  
+  /* Dr DisRespect cursor */
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><text y="20" font-size="20">🕶️</text></svg>'), auto;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
+  background-color: var(--arena-bg);
+  color: var(--arena-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Scanline Overlay Effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 0, 51, 0.03) 0px,
+    transparent 1px,
+    transparent 2px,
+    rgba(255, 0, 51, 0.03) 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.1;
+  animation: scanline 8s linear infinite;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@keyframes scanline {
+  0% {
+    transform: translateY(0);
   }
-  a:hover {
-    color: #747bff;
+  100% {
+    transform: translateY(100vh);
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+/* Focus Visible for Accessibility */
+*:focus-visible {
+  outline: 2px solid var(--arena-red);
+  outline-offset: 2px;
+}
+
+/* Arena Button Styles */
+.btn-arena-primary {
+  background-color: var(--arena-red);
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s;
+  box-shadow: 0 0 20px rgba(255, 0, 51, 0.3);
+}
+
+.btn-arena-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 0, 51, 0.6);
+}
+
+.btn-arena-secondary {
+  border: 2px solid var(--arena-red);
+  color: var(--arena-red);
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s;
+  background: transparent;
+}
+
+.btn-arena-secondary:hover {
+  background-color: var(--arena-red);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Arena Card with Glow Effect */
+.arena-card {
+  background-color: #0a0a0a;
+  border: 1px solid var(--arena-red);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.arena-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--arena-red);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.arena-card:hover::before {
+  transform: scaleX(1);
+}
+
+.arena-card:hover {
+  box-shadow: 0 0 30px rgba(255, 0, 51, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Glow Text Effect */
+.glow-text-red {
+  text-shadow: 
+    0 0 10px rgba(255, 0, 51, 0.8),
+    0 0 20px rgba(255, 0, 51, 0.6),
+    0 0 30px rgba(255, 0, 51, 0.4);
+}
+
+/* Grid Background */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(255, 0, 51, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 51, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Custom Scrollbar */
+.scrollbar-arena::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-arena::-webkit-scrollbar-track {
+  background: var(--arena-bg);
+}
+
+.scrollbar-arena::-webkit-scrollbar-thumb {
+  background: var(--arena-red);
+  border-radius: 4px;
+}
+
+.scrollbar-arena::-webkit-scrollbar-thumb:hover {
+  background: #ff1a47;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

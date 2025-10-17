@@ -30,9 +30,13 @@ export default function Navbar() {
     >
       <div className="section-container">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
+          {/* Logo with BarodaTek Llama Icon */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <span className="text-3xl">🏟️</span>
+            <img 
+              src="/assets/barodatek-logo.png" 
+              alt="BarodaTek Llama" 
+              className="w-10 h-10 md:w-12 md:h-12 transition-transform group-hover:scale-110"
+            />
             <span className="text-xl md:text-2xl font-heading font-black glow-text-red">
               BARODATEK <span className="text-white">ARENA</span>
             </span>

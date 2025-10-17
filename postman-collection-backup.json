@@ -1,0 +1,308 @@
+{
+    "info": {
+        "name": "API Mock Contract MVP",
+        "description": "Complete API collection for testing the Contract Management API",
+        "version": "1.0.0",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+        "type": "noauth"
+    },
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "// Set base URL",
+                    "pm.globals.set('baseURL', 'http://localhost:8080/api');"
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseURL",
+            "value": "http://localhost:8080/api",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Health Check",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Response has success property', function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.success).to.be.true;",
+                            "});",
+                            "",
+                            "pm.test('Response contains message', function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.be.a('string');",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseURL}}/health",
+                    "host": ["{{baseURL}}"],
+                    "path": ["health"]
+                },
+                "description": "Check if the API is running and healthy"
+            },
+            "response": []
+        },
+        {
+            "name": "Get All Contracts",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Response has contracts array', function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.be.an('array');",
+                            "});",
+                            "",
+                            "pm.test('Response has count property', function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.count).to.be.a('number');",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseURL}}/contracts",
+                    "host": ["{{baseURL}}"],
+                    "path": ["contracts"]
+                },
+                "description": "Retrieve all contracts from the system"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Contract by ID",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200 or 404', function () {",
+                            "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                            "});",
+                            "",
+                            "if (pm.response.code === 200) {",
+                            "    pm.test('Response contains contract data', function () {",
+                            "        var jsonData = pm.response.json();",
+                            "        pm.expect(jsonData.data).to.have.property('id');",
+                            "        pm.expect(jsonData.data).to.have.property('title');",
+                            "        pm.expect(jsonData.data).to.have.property('client');",
+                            "    });",
+                            "}"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseURL}}/contracts/1",
+                    "host": ["{{baseURL}}"],
+                    "path": ["contracts", "1"]
+                },
+                "description": "Retrieve a specific contract by its ID"
+            },
+            "response": []
+        },
+        {
+            "name": "Create New Contract",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 201', function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "pm.test('Contract created successfully', function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.success).to.be.true;",
+                            "    pm.expect(jsonData.data).to.have.property('id');",
+                            "});",
+                            "",
+                            "// Save contract ID for other tests",
+                            "if (pm.response.code === 201) {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.globals.set('lastCreatedContractId', jsonData.data.id);",
+                            "}"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"title\": \"Postman Test Contract\",\n  \"client\": \"Test Client Corp\",\n  \"provider\": \"Test Provider LLC\",\n  \"amount\": 25000,\n  \"description\": \"Contract created via Postman for API testing\",\n  \"expiryDate\": \"2025-12-31\"\n}"
+                },
+                "url": {
+                    "raw": "{{baseURL}}/contracts",
+                    "host": ["{{baseURL}}"],
+                    "path": ["contracts"]
+                },
+                "description": "Create a new contract in the system"
+            },
+            "response": []
+        },
+        {
+            "name": "Update Contract",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200 or 404', function () {",
+                            "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                            "});",
+                            "",
+                            "if (pm.response.code === 200) {",
+                            "    pm.test('Contract updated successfully', function () {",
+                            "        var jsonData = pm.response.json();",
+                            "        pm.expect(jsonData.success).to.be.true;",
+                            "        pm.expect(jsonData.data).to.have.property('id');",
+                            "    });",
+                            "}"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"title\": \"Updated Postman Test Contract\",\n  \"amount\": 30000,\n  \"status\": \"active\",\n  \"description\": \"Contract updated via Postman API testing\"\n}"
+                },
+                "url": {
+                    "raw": "{{baseURL}}/contracts/1",
+                    "host": ["{{baseURL}}"],
+                    "path": ["contracts", "1"]
+                },
+                "description": "Update an existing contract"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Contract Statistics",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Response contains statistics', function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.have.property('totalContracts');",
+                            "    pm.expect(jsonData.data).to.have.property('activeContracts');",
+                            "    pm.expect(jsonData.data).to.have.property('totalValue');",
+                            "});",
+                            "",
+                            "pm.test('Statistics are numbers', function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data.totalContracts).to.be.a('number');",
+                            "    pm.expect(jsonData.data.totalValue).to.be.a('number');",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseURL}}/stats",
+                    "host": ["{{baseURL}}"],
+                    "path": ["stats"]
+                },
+                "description": "Get contract statistics and analytics"
+            },
+            "response": []
+        },
+        {
+            "name": "Delete Contract",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200 or 404', function () {",
+                            "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                            "});",
+                            "",
+                            "if (pm.response.code === 200) {",
+                            "    pm.test('Contract deleted successfully', function () {",
+                            "        var jsonData = pm.response.json();",
+                            "        pm.expect(jsonData.success).to.be.true;",
+                            "    });",
+                            "}"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "{{baseURL}}/contracts/{{lastCreatedContractId}}",
+                    "host": ["{{baseURL}}"],
+                    "path": ["contracts", "{{lastCreatedContractId}}"]
+                },
+                "description": "Delete a contract by ID (uses the last created contract ID)"
+            },
+            "response": []
+        }
+    ]
+}

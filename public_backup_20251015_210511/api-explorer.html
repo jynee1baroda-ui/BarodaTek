@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Explorer - API Mock Contract MVP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <style>
+        .api-explorer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+        }
+        .endpoint-card {
+            border-left: 4px solid;
+            margin-bottom: 2rem;
+        }
+        .endpoint-card.get { border-left-color: #28a745; }
+        .endpoint-card.post { border-left-color: #007bff; }
+        .endpoint-card.put { border-left-color: #ffc107; }
+        .endpoint-card.delete { border-left-color: #dc3545; }
+        
+        .method-badge.get { background-color: #28a745; }
+        .method-badge.post { background-color: #007bff; }
+        .method-badge.put { background-color: #ffc107; color: #000; }
+        .method-badge.delete { background-color: #dc3545; }
+        
+        .response-area {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .test-button {
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .loading-spinner {
+            display: none;
+        }
+        
+        .sample-data {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-file-contract me-2"></i>API Mock Contract MVP
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="api-explorer.html">API Explorer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#samples">Samples</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="api-explorer">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-3">
+                <i class="fas fa-code me-3"></i>API Explorer
+            </h1>
+            <p class="lead mb-4">Interactive testing interface for the Contract Management API</p>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="alert alert-light" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Base URL:</strong> <code id="base-api-url">(loading...)</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Endpoints -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">🔗 Interactive API Testing</h2>
+            
+            <!-- Health Check Endpoint -->
+            <div class="card endpoint-card get">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge method-badge get me-2">GET</span>
+                        <code>/health</code>
+                    </div>
+                    <button class="btn btn-success btn-sm test-button" data-action="testEndpoint" data-endpoint="health" data-method="GET">
+                        <span class="loading-spinner spinner-border spinner-border-sm me-2" role="status"></span>
+                        <i class="fas fa-play me-1"></i>Test
+                    </button>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">Check API health and status</p>
+                    <div class="response-area" id="health-response">
+                        Click "Test" to see the response
+                    </div>
+                </div>
+            </div>
+
+            <!-- Get All Contracts -->
+            <div class="card endpoint-card get">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge method-badge get me-2">GET</span>
+                        <code>/contracts</code>
+                    </div>
+                    <button class="btn btn-success btn-sm test-button" data-action="testEndpoint" data-endpoint="contracts" data-method="GET">
+                        <span class="loading-spinner spinner-border spinner-border-sm me-2" role="status"></span>
+                        <i class="fas fa-play me-1"></i>Test
+                    </button>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">Retrieve all contracts</p>
+                    <div class="response-area" id="contracts-response">
+                        Click "Test" to see the response
+                    </div>
+                </div>
+            </div>
+
+            <!-- Get Contract by ID -->
+            <div class="card endpoint-card get">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge method-badge get me-2">GET</span>
+                        <code>/contracts/{id}</code>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <input type="number" class="form-control form-control-sm" id="contract-id" placeholder="ID" value="1" style="width: 80px;">
+                        <button class="btn btn-success btn-sm test-button" data-action="testEndpointWithId" data-endpoint="contracts" data-method="GET">
+                            <span class="loading-spinner spinner-border spinner-border-sm me-2" role="status"></span>
+                            <i class="fas fa-play me-1"></i>Test
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">Retrieve a specific contract by ID</p>
+                    <div class="response-area" id="contracts-id-response">
+                        Enter an ID and click "Test" to see the response
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create Contract -->
+            <div class="card endpoint-card post">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge method-badge post me-2">POST</span>
+                        <code>/contracts</code>
+                    </div>
+                    <button class="btn btn-primary btn-sm test-button" data-action="testCreateContract">
+                        <span class="loading-spinner spinner-border spinner-border-sm me-2" role="status"></span>
+                        <i class="fas fa-play me-1"></i>Test
+                    </button>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">Create a new contract</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Request Body:</h6>
+                            <textarea class="form-control mb-3" id="create-contract-body" rows="8">{
+  "title": "Test Contract",
+  "client": "Test Client",
+  "provider": "Test Provider",
+  "amount": 10000,
+  "description": "Test contract description",
+  "expiryDate": "2025-12-31"
+}</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Response:</h6>
+                            <div class="response-area" id="create-contract-response">
+                                Click "Test" to see the response
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Get Statistics -->
+            <div class="card endpoint-card get">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge method-badge get me-2">GET</span>
+                        <code>/stats</code>
+                    </div>
+                    <button class="btn btn-success btn-sm test-button" data-action="testEndpoint" data-endpoint="stats" data-method="GET">
+                        <span class="loading-spinner spinner-border spinner-border-sm me-2" role="status"></span>
+                        <i class="fas fa-play me-1"></i>Test
+                    </button>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">Get contract statistics and analytics</p>
+                    <div class="response-area" id="stats-response">
+                        Click "Test" to see the response
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Contract -->
+            <div class="card endpoint-card delete">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge method-badge delete me-2">DELETE</span>
+                        <code>/contracts/{id}</code>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <input type="number" class="form-control form-control-sm" id="delete-contract-id" placeholder="ID" value="1" style="width: 80px;">
+                        <button class="btn btn-danger btn-sm test-button" data-action="testDeleteContract">
+                            <span class="loading-spinner spinner-border spinner-border-sm me-2" role="status"></span>
+                            <i class="fas fa-trash me-1"></i>Delete
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">Delete a contract by ID</p>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Warning:</strong> This will permanently delete the contract!
+                    </div>
+                    <div class="response-area" id="delete-contract-response">
+                        Enter an ID and click "Delete" to test
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sample Data Section -->
+    <section id="samples" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">📋 Sample Data & Usage Examples</h2>
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-database me-2"></i>Sample Contract Data</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="sample-data">
+                                <pre><code>{
+  "title": "Web Development Contract",
+  "client": "TechStart Inc",
+  "provider": "DevStudio",
+  "amount": 75000,
+  "description": "Full-stack web application development",
+  "expiryDate": "2025-12-31"
+}</code></pre>
+                            </div>
+                            <button class="btn btn-primary btn-sm mt-2" data-action="useSampleData" data-arg="web-dev">
+                                <i class="fas fa-copy me-1"></i>Use This Sample
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-code me-2"></i>cURL Examples</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="sample-data" id="curl-examples">
+                                <pre><code># Get all contracts
+curl http://localhost:8080/api/contracts
+
+# Create new contract
+curl -X POST http://localhost:8080/api/contracts \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Test","client":"Client","provider":"Provider","amount":5000}'</code></pre>
+                            </div>
+                            <button class="btn btn-secondary btn-sm mt-2" data-action="copyToClipboard" data-arg="curl-examples">
+                                <i class="fas fa-copy me-1"></i>Copy Examples
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-tools me-2"></i>Quick Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="btn btn-success w-100 mb-2" data-action="loadSampleData">
+                                        <i class="fas fa-database me-2"></i>Load Sample Data
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-info w-100 mb-2" data-action="testAllEndpoints">
+                                        <i class="fas fa-check-double me-2"></i>Test All Endpoints
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-warning w-100 mb-2" data-action="clearAllData">
+                                        <i class="fas fa-trash-alt me-2"></i>Clear All Data
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-secondary w-100 mb-2" data-action="exportData">
+                                        <i class="fas fa-download me-2"></i>Export Data
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">
+                <i class="fas fa-heart text-danger me-2"></i>
+                API Mock Contract MVP - Interactive API Explorer
+                <i class="fas fa-code ms-2"></i>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="api-explorer.js"></script>
+</body>
+</html>
+<script>
+    (function(){
+        try {
+            var el = document.getElementById('base-api-url');
+            if (el) el.textContent = window.location.origin + '/api';
+        } catch (e) { /* noop */ }
+    })();
+    </script>

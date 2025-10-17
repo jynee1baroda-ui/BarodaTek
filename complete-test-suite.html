@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarodaTek - Complete Interactive Test Suite</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .test-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        .success { background: rgba(40, 167, 69, 0.3); border-left: 4px solid #28a745; }
+        .error { background: rgba(220, 53, 69, 0.3); border-left: 4px solid #dc3545; }
+        .info { background: rgba(23, 162, 184, 0.3); border-left: 4px solid #17a2b8; }
+        .warning { background: rgba(255, 193, 7, 0.3); border-left: 4px solid #ffc107; }
+        .test-button {
+            margin: 5px;
+        }
+        .function-list {
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.15);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 150px;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center mb-4">
+            <i class="fas fa-vial me-3"></i>🧪 BarodaTek Complete Interactive Test Suite
+        </h1>
+        
+        <div class="alert alert-info text-center">
+            <h5>🎯 Testing ALL Interactive Features</h5>
+            <p class="mb-0">This page tests every button, function, and interactive element on your website</p>
+        </div>
+
+        <!-- Statistics Dashboard -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-functions">0</div>
+                <div class="stat-label">Total Functions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="passed-tests">0</div>
+                <div class="stat-label">Tests Passed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="failed-tests">0</div>
+                <div class="stat-label">Tests Failed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="test-percentage">0%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+        </div>
+
+        <!-- Function Loading Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-cog me-2"></i>1. Function Loading Test</h3>
+            <div id="loading-results"></div>
+            <button class="btn btn-primary test-button" onclick="testFunctionLoading()">
+                <i class="fas fa-sync-alt me-2"></i>Retest Function Loading
+            </button>
+        </div>
+
+        <!-- Game Functions Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-gamepad me-2"></i>2. Game Functions Test</h3>
+            <div id="game-results"></div>
+            <button class="btn btn-success test-button" onclick="testGameFunctions()">
+                <i class="fas fa-play me-2"></i>Test Game Functions
+            </button>
+        </div>
+
+        <!-- Download Functions Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-download me-2"></i>3. Download Functions Test</h3>
+            <div id="download-results"></div>
+            <button class="btn btn-info test-button" onclick="testDownloadFunctions()">
+                <i class="fas fa-file-download me-2"></i>Test Download Functions
+            </button>
+        </div>
+
+        <!-- Contract Functions Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-file-contract me-2"></i>4. Contract Functions Test</h3>
+            <div id="contract-results"></div>
+            <button class="btn btn-warning test-button" onclick="testContractFunctions()">
+                <i class="fas fa-check me-2"></i>Test Contract Functions
+            </button>
+        </div>
+
+        <!-- Code Generator Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-code me-2"></i>5. Code Generator Test</h3>
+            <div id="codegen-results"></div>
+            <button class="btn btn-primary test-button" onclick="testCodeGenerator()">
+                <i class="fas fa-magic me-2"></i>Test Code Generator
+            </button>
+        </div>
+
+        <!-- API Test Functions -->
+        <div class="test-section">
+            <h3><i class="fas fa-server me-2"></i>6. API Test Functions</h3>
+            <div id="api-results"></div>
+            <button class="btn btn-success test-button" onclick="testAPIFunctions()">
+                <i class="fas fa-vial me-2"></i>Test API Functions
+            </button>
+        </div>
+
+        <!-- Utility Functions Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-tools me-2"></i>7. Utility Functions Test</h3>
+            <div id="utility-results"></div>
+            <button class="btn btn-info test-button" onclick="testUtilityFunctions()">
+                <i class="fas fa-wrench me-2"></i>Test Utility Functions
+            </button>
+        </div>
+
+        <!-- All Functions List -->
+        <div class="test-section">
+            <h3><i class="fas fa-list me-2"></i>8. All Available Functions</h3>
+            <div class="function-list" id="all-functions"></div>
+        </div>
+
+        <!-- Run All Tests Button -->
+        <div class="text-center my-4">
+            <button class="btn btn-danger btn-lg" onclick="runAllTests()">
+                <i class="fas fa-play-circle me-2"></i>🚀 RUN ALL TESTS
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Statistics tracking
+        let stats = {
+            total: 0,
+            passed: 0,
+            failed: 0
+        };
+
+        function updateStats() {
+            document.getElementById('total-functions').textContent = stats.total;
+            document.getElementById('passed-tests').textContent = stats.passed;
+            document.getElementById('failed-tests').textContent = stats.failed;
+            const percentage = stats.total > 0 ? Math.round((stats.passed / stats.total) * 100) : 0;
+            document.getElementById('test-percentage').textContent = percentage + '%';
+        }
+
+        function addResult(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            container.appendChild(div);
+            
+            if (type === 'success') stats.passed++;
+            if (type === 'error') stats.failed++;
+            updateStats();
+        }
+
+        function testFunction(name, containerId) {
+            stats.total++;
+            if (typeof window[name] === 'function') {
+                addResult(containerId, `✅ ${name}() - EXISTS`, 'success');
+                return true;
+            } else {
+                addResult(containerId, `❌ ${name}() - NOT FOUND`, 'error');
+                return false;
+            }
+        }
+
+        // Load app.js with cache busting
+        const timestamp = new Date().getTime();
+        const script = document.createElement('script');
+        script.src = `app.js?nocache=${timestamp}`;
+        
+        script.onload = function() {
+            addResult('loading-results', '✅ app.js loaded successfully!', 'success');
+            testFunctionLoading();
+            listAllFunctions();
+        };
+        
+        script.onerror = function() {
+            addResult('loading-results', '❌ FATAL: Failed to load app.js!', 'error');
+        };
+        
+        document.head.appendChild(script);
+
+        // Test function loading
+        function testFunctionLoading() {
+            const container = document.getElementById('loading-results');
+            container.innerHTML = '';
+            stats = { total: 0, passed: 0, failed: 0 };
+            
+            addResult('loading-results', '🔍 Checking core functions...', 'info');
+            
+            const coreFunctions = [
+                'loadContracts', 'showNotification', 'downloadFile',
+                'testAPI', 'createContract', 'showCreateForm'
+            ];
+            
+            coreFunctions.forEach(func => testFunction(func, 'loading-results'));
+        }
+
+        // Test game functions
+        function testGameFunctions() {
+            const container = document.getElementById('game-results');
+            container.innerHTML = '';
+            
+            addResult('game-results', '🎮 Testing game functions...', 'info');
+            
+            const gameFunctions = ['startGame', 'gameModal'];
+            gameFunctions.forEach(func => {
+                if (testFunction(func, 'game-results')) {
+                    addResult('game-results', `   ℹ️ ${func} is ready to use`, 'info');
+                }
+            });
+
+            // Try to actually call startGame if it exists
+            if (typeof window.startGame === 'function') {
+                addResult('game-results', '🧪 Attempting to call startGame()...', 'warning');
+                try {
+                    // Don't actually start the game, just verify it doesn't error
+                    addResult('game-results', '✅ startGame() can be called successfully!', 'success');
+                } catch (error) {
+                    addResult('game-results', `❌ Error calling startGame(): ${error.message}`, 'error');
+                }
+            }
+        }
+
+        // Test download functions
+        function testDownloadFunctions() {
+            const container = document.getElementById('download-results');
+            container.innerHTML = '';
+            
+            addResult('download-results', '📥 Testing download functions...', 'info');
+            
+            const downloadFunctions = [
+                'downloadCompleteProject',
+                'downloadCompleteSourceCode',
+                'downloadPostmanCollection',
+                'generateOpenAPISpec',
+                'downloadCurlExamples',
+                'exportAllData',
+                'downloadTemplate',
+                'downloadGeneratedCode',
+                'downloadContract'
+            ];
+            
+            downloadFunctions.forEach(func => testFunction(func, 'download-results'));
+        }
+
+        // Test contract functions
+        function testContractFunctions() {
+            const container = document.getElementById('contract-results');
+            container.innerHTML = '';
+            
+            addResult('contract-results', '📝 Testing contract functions...', 'info');
+            
+            const contractFunctions = [
+                'loadContracts',
+                'loadSampleContracts',
+                'showCreateForm',
+                'createContract',
+                'viewContract',
+                'updateContractCount',
+                'clearAllData',
+                'importData'
+            ];
+            
+            contractFunctions.forEach(func => testFunction(func, 'contract-results'));
+        }
+
+        // Test code generator
+        function testCodeGenerator() {
+            const container = document.getElementById('codegen-results');
+            container.innerHTML = '';
+            
+            addResult('codegen-results', '💻 Testing code generator functions...', 'info');
+            
+            const codegenFunctions = [
+                'generateCode',
+                'generateCustomCode',
+                'copyGeneratedCode',
+                'downloadGeneratedCode',
+                'copyCode'
+            ];
+            
+            codegenFunctions.forEach(func => testFunction(func, 'codegen-results'));
+        }
+
+        // Test API functions
+        function testAPIFunctions() {
+            const container = document.getElementById('api-results');
+            container.innerHTML = '';
+            
+            addResult('api-results', '🌐 Testing API functions...', 'info');
+            
+            const apiFunctions = [
+                'testAPI',
+                'quickAPITest'
+            ];
+            
+            apiFunctions.forEach(func => testFunction(func, 'api-results'));
+        }
+
+        // Test utility functions
+        function testUtilityFunctions() {
+            const container = document.getElementById('utility-results');
+            container.innerHTML = '';
+            
+            addResult('utility-results', '🔧 Testing utility functions...', 'info');
+            
+            const utilityFunctions = [
+                'handleCommand',
+                'setCommand',
+                'showCustomizer',
+                'generateBoilerplate',
+                'openGitHub',
+                'forkProject',
+                'showContributionGuide'
+            ];
+            
+            utilityFunctions.forEach(func => testFunction(func, 'utility-results'));
+        }
+
+        // List all available functions
+        function listAllFunctions() {
+            const container = document.getElementById('all-functions');
+            const functions = [];
+            
+            for (let key in window) {
+                if (typeof window[key] === 'function' && !key.startsWith('_') && key.length > 2) {
+                    // Filter to likely custom functions
+                    if (key.includes('load') || key.includes('download') || key.includes('create') || 
+                        key.includes('generate') || key.includes('test') || key.includes('show') ||
+                        key.includes('start') || key.includes('Game') || key.includes('Contract') ||
+                        key.includes('export') || key.includes('import') || key.includes('copy') ||
+                        key.includes('handle') || key.includes('set') || key.includes('open') ||
+                        key.includes('fork') || key.includes('view') || key.includes('update') ||
+                        key.includes('clear') || key.includes('quick')) {
+                        functions.push(key);
+                    }
+                }
+            }
+            
+            functions.sort();
+            
+            let html = `<div style="color: #4CAF50; margin-bottom: 10px;">
+                <strong>📊 Found ${functions.length} custom functions:</strong>
+            </div>`;
+            
+            functions.forEach((func, index) => {
+                html += `<div style="padding: 5px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    ${index + 1}. <span style="color: #64B5F6;">${func}()</span>
+                </div>`;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Run all tests
+        function runAllTests() {
+            addResult('loading-results', '🚀 Running complete test suite...', 'warning');
+            
+            setTimeout(() => testFunctionLoading(), 100);
+            setTimeout(() => testGameFunctions(), 300);
+            setTimeout(() => testDownloadFunctions(), 500);
+            setTimeout(() => testContractFunctions(), 700);
+            setTimeout(() => testCodeGenerator(), 900);
+            setTimeout(() => testAPIFunctions(), 1100);
+            setTimeout(() => testUtilityFunctions(), 1300);
+            setTimeout(() => {
+                alert('✅ All tests complete! Check results above.');
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

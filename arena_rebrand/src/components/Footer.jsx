@@ -16,10 +16,14 @@ export default function Footer() {
       <div className="section-container py-12">
         {/* Top Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          {/* Brand */}
+          {/* Brand with Logo */}
           <div>
             <div className="flex items-center space-x-3 mb-4">
-              <span className="text-3xl">🏟️</span>
+              <img 
+                src="/assets/barodatek-logo.png" 
+                alt="BarodaTek Llama" 
+                className="w-10 h-10"
+              />
               <span className="text-xl font-heading font-black glow-text-red">
                 BARODATEK ARENA
               </span>

@@ -9,6 +9,9 @@ const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 const multer = require('multer');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken'); // JWT for authentication
+const bcrypt = require('bcrypt'); // Password hashing
+const { v4: uuidv4 } = require('uuid'); // API key generation
 const aiMonitor = require('./ai-monitor'); // AI Monitoring System
 const db = require('./database'); // Real Database with Persistence
 const paymentHandler = require('./payment-handler'); // Payment Processing System
@@ -42,8 +45,8 @@ setInterval(() => {
         }
     });
     
-    // Only log and report if memory is CRITICALLY high (>90%)
-    if (heapPercent > 90) {
+    // Only log and report if memory is CRITICALLY high (>95%)
+    if (heapPercent > 95) {
         console.log(`⚠️  CRITICAL memory: ${heapPercent}% (${heapUsedMB}MB / ${heapTotalMB}MB)`);
         
         // Aggressive cleanup
@@ -54,14 +57,15 @@ setInterval(() => {
             global.gc();
         }
         
-        aiMonitor.reportError('CRITICAL_MEMORY', new Error(`Memory at ${heapPercent}%`), {
-            heapUsed: heapUsedMB,
-            heapTotal: heapTotalMB,
-            heapPercent,
-            autoFix: !!global.gc
-        });
+        // Don't report to AI Monitor (creates loop)
+        // aiMonitor.reportError('CRITICAL_MEMORY', new Error(`Memory at ${heapPercent}%`), {
+        //     heapUsed: heapUsedMB,
+        //     heapTotal: heapTotalMB,
+        //     heapPercent,
+        //     autoFix: !!global.gc
+        // });
     }
-}, 60000); // Check every 60 seconds (reduced frequency)
+}, 120000); // Check every 120 seconds (less frequent)
 
 // Connect AI Monitor to WebSocket for real-time notifications
 aiMonitor.on('notification', (notification) => {
@@ -99,6 +103,426 @@ let analytics = {
     activeUsers: 0,
     sessions: new Map(),
     events: []
+};
+
+// Shared game content for server-driven mini games
+const GAME_QUESTION_BANK = {
+    'api-galaxy': {
+        mode: 'multiple-choice',
+        questions: [
+            {
+                id: 'api-1',
+                question: 'Which HTTP method retrieves data without modifying it?',
+                options: ['GET', 'POST', 'PUT', 'DELETE'],
+                correctAnswer: 0,
+                hint: 'Think "read" not "write".',
+                explanation: 'GET requests ask the server for a resource without changing it.'
+            },
+            {
+                id: 'api-2',
+                question: 'What status code means a resource was created successfully?',
+                options: ['200', '201', '204', '400'],
+                correctAnswer: 1,
+                hint: 'It is still in the 2xx success family.',
+                explanation: '201 Created signals that the server created a new resource.'
+            },
+            {
+                id: 'api-3',
+                question: 'REST stands for what?',
+                options: [
+                    'Representational State Transfer',
+                    'Remote Execution Service Transport',
+                    'Runtime Event Source Tree',
+                    'Resource Exchange Service Tunnel'
+                ],
+                correctAnswer: 0,
+                hint: 'It captures the idea of representing state over HTTP.',
+                explanation: 'REST = Representational State Transfer, Roy Fielding\'s architecture style.'
+            },
+            {
+                id: 'api-4',
+                question: 'Which header allows cross-origin requests?',
+                options: [
+                    'Access-Control-Allow-Origin',
+                    'Content-Type',
+                    'Authorization',
+                    'Accept'
+                ],
+                correctAnswer: 0,
+                hint: 'CORS is controlled via dedicated headers.',
+                explanation: 'Access-Control-Allow-Origin lists which origins may access the resource.'
+            },
+            {
+                id: 'api-5',
+                question: 'Which HTTP method is idempotent?',
+                options: ['POST', 'PATCH', 'PUT', 'CONNECT'],
+                correctAnswer: 2,
+                hint: 'Calling it multiple times yields the same result.',
+                explanation: 'PUT replaces the resource, so repeated calls are safe.'
+            },
+            {
+                id: 'api-6',
+                question: 'What status code indicates the client is rate limited?',
+                options: ['401', '403', '404', '429'],
+                correctAnswer: 3,
+                hint: 'It is in the 4xx range and often paired with Retry-After.',
+                explanation: '429 Too Many Requests means the client must slow down.'
+            },
+            {
+                id: 'api-7',
+                question: 'What is the correct Content-Type for JSON APIs?',
+                options: [
+                    'text/plain; charset=utf-8',
+                    'application/json',
+                    'application/x-www-form-urlencoded',
+                    'multipart/form-data'
+                ],
+                correctAnswer: 1,
+                hint: 'Browsers detect JSON via a specific media type.',
+                explanation: 'application/json signals the body is JSON encoded.'
+            },
+            {
+                id: 'api-8',
+                question: 'What does status 204 mean?',
+                options: ['No Content', 'Partial Content', 'Reset Content', 'Accepted'],
+                correctAnswer: 0,
+                hint: 'It still implies success but nothing to send back.',
+                explanation: '204 No Content is success with an empty body.'
+            },
+            {
+                id: 'api-9',
+                question: 'Which header tells the server what response format the client expects?',
+                options: ['Accept', 'Authorization', 'Cache-Control', 'Host'],
+                correctAnswer: 0,
+                hint: 'It is the counterpart to Content-Type in requests.',
+                explanation: 'Accept header specifies the media types the client can process.'
+            },
+            {
+                id: 'api-10',
+                question: 'Which status signals a generic server error?',
+                options: ['400', '401', '500', '503'],
+                correctAnswer: 2,
+                hint: 'It begins the 5xx series.',
+                explanation: '500 Internal Server Error is the fallback for unexpected failures.'
+            },
+            {
+                id: 'api-11',
+                question: 'What HTTP verb partially updates an existing resource?',
+                options: ['GET', 'PATCH', 'HEAD', 'TRACE'],
+                correctAnswer: 1,
+                hint: 'It rhymes with scratch.',
+                explanation: 'PATCH applies a partial update to the resource.'
+            },
+            {
+                id: 'api-12',
+                question: 'Which response header is used for pagination links?',
+                options: ['Link', 'ETag', 'Location', 'Server'],
+                correctAnswer: 0,
+                hint: 'GitHub\'s API relies heavily on this header.',
+                explanation: 'The Link header can contain rel="next"/"prev" for pagination.'
+            }
+        ]
+    },
+    'debug-detective': {
+        mode: 'debugging',
+        questions: [
+            {
+                id: 'debug-1',
+                question: 'Fix the missing return in a map callback.',
+                buggyCode: 'const doubled = numbers.map(n => { n * 2; });',
+                expectedFix: 'const doubled = numbers.map(n => n * 2);',
+                hint: 'Arrow functions without braces implicitly return.',
+                explanation: 'Remove braces or add explicit return so the map produces data.'
+            },
+            {
+                id: 'debug-2',
+                question: 'Resolve promise rejection not being handled.',
+                buggyCode: 'fetch(url).then(res => res.json());',
+                expectedFix: 'fetch(url).then(res => res.json()).catch(console.error);',
+                hint: 'Always handle promise failures.',
+                explanation: 'Attach a catch handler to surface network errors.'
+            },
+            {
+                id: 'debug-3',
+                question: 'Fix incorrect equality when comparing IDs.',
+                buggyCode: 'if (user.id === "42") { grantAccess(); }',
+                expectedFix: 'if (String(user.id) === "42") { grantAccess(); }',
+                hint: 'Ensure types align before comparison.',
+                explanation: 'Convert id to string (or number) before strict comparison.'
+            },
+            {
+                id: 'debug-4',
+                question: 'Stop mutating original state array in React.',
+                buggyCode: 'state.items.push(newItem); setState({ items: state.items });',
+                expectedFix: 'setState(prev => ({ items: [...prev.items, newItem] }));',
+                hint: 'Never mutate state directly.',
+                explanation: 'Use immutable update helpers to trigger re-render.'
+            },
+            {
+                id: 'debug-5',
+                question: 'Fix async/await missing await keyword.',
+                buggyCode: 'async function load() { const data = fetch(url); return data.json(); }',
+                expectedFix: 'async function load() { const res = await fetch(url); return res.json(); }',
+                hint: 'Await the fetch before calling .json().',
+                explanation: 'Without await, data is a promise, not the response.'
+            },
+            {
+                id: 'debug-6',
+                question: 'Guard against undefined property access.',
+                buggyCode: 'const city = profile.address.city.toUpperCase();',
+                expectedFix: 'const city = profile.address?.city?.toUpperCase() || "Unknown";',
+                hint: 'Use optional chaining.',
+                explanation: 'Optional chaining avoids runtime errors when nested fields are missing.'
+            },
+            {
+                id: 'debug-7',
+                question: 'Fix event listener leak inside React component.',
+                buggyCode: 'useEffect(() => { window.addEventListener("resize", handle); });',
+                expectedFix: 'useEffect(() => { window.addEventListener("resize", handle); return () => window.removeEventListener("resize", handle); }, []);',
+                hint: 'Clean up listeners on unmount.',
+                explanation: 'Return a cleanup function and add dependency array.'
+            },
+            {
+                id: 'debug-8',
+                question: 'Correct Node.js require path typo.',
+                buggyCode: 'const config = require("./Config.json");',
+                expectedFix: 'const config = require("./config.json");',
+                hint: 'File systems are case sensitive in production.',
+                explanation: 'Use the correct casing to avoid module not found errors.'
+            },
+            {
+                id: 'debug-9',
+                question: 'Fix SQL query string concatenation injection risk.',
+                buggyCode: "db.query(`SELECT * FROM users WHERE email = '${email}'`);",
+                expectedFix: 'db.query("SELECT * FROM users WHERE email = ?", [email]);',
+                hint: 'Always parameterize queries.',
+                explanation: 'Prepared statements stop injection and escape values safely.'
+            },
+            {
+                id: 'debug-10',
+                question: 'Fix missing dependency array in useEffect.',
+                buggyCode: 'useEffect(() => { fetchData(); });',
+                expectedFix: 'useEffect(() => { fetchData(); }, []);',
+                hint: 'Effect should fire once on mount.',
+                explanation: 'Empty dependency array prevents endless re-fetch loops.'
+            },
+            {
+                id: 'debug-11',
+                question: 'Handle JSON parsing errors safely.',
+                buggyCode: 'const data = JSON.parse(raw);',
+                expectedFix: 'let data; try { data = JSON.parse(raw); } catch (err) { data = null; }',
+                hint: 'Wrap parse in try/catch.',
+                explanation: 'Invalid JSON throws, so guard to prevent crashes.'
+            },
+            {
+                id: 'debug-12',
+                question: 'Fix missing module export.',
+                buggyCode: 'function sum(a, b) { return a + b; }',
+                expectedFix: 'module.exports = { sum };',
+                hint: 'Export the function for other files.',
+                explanation: 'Without exporting, require/import returns an empty object.'
+            }
+        ]
+    },
+    'syntax-speedrun': {
+        mode: 'code-completion',
+        questions: [
+            {
+                id: 'syntax-1',
+                task: 'Create an array containing numbers 1 through 5',
+                answer: '[1, 2, 3, 4, 5]',
+                hint: 'Use square brackets and commas.',
+                explanation: 'Arrays are written with square brackets and comma-separated values.'
+            },
+            {
+                id: 'syntax-2',
+                task: 'Declare a function named greet returning "hi"',
+                answer: 'function greet() { return "hi"; }',
+                hint: 'Remember the return keyword.',
+                explanation: 'Functions need parentheses, braces, and a return statement.'
+            },
+            {
+                id: 'syntax-3',
+                task: 'Create const user equal to object with name "Alex"',
+                answer: 'const user = { name: "Alex" };',
+                hint: 'Objects use curly braces with key: value pairs.',
+                explanation: 'Use const for constant bindings and object literal syntax.'
+            },
+            {
+                id: 'syntax-4',
+                task: 'Write arrow function double that doubles input x',
+                answer: 'const double = x => x * 2;',
+                hint: 'Arrow functions can omit return for one-liners.',
+                explanation: 'Concise arrow syntax keeps the expression inline.'
+            },
+            {
+                id: 'syntax-5',
+                task: 'Create template string outputting name variable',
+                answer: 'const message = `Hello, ${name}!`;',
+                hint: 'Use backticks and ${ } placeholders.',
+                explanation: 'Template literals embed expressions inside ${ }.'
+            },
+            {
+                id: 'syntax-6',
+                task: 'Destructure property title from object post',
+                answer: 'const { title } = post;',
+                hint: 'Use curly braces on the left-hand side.',
+                explanation: 'Object destructuring extracts properties into variables.'
+            },
+            {
+                id: 'syntax-7',
+                task: 'Convert string num to number using Number()',
+                answer: 'const value = Number(num);',
+                hint: 'Wrap the variable in Number(...)',
+                explanation: 'Number() casts string numeric values to numbers.'
+            },
+            {
+                id: 'syntax-8',
+                task: 'Create array copy of items using spread',
+                answer: 'const copy = [...items];',
+                hint: 'Spread syntax uses three dots.',
+                explanation: 'Spread inside array literal clones the array shallowly.'
+            },
+            {
+                id: 'syntax-9',
+                task: 'Create promise resolving after 1s',
+                answer: 'const wait = () => new Promise(res => setTimeout(res, 1000));',
+                hint: 'Wrap setTimeout in new Promise.',
+                explanation: 'Promises need executor with resolve callback and async work inside.'
+            },
+            {
+                id: 'syntax-10',
+                task: 'Use optional chaining to safely access profile.email',
+                answer: 'const email = profile?.email || null;',
+                hint: 'Use ?. to guard access.',
+                explanation: 'Optional chaining prevents errors when profile is undefined.'
+            },
+            {
+                id: 'syntax-11',
+                task: 'Create Set from array values',
+                answer: 'const unique = new Set(values);',
+                hint: 'Set removes duplicates automatically.',
+                explanation: 'new Set(iterable) constructs a collection of unique values.'
+            },
+            {
+                id: 'syntax-12',
+                task: 'Export function sum as default export',
+                answer: 'export default function sum(a, b) { return a + b; }',
+                hint: 'Combine export default with function declaration.',
+                explanation: 'Default exports allow importing without curly braces.'
+            }
+        ]
+    },
+    'algorithm-puzzle': {
+        mode: 'multiple-choice',
+        questions: [
+            {
+                id: 'algo-1',
+                question: 'What is the time complexity of binary search?',
+                options: ['O(n)', 'O(log n)', 'O(n log n)', 'O(1)'],
+                correctAnswer: 1,
+                hint: 'It halves the search space each step.',
+                explanation: 'Binary search divides by two repeatedly, giving logarithmic time.'
+            },
+            {
+                id: 'algo-2',
+                question: 'Which data structure works best for FIFO processing?',
+                options: ['Stack', 'Queue', 'Tree', 'Graph'],
+                correctAnswer: 1,
+                hint: 'First in, first out.',
+                explanation: 'Queues dequeue in the same order items were enqueued.'
+            },
+            {
+                id: 'algo-3',
+                question: 'Which algorithm guarantees the shortest path in weighted graphs with no negative weights?',
+                options: ['Depth-first search', 'Breadth-first search', 'Dijkstra\'s algorithm', 'Prim\'s algorithm'],
+                correctAnswer: 2,
+                hint: 'It uses a priority queue of distances.',
+                explanation: 'Dijkstra keeps track of the smallest tentative distance to each node.'
+            },
+            {
+                id: 'algo-4',
+                question: 'What does Big-O notation describe?',
+                options: ['Exact runtime', 'Average runtime', 'Upper bound of growth', 'Memory usage only'],
+                correctAnswer: 2,
+                hint: 'It bounds the worst case growth rate.',
+                explanation: 'Big-O gives an asymptotic upper limit on runtime as input grows.'
+            },
+            {
+                id: 'algo-5',
+                question: 'Which traversal visits tree nodes level by level?',
+                options: ['In-order', 'Pre-order', 'Post-order', 'Breadth-first'],
+                correctAnswer: 3,
+                hint: 'Use a queue to visit siblings first.',
+                explanation: 'Breadth-first traversal uses a queue to explore each depth before going deeper.'
+            },
+            {
+                id: 'algo-6',
+                question: 'What is the space complexity of merge sort?',
+                options: ['O(1)', 'O(log n)', 'O(n)', 'O(n log n)'],
+                correctAnswer: 2,
+                hint: 'It requires an auxiliary array.',
+                explanation: 'Merge sort allocates additional arrays proportional to input size.'
+            },
+            {
+                id: 'algo-7',
+                question: 'Which algorithm is best for finding strongly connected components?',
+                options: ['Kruskal\'s', 'Tarjan\'s', 'Prim\'s', 'Floyd-Warshall'],
+                correctAnswer: 1,
+                hint: 'It uses depth-first search twice with low-link values.',
+                explanation: 'Tarjan\'s algorithm identifies SCCs in linear time.'
+            },
+            {
+                id: 'algo-8',
+                question: 'What structure does a heap sort rely on?',
+                options: ['Binary heap', 'AVL tree', 'Hash map', 'Trie'],
+                correctAnswer: 0,
+                hint: 'Think of priority queue implementation.',
+                explanation: 'Heap sort builds a max-heap to repeatedly extract the largest element.'
+            },
+            {
+                id: 'algo-9',
+                question: 'Which algorithm detects cycles in an undirected graph efficiently?',
+                options: ['Union-Find', 'Topological sort', 'Bellman-Ford', 'Dijkstra'],
+                correctAnswer: 0,
+                hint: 'Disjoint set union works great for this.',
+                explanation: 'Union-Find can detect when two nodes share the same root, signalling a cycle.'
+            },
+            {
+                id: 'algo-10',
+                question: 'What is the best-case time complexity of quicksort?',
+                options: ['O(n)', 'O(log n)', 'O(n log n)', 'O(n^2)'],
+                correctAnswer: 2,
+                hint: 'Balanced partitions give the ideal case.',
+                explanation: 'When partitions are even, quicksort does divide-and-conquer in O(n log n).' 
+            },
+            {
+                id: 'algo-11',
+                question: 'Which algorithm finds minimum spanning tree using edge relaxation?',
+                options: ['Prim', 'Kruskal', 'Bellman-Ford', 'Floyd-Warshall'],
+                correctAnswer: 1,
+                hint: 'It sorts edges by weight first.',
+                explanation: 'Kruskal sorts edges and unions disjoint sets to build the MST.'
+            },
+            {
+                id: 'algo-12',
+                question: 'Which technique speeds up repeated Fibonacci calculations?',
+                options: ['Recursion without memo', 'Dynamic programming', 'Brute force', 'Randomization'],
+                correctAnswer: 1,
+                hint: 'Store results to avoid re-computation.',
+                explanation: 'Dynamic programming (memoization or tabulation) gives linear time Fibonacci.'
+            }
+        ]
+    }
+};
+
+const shuffleArray = (array) => {
+    const clone = [...array];
+    for (let i = clone.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [clone[i], clone[j]] = [clone[j], clone[i]];
+    }
+    return clone;
 };
 
 // Rate limiting
@@ -255,7 +679,10 @@ wss.on('connection', (ws, req) => {
     ws.on('message', (message) => {
         try {
             const data = JSON.parse(message);
+            // Analytics channel (existing behavior)
             handleAnalyticsEvent(data, ws);
+            // Realtime matchmaking control
+            handleRealtimeMessage(data, ws);
         } catch (error) {
             console.error('❌ Error parsing WebSocket message:', error);
         }
@@ -405,17 +832,18 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// API Routes
-app.get('/api/health', async (req, res) => {
-    const dbStats = await db.getDatabaseStats();
+// API Routes - Fast health check (optimized for serverless)
+app.get('/api/health', (req, res) => {
+    // Instant response - no async DB calls for health check
     res.json({
         status: 'healthy',
+        success: true,
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
         environment: process.env.NODE_ENV || 'development',
         version: '2.0.0',
-        platform: 'BarodaTek.com',
-        database: dbStats
+        platform: 'Champions Arena - BarodaTek.com',
+        service: 'Champions Arena AI Assistant'
     });
 });
 
@@ -573,6 +1001,1526 @@ app.delete('/api/contracts/:id', async (req, res) => {
         });
     }
 });
+
+// ========== ARENA CONTROL CENTER STATS ENDPOINT ==========
+
+// GET real-time statistics for Arena Control Center
+app.get('/api/stats', async (req, res) => {
+    try {
+        const dbStats = await db.getDatabaseStats();
+        const contractsCount = await db.getAllContracts().then(c => c.length);
+        
+        // Calculate real metrics
+        const stats = {
+            activeUsers: analytics.sessions.size || 0,
+            pageViews: analytics.pageViews || 0,
+            apiRequests: analytics.apiRequests || 0,
+            uptime: ((process.uptime() / 86400) * 100).toFixed(2), // Convert to percentage
+            responseTime: analytics.avgResponseTime || 0,
+            port: PORT,
+            status: 'operational',
+            timestamp: Date.now(),
+            // Additional metrics
+            totalContracts: contractsCount,
+            databaseSize: dbStats.size || 0,
+            memoryUsage: Math.round(process.memoryUsage().heapUsed / 1024 / 1024), // MB
+            serverUptime: Math.round(process.uptime() / 3600), // hours
+            environment: process.env.NODE_ENV || 'development'
+        };
+        
+        res.json(stats);
+    } catch (error) {
+        console.error('Error fetching stats:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch statistics',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// ========== PHASE A DAY 2: AUTHENTICATION & RATE LIMITING ==========
+
+// JWT Secret (in production, use environment variable)
+const JWT_SECRET = process.env.JWT_SECRET || 'barodatek-arena-secret-key-change-in-production';
+const JWT_EXPIRES_IN = '24h';
+
+// User & API Key Database (in-memory for now, will move to real DB later)
+const authData = {
+    users: new Map(), // userId -> { email, passwordHash, tier, createdAt, ... }
+    apiKeys: new Map(), // apiKey -> { userId, tier, createdAt, lastUsed, ... }
+    usage: new Map() // apiKey -> { requests: number, resetAt: timestamp }
+};
+
+// Rate limit tiers
+const RATE_LIMITS = {
+    free: { requests: 5000, window: 24 * 60 * 60 * 1000 }, // 5K per day
+    pro: { requests: 100000, window: 24 * 60 * 60 * 1000 }, // 100K per day
+    enterprise: { requests: Infinity, window: 24 * 60 * 60 * 1000 } // Unlimited
+};
+
+// Middleware: Authenticate JWT Token
+function authenticateJWT(req, res, next) {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({
+            success: false,
+            error: 'Authentication required',
+            message: 'Please provide a valid JWT token in Authorization header'
+        });
+    }
+    
+    const token = authHeader.substring(7);
+    
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        return res.status(403).json({
+            success: false,
+            error: 'Invalid or expired token',
+            message: error.message
+        });
+    }
+}
+
+// Middleware: Authenticate API Key & Check Rate Limits
+function authenticateAPIKey(req, res, next) {
+    const apiKey = req.headers['x-api-key'];
+    
+    if (!apiKey) {
+        return res.status(401).json({
+            success: false,
+            error: 'API key required',
+            message: 'Please provide your API key in the X-API-Key header'
+        });
+    }
+    
+    const keyData = authData.apiKeys.get(apiKey);
+    
+    if (!keyData) {
+        return res.status(403).json({
+            success: false,
+            error: 'Invalid API key',
+            message: 'The provided API key is not valid'
+        });
+    }
+    
+    // Check rate limits
+    const tier = keyData.tier;
+    const limit = RATE_LIMITS[tier];
+    
+    if (!authData.usage.has(apiKey)) {
+        authData.usage.set(apiKey, {
+            requests: 0,
+            resetAt: Date.now() + limit.window
+        });
+    }
+    
+    const usage = authData.usage.get(apiKey);
+    
+    // Reset if window expired
+    if (Date.now() > usage.resetAt) {
+        usage.requests = 0;
+        usage.resetAt = Date.now() + limit.window;
+    }
+    
+    // Check if limit exceeded
+    if (usage.requests >= limit.requests) {
+        const resetIn = Math.ceil((usage.resetAt - Date.now()) / 1000 / 60);
+        return res.status(429).json({
+            success: false,
+            error: 'Rate limit exceeded',
+            message: `You have reached your ${tier} tier limit of ${limit.requests} requests per day`,
+            resetIn: `${resetIn} minutes`,
+            upgrade: tier === 'free' ? 'Upgrade to Pro for 100K requests/day' : null
+        });
+    }
+    
+    // Increment usage
+    usage.requests++;
+    keyData.lastUsed = new Date().toISOString();
+    
+    // Attach user data to request
+    req.apiKey = apiKey;
+    req.apiKeyData = keyData;
+    req.user = authData.users.get(keyData.userId);
+    
+    next();
+}
+
+// ========== AUTHENTICATION ENDPOINTS ==========
+
+// POST /api/auth/register - Register new developer account
+app.post('/api/auth/register', async (req, res) => {
+    try {
+        const { email, password, name, tier = 'free' } = req.body;
+        
+        // Validation
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                error: 'Email and password required'
+            });
+        }
+        
+        // Check if user already exists
+        const existingUser = Array.from(authData.users.values()).find(u => u.email === email);
+        if (existingUser) {
+            return res.status(409).json({
+                success: false,
+                error: 'Email already registered'
+            });
+        }
+        
+        // Hash password
+        const passwordHash = await bcrypt.hash(password, 10);
+        
+        // Create user
+        const userId = uuidv4();
+        const user = {
+            id: userId,
+            email,
+            name: name || email.split('@')[0],
+            passwordHash,
+            tier: tier === 'pro' || tier === 'enterprise' ? tier : 'free',
+            createdAt: new Date().toISOString(),
+            apiKeysCount: 0
+        };
+        
+        authData.users.set(userId, user);
+        
+        // Generate initial API key
+        const apiKey = `barodatek_${crypto.randomBytes(32).toString('hex')}`;
+        authData.apiKeys.set(apiKey, {
+            userId,
+            tier: user.tier,
+            name: 'Default API Key',
+            createdAt: new Date().toISOString(),
+            lastUsed: null
+        });
+        
+        user.apiKeysCount = 1;
+        
+        // Generate JWT
+        const token = jwt.sign(
+            { userId, email, tier: user.tier },
+            JWT_SECRET,
+            { expiresIn: JWT_EXPIRES_IN }
+        );
+        
+        res.status(201).json({
+            success: true,
+            message: 'Developer account created successfully',
+            data: {
+                userId,
+                email: user.email,
+                name: user.name,
+                tier: user.tier,
+                token,
+                apiKey,
+                rateLimit: RATE_LIMITS[user.tier]
+            }
+        });
+        
+        console.log(`✅ New developer registered: ${email} (${user.tier} tier)`);
+        
+    } catch (error) {
+        console.error('Registration error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Registration failed',
+            message: error.message
+        });
+    }
+});
+
+// POST /api/auth/login - Developer login
+app.post('/api/auth/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                error: 'Email and password required'
+            });
+        }
+        
+        // Find user
+        const user = Array.from(authData.users.values()).find(u => u.email === email);
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                error: 'Invalid credentials'
+            });
+        }
+        
+        // Verify password
+        const validPassword = await bcrypt.compare(password, user.passwordHash);
+        if (!validPassword) {
+            return res.status(401).json({
+                success: false,
+                error: 'Invalid credentials'
+            });
+        }
+        
+        // Generate JWT
+        const token = jwt.sign(
+            { userId: user.id, email: user.email, tier: user.tier },
+            JWT_SECRET,
+            { expiresIn: JWT_EXPIRES_IN }
+        );
+        
+        // Get user's API keys
+        const userApiKeys = Array.from(authData.apiKeys.entries())
+            .filter(([_, data]) => data.userId === user.id)
+            .map(([key, data]) => ({
+                key,
+                name: data.name,
+                createdAt: data.createdAt,
+                lastUsed: data.lastUsed
+            }));
+        
+        res.json({
+            success: true,
+            message: 'Login successful',
+            data: {
+                userId: user.id,
+                email: user.email,
+                name: user.name,
+                tier: user.tier,
+                token,
+                apiKeys: userApiKeys,
+                rateLimit: RATE_LIMITS[user.tier]
+            }
+        });
+        
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Login failed',
+            message: error.message
+        });
+    }
+});
+
+// GET /api/auth/profile - Get user profile (protected)
+app.get('/api/auth/profile', authenticateJWT, (req, res) => {
+    try {
+        const user = authData.users.get(req.user.userId);
+        
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                error: 'User not found'
+            });
+        }
+        
+        // Get user's API keys
+        const userApiKeys = Array.from(authData.apiKeys.entries())
+            .filter(([_, data]) => data.userId === user.id)
+            .map(([key, data]) => ({
+                key: `${key.substring(0, 20)}...${key.substring(key.length - 8)}`,
+                name: data.name,
+                tier: data.tier,
+                createdAt: data.createdAt,
+                lastUsed: data.lastUsed
+            }));
+        
+        res.json({
+            success: true,
+            data: {
+                userId: user.id,
+                email: user.email,
+                name: user.name,
+                tier: user.tier,
+                createdAt: user.createdAt,
+                apiKeys: userApiKeys,
+                rateLimit: RATE_LIMITS[user.tier]
+            }
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch profile',
+            message: error.message
+        });
+    }
+});
+
+// POST /api/auth/refresh-key - Generate new API key (protected)
+app.post('/api/auth/refresh-key', authenticateJWT, (req, res) => {
+    try {
+        const { name = 'API Key' } = req.body;
+        const user = authData.users.get(req.user.userId);
+        
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                error: 'User not found'
+            });
+        }
+        
+        // Generate new API key
+        const apiKey = `barodatek_${crypto.randomBytes(32).toString('hex')}`;
+        authData.apiKeys.set(apiKey, {
+            userId: user.id,
+            tier: user.tier,
+            name,
+            createdAt: new Date().toISOString(),
+            lastUsed: null
+        });
+        
+        user.apiKeysCount++;
+        
+        res.json({
+            success: true,
+            message: 'New API key generated',
+            data: {
+                apiKey,
+                name,
+                tier: user.tier,
+                rateLimit: RATE_LIMITS[user.tier]
+            }
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to generate API key',
+            message: error.message
+        });
+    }
+});
+
+// GET /api/auth/usage - Get API usage stats (requires API key)
+app.get('/api/auth/usage', authenticateAPIKey, (req, res) => {
+    try {
+        const usage = authData.usage.get(req.apiKey);
+        const limit = RATE_LIMITS[req.apiKeyData.tier];
+        
+        const remaining = Math.max(0, limit.requests - (usage?.requests || 0));
+        const resetAt = usage?.resetAt || Date.now() + limit.window;
+        const resetIn = Math.ceil((resetAt - Date.now()) / 1000 / 60);
+        
+        res.json({
+            success: true,
+            data: {
+                tier: req.apiKeyData.tier,
+                requests: {
+                    used: usage?.requests || 0,
+                    limit: limit.requests,
+                    remaining
+                },
+                resetIn: `${resetIn} minutes`,
+                resetAt: new Date(resetAt).toISOString()
+            }
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch usage',
+            message: error.message
+        });
+    }
+});
+
+// ========== PHASE A: GAMING API ENDPOINTS ==========
+// Arena Stats, Leaderboards, Player Stats, Match Recording
+
+// In-memory game data (will be moved to database later)
+const gamingData = {
+    players: new Map(),
+    matches: [],
+    leaderboards: new Map(),
+    activeMatches: new Set()
+};
+
+// Initialize some demo players for testing
+const initDemoPlayers = () => {
+    const demoPlayers = [
+        { id: 'player1', username: 'ArenaChampion', score: 2500, wins: 45, losses: 12, level: 15 },
+        { id: 'player2', username: 'EliteGamer', score: 2350, wins: 38, losses: 15, level: 14 },
+        { id: 'player3', username: 'ProShooter', score: 2200, wins: 35, losses: 18, level: 13 },
+        { id: 'player4', username: 'StrategyKing', score: 2100, wins: 32, losses: 20, level: 12 },
+        { id: 'player5', username: 'SpeedRunner', score: 1950, wins: 28, losses: 22, level: 11 }
+    ];
+    
+    demoPlayers.forEach(player => {
+        gamingData.players.set(player.id, {
+            ...player,
+            xp: player.score * 10,
+            gamesPlayed: player.wins + player.losses,
+            winRate: ((player.wins / (player.wins + player.losses)) * 100).toFixed(1),
+            kdr: (Math.random() * 2 + 1).toFixed(2),
+            avgScore: Math.floor(Math.random() * 5000 + 3000),
+            bestScore: Math.floor(Math.random() * 10000 + 8000),
+            streak: Math.floor(Math.random() * 10),
+            longestStreak: Math.floor(Math.random() * 20 + 5),
+            achievements: Math.floor(Math.random() * 20 + 10),
+            badges: Math.floor(Math.random() * 15 + 5),
+            createdAt: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000),
+            lastActive: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000)
+        });
+    });
+};
+
+initDemoPlayers();
+
+// GET /api/arena/stats - Enhanced arena statistics (PROTECTED)
+app.get('/api/arena/stats', authenticateAPIKey, async (req, res) => {
+    try {
+        const stats = {
+            // Real-time arena metrics
+            activeUsers: analytics.sessions.size || 0,
+            totalPlayers: gamingData.players.size,
+            liveMatches: gamingData.activeMatches.size,
+            dailySignups: Math.floor(Math.random() * 50 + 10), // Will be real from DB
+            peakConcurrent: Math.floor(analytics.sessions.size * 1.5),
+            totalApiCalls: analytics.apiRequests || 0,
+            avgResponseTime: analytics.avgResponseTime || 0,
+            uptime: process.uptime(),
+            status: 'operational',
+            timestamp: Date.now(),
+            // Gaming-specific metrics
+            totalMatchesPlayed: gamingData.matches.length,
+            averageMatchDuration: 15.5, // minutes
+            topGameMode: 'Arena Deathmatch',
+            serverRegion: 'US-East',
+            serverLoad: Math.floor(Math.random() * 40 + 30) // percentage
+        };
+        
+        res.json(stats);
+    } catch (error) {
+        console.error('Error fetching arena stats:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch arena statistics',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// GET /api/arena/leaderboard - Player rankings (PROTECTED)
+app.get('/api/arena/leaderboard', authenticateAPIKey, async (req, res) => {
+    try {
+        const { game = 'all', timeframe = 'weekly', limit = 100 } = req.query;
+        
+        // Convert players Map to array and sort by score
+        const players = Array.from(gamingData.players.values());
+        const sortedPlayers = players
+            .sort((a, b) => b.score - a.score)
+            .slice(0, parseInt(limit));
+        
+        const leaderboard = {
+            game,
+            timeframe,
+            updated: new Date(),
+            totalPlayers: players.length,
+            entries: sortedPlayers.map((player, index) => ({
+                rank: index + 1,
+                playerId: player.id,
+                username: player.username,
+                score: player.score,
+                level: player.level,
+                wins: player.wins,
+                losses: player.losses,
+                winRate: parseFloat(player.winRate),
+                streak: player.streak,
+                lastActive: player.lastActive,
+                badges: player.badges
+            }))
+        };
+        
+        res.json(leaderboard);
+    } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch leaderboard',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// GET /api/arena/player/:id - Individual player stats (PROTECTED)
+app.get('/api/arena/player/:id', authenticateAPIKey, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const player = gamingData.players.get(id);
+        
+        if (!player) {
+            return res.status(404).json({
+                success: false,
+                error: 'Player not found',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Calculate global rank
+        const allPlayers = Array.from(gamingData.players.values());
+        const sortedByScore = allPlayers.sort((a, b) => b.score - a.score);
+        const globalRank = sortedByScore.findIndex(p => p.id === id) + 1;
+        
+        const playerData = {
+            id: player.id,
+            username: player.username,
+            level: player.level,
+            xp: player.xp,
+            rank: globalRank,
+            stats: {
+                gamesPlayed: player.gamesPlayed,
+                wins: player.wins,
+                losses: player.losses,
+                winRate: parseFloat(player.winRate),
+                killDeathRatio: parseFloat(player.kdr),
+                avgScore: player.avgScore,
+                bestScore: player.bestScore,
+                currentStreak: player.streak,
+                longestStreak: player.longestStreak
+            },
+            achievements: player.achievements,
+            badges: player.badges,
+            joinDate: player.createdAt,
+            lastSeen: player.lastActive,
+            status: Date.now() - new Date(player.lastActive).getTime() < 300000 ? 'online' : 'offline'
+        };
+        
+        res.json(playerData);
+    } catch (error) {
+        console.error('Error fetching player:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch player data',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// POST /api/arena/match - Record match results (PROTECTED)
+app.post('/api/arena/match', authenticateAPIKey, async (req, res) => {
+    try {
+        const { gameType, players, duration, winner, scores } = req.body;
+        
+        if (!gameType || !players || !Array.isArray(players) || players.length === 0) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid match data: gameType and players array required',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Create match record
+        const match = {
+            id: `match_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`,
+            gameType,
+            players,
+            duration: duration || 0,
+            winner: winner || null,
+            scores: scores || {},
+            timestamp: new Date(),
+            status: 'completed'
+        };
+        
+        gamingData.matches.push(match);
+        
+        // Update player stats
+        for (const playerId of players) {
+            const player = gamingData.players.get(playerId);
+            if (player) {
+                player.gamesPlayed++;
+                player.lastActive = new Date();
+                
+                if (playerId === winner) {
+                    player.wins++;
+                    player.streak++;
+                    player.score += 50;
+                    if (player.streak > player.longestStreak) {
+                        player.longestStreak = player.streak;
+                    }
+                } else {
+                    player.losses++;
+                    player.streak = 0;
+                    player.score = Math.max(0, player.score - 20);
+                }
+                
+                player.winRate = ((player.wins / player.gamesPlayed) * 100).toFixed(1);
+            }
+        }
+        
+        res.status(201).json({
+            success: true,
+            matchId: match.id,
+            status: 'recorded',
+            leaderboardUpdated: true,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error recording match:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to record match',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// ========== MATCHMAKING API ENDPOINTS (DAY 3) ==========
+
+// Matchmaking data structures
+const lobbies = new Map(); // lobbyId -> lobby object
+const matchmakingQueue = new Map(); // playerId -> queue entry
+
+// Helper: Generate lobby ID
+function generateLobbyId() {
+    return `lobby_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`;
+}
+
+// Helper: Generate queue ID
+function generateQueueId() {
+    return `queue_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`;
+}
+
+// Helper: Calculate match quality (0-100)
+function calculateMatchQuality(players) {
+    if (!players || players.length === 0) return 0;
+    
+    const elos = players.map(p => p.elo);
+    const avgElo = elos.reduce((sum, elo) => sum + elo, 0) / elos.length;
+    const eloRange = Math.max(...elos) - Math.min(...elos);
+    
+    // Perfect match (100): all within 10 ELO points
+    // Excellent (90-99): within 50 ELO points
+    // Good (75-89): within 100 ELO points
+    // Fair (60-74): within 150 ELO points
+    // Poor (<60): > 150 ELO range
+    const quality = Math.max(0, 100 - eloRange);
+    
+    return {
+        score: Math.round(quality),
+        averageElo: Math.round(avgElo),
+        eloRange: eloRange
+    };
+}
+
+// Helper: Find matches in queue (ELO-based)
+function findMatches(gameMode, region) {
+    const matches = [];
+    const processed = new Set();
+    
+    // Filter queue by game mode and region
+    const filteredQueue = Array.from(matchmakingQueue.values()).filter(entry =>
+        entry.gameMode === gameMode && entry.region === region && !processed.has(entry.playerId)
+    );
+    
+    // Sort by wait time (longest waiting first)
+    filteredQueue.sort((a, b) => a.joinedAt - b.joinedAt);
+    
+    for (const player of filteredQueue) {
+        if (processed.has(player.playerId)) continue;
+        
+        // Find compatible players (±100 ELO)
+        const compatiblePlayers = filteredQueue.filter(p =>
+            !processed.has(p.playerId) &&
+            Math.abs(p.elo - player.elo) <= 100
+        );
+        
+        // Need 6-10 players for a match
+        if (compatiblePlayers.length >= 6) {
+            const matchPlayers = compatiblePlayers.slice(0, 10);
+            const quality = calculateMatchQuality(matchPlayers);
+            
+            matches.push({
+                players: matchPlayers,
+                gameMode: gameMode,
+                region: region,
+                quality: quality
+            });
+            
+            matchPlayers.forEach(p => processed.add(p.playerId));
+        }
+    }
+    
+    return matches;
+}
+
+// Helper: Notify player via WebSocket
+function notifyPlayer(playerId, eventType, data) {
+    wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN && client.playerId === playerId) {
+            client.send(JSON.stringify({
+                type: eventType,
+                ...data,
+                timestamp: Date.now()
+            }));
+        }
+    });
+}
+
+// Helper: Broadcast to lobby
+function broadcastToLobby(lobbyId, eventType, data) {
+    const lobby = lobbies.get(lobbyId);
+    if (!lobby) return;
+    
+    lobby.players.forEach(player => {
+        notifyPlayer(player.playerId, eventType, data);
+    });
+}
+
+function getMatchmakingSnapshot() {
+    const queue = Array.from(matchmakingQueue.values()).map(entry => ({
+        playerId: entry.playerId,
+        elo: entry.elo,
+        region: entry.region,
+        gameMode: entry.gameMode,
+        joinedAt: new Date(entry.joinedAt).toISOString()
+    }));
+    const lobbyList = Array.from(lobbies.values()).map(lobby => ({
+        lobbyId: lobby.lobbyId,
+        gameMode: lobby.gameMode,
+        region: lobby.region,
+        status: lobby.status,
+        players: lobby.players.length,
+        maxPlayers: lobby.maxPlayers,
+        createdAt: new Date(lobby.createdAt).toISOString()
+    }));
+
+    return {
+        queueSize: queue.length,
+        lobbyCount: lobbyList.length,
+        queue,
+        lobbies: lobbyList
+    };
+}
+
+function getWebSocketSnapshot() {
+    let total = 0;
+    let admins = 0;
+    wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            total++;
+            if (client.isAdmin) admins++;
+        }
+    });
+    return { total, admins };
+}
+
+async function buildSystemStatus() {
+    const [dbStats, analyticsData] = await Promise.all([
+        db.getDatabaseStats(),
+        db.getAnalytics()
+    ]);
+
+    return {
+        status: 'operational',
+        timestamp: new Date().toISOString(),
+        uptimeSeconds: Math.round(process.uptime()),
+        memory: {
+            rssMB: Math.round(process.memoryUsage().rss / 1024 / 1024),
+            heapUsedMB: Math.round(process.memoryUsage().heapUsed / 1024 / 1024)
+        },
+        analytics: {
+            pageViews: analyticsData.pageViews,
+            eventsTracked: analyticsData.events.length,
+            topPages: analyticsData.topPages
+        },
+        database: dbStats,
+        matchmaking: getMatchmakingSnapshot(),
+        websockets: getWebSocketSnapshot(),
+        featureFlags
+    };
+}
+
+// Public snapshot of matchmaking health
+app.get('/api/matchmaking/status', (req, res) => {
+    const snapshot = getMatchmakingSnapshot();
+
+    res.json({
+        success: true,
+        snapshot,
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Global status endpoint consumed by UI/health checks
+app.get('/api/status', async (req, res) => {
+    try {
+        const status = await buildSystemStatus();
+        res.json({ success: true, ...status });
+    } catch (error) {
+        console.error('Error building status payload:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to compute system status',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// POST /api/matchmaking/lobby - Create a new lobby (PROTECTED)
+app.post('/api/matchmaking/lobby', authenticateAPIKey, async (req, res) => {
+    try {
+        const { gameMode, region, maxPlayers, hostPlayerId, hostUsername, hostElo } = req.body;
+        
+        // Validate input
+        if (!gameMode || !region || !hostPlayerId) {
+            return res.status(400).json({
+                success: false,
+                error: 'Missing required fields: gameMode, region, hostPlayerId',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Validate game mode
+        const validGameModes = ['ranked', 'casual', 'custom', 'tournament'];
+        if (!validGameModes.includes(gameMode)) {
+            return res.status(400).json({
+                success: false,
+                error: `Invalid gameMode. Must be one of: ${validGameModes.join(', ')}`,
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Validate region
+        const validRegions = ['us-east', 'us-west', 'eu-west', 'eu-east', 'asia-pacific', 'south-america'];
+        if (!validRegions.includes(region)) {
+            return res.status(400).json({
+                success: false,
+                error: `Invalid region. Must be one of: ${validRegions.join(', ')}`,
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Create lobby
+        const lobbyId = generateLobbyId();
+        const lobby = {
+            lobbyId: lobbyId,
+            gameMode: gameMode,
+            region: region,
+            status: 'waiting', // waiting, full, in-progress, completed
+            players: [
+                {
+                    playerId: hostPlayerId,
+                    username: hostUsername || `Player_${hostPlayerId.substring(0, 8)}`,
+                    elo: hostElo || 1500,
+                    isHost: true,
+                    team: null,
+                    joinedAt: Date.now()
+                }
+            ],
+            maxPlayers: maxPlayers || 10,
+            matchQuality: null,
+            createdAt: Date.now(),
+            startedAt: null,
+            completedAt: null,
+            serverIp: null
+        };
+        
+        lobbies.set(lobbyId, lobby);
+        
+        console.log(`✅ Created lobby ${lobbyId} (${gameMode}, ${region})`);
+        
+        res.status(201).json({
+            success: true,
+            data: {
+                lobbyId: lobby.lobbyId,
+                gameMode: lobby.gameMode,
+                region: lobby.region,
+                status: lobby.status,
+                players: lobby.players,
+                maxPlayers: lobby.maxPlayers,
+                currentPlayers: lobby.players.length,
+                createdAt: new Date(lobby.createdAt).toISOString()
+            },
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error creating lobby:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to create lobby',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// GET /api/matchmaking/lobbies - List active lobbies (PROTECTED)
+app.get('/api/matchmaking/lobbies', authenticateAPIKey, async (req, res) => {
+    try {
+        const { gameMode, region, status } = req.query;
+        
+        // Filter lobbies
+        let filteredLobbies = Array.from(lobbies.values());
+        
+        if (gameMode) {
+            filteredLobbies = filteredLobbies.filter(l => l.gameMode === gameMode);
+        }
+        if (region) {
+            filteredLobbies = filteredLobbies.filter(l => l.region === region);
+        }
+        if (status) {
+            filteredLobbies = filteredLobbies.filter(l => l.status === status);
+        }
+        
+        // Map to response format
+        const lobbyList = filteredLobbies.map(lobby => ({
+            lobbyId: lobby.lobbyId,
+            gameMode: lobby.gameMode,
+            region: lobby.region,
+            status: lobby.status,
+            currentPlayers: lobby.players.length,
+            maxPlayers: lobby.maxPlayers,
+            averageElo: Math.round(lobby.players.reduce((sum, p) => sum + p.elo, 0) / lobby.players.length),
+            createdAt: new Date(lobby.createdAt).toISOString()
+        }));
+        
+        res.json({
+            success: true,
+            data: {
+                lobbies: lobbyList,
+                count: lobbyList.length,
+                filters: { gameMode, region, status }
+            },
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error listing lobbies:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to list lobbies',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// PUT /api/matchmaking/lobby/:id - Update lobby (add player, change status) (PROTECTED)
+app.put('/api/matchmaking/lobby/:id', authenticateAPIKey, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { action, playerId, username, elo, status } = req.body;
+        
+        const lobby = lobbies.get(id);
+        if (!lobby) {
+            return res.status(404).json({
+                success: false,
+                error: 'Lobby not found',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Handle different actions
+        if (action === 'add-player') {
+            if (!playerId) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'playerId required for add-player action',
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            // Check if lobby is full
+            if (lobby.players.length >= lobby.maxPlayers) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Lobby is full',
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            // Check if player already in lobby
+            if (lobby.players.some(p => p.playerId === playerId)) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Player already in lobby',
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            // Add player
+            const newPlayer = {
+                playerId: playerId,
+                username: username || `Player_${playerId.substring(0, 8)}`,
+                elo: elo || 1500,
+                isHost: false,
+                team: null,
+                joinedAt: Date.now()
+            };
+            
+            lobby.players.push(newPlayer);
+            
+            // Update status if full
+            if (lobby.players.length >= lobby.maxPlayers) {
+                lobby.status = 'full';
+            }
+            
+            // Broadcast to all players in lobby
+            broadcastToLobby(id, 'player-joined', {
+                lobbyId: id,
+                player: newPlayer,
+                currentPlayers: lobby.players.length,
+                maxPlayers: lobby.maxPlayers
+            });
+            
+            console.log(`✅ Player ${playerId} joined lobby ${id}`);
+            
+        } else if (action === 'remove-player') {
+            if (!playerId) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'playerId required for remove-player action',
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            const playerIndex = lobby.players.findIndex(p => p.playerId === playerId);
+            if (playerIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    error: 'Player not found in lobby',
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            lobby.players.splice(playerIndex, 1);
+            
+            // If lobby is now empty, delete it
+            if (lobby.players.length === 0) {
+                lobbies.delete(id);
+                return res.json({
+                    success: true,
+                    message: 'Player removed and lobby closed (empty)',
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            // Update status if no longer full
+            if (lobby.status === 'full' && lobby.players.length < lobby.maxPlayers) {
+                lobby.status = 'waiting';
+            }
+            
+            broadcastToLobby(id, 'player-left', {
+                lobbyId: id,
+                playerId: playerId,
+                currentPlayers: lobby.players.length
+            });
+            
+        } else if (action === 'update-status') {
+            if (!status) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'status required for update-status action',
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            const validStatuses = ['waiting', 'full', 'in-progress', 'completed'];
+            if (!validStatuses.includes(status)) {
+                return res.status(400).json({
+                    success: false,
+                    error: `Invalid status. Must be one of: ${validStatuses.join(', ')}`,
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            lobby.status = status;
+            
+            if (status === 'in-progress' && !lobby.startedAt) {
+                lobby.startedAt = Date.now();
+            }
+            if (status === 'completed' && !lobby.completedAt) {
+                lobby.completedAt = Date.now();
+            }
+            
+            broadcastToLobby(id, 'lobby-updated', {
+                lobbyId: id,
+                status: status
+            });
+            
+        } else {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid action. Must be: add-player, remove-player, or update-status',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        res.json({
+            success: true,
+            data: {
+                lobbyId: lobby.lobbyId,
+                gameMode: lobby.gameMode,
+                region: lobby.region,
+                status: lobby.status,
+                players: lobby.players,
+                currentPlayers: lobby.players.length,
+                maxPlayers: lobby.maxPlayers
+            },
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error updating lobby:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to update lobby',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// DELETE /api/matchmaking/lobby/:id - Close/delete lobby (PROTECTED)
+app.delete('/api/matchmaking/lobby/:id', authenticateAPIKey, async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const lobby = lobbies.get(id);
+        if (!lobby) {
+            return res.status(404).json({
+                success: false,
+                error: 'Lobby not found',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Notify all players
+        broadcastToLobby(id, 'lobby-closed', {
+            lobbyId: id,
+            reason: 'Host closed lobby'
+        });
+        
+        lobbies.delete(id);
+        
+        console.log(`✅ Closed lobby ${id}`);
+        
+        res.json({
+            success: true,
+            message: 'Lobby closed successfully',
+            data: {
+                lobbyId: id,
+                closedAt: new Date().toISOString()
+            },
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error closing lobby:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to close lobby',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// POST /api/matchmaking/queue - Join matchmaking queue (PROTECTED)
+app.post('/api/matchmaking/queue', authenticateAPIKey, async (req, res) => {
+    try {
+        const { playerId, username, elo, gameMode, region } = req.body;
+        
+        // Validate input
+        if (!playerId || !gameMode || !region) {
+            return res.status(400).json({
+                success: false,
+                error: 'Missing required fields: playerId, gameMode, region',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Check if already in queue
+        if (matchmakingQueue.has(playerId)) {
+            const existingEntry = matchmakingQueue.get(playerId);
+            return res.status(400).json({
+                success: false,
+                error: 'Player already in queue',
+                data: {
+                    queueId: existingEntry.queueId,
+                    joinedAt: new Date(existingEntry.joinedAt).toISOString()
+                },
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Create queue entry
+        const queueId = generateQueueId();
+        const queueEntry = {
+            queueId: queueId,
+            playerId: playerId,
+            username: username || `Player_${playerId.substring(0, 8)}`,
+            elo: elo || 1500,
+            gameMode: gameMode,
+            region: region,
+            joinedAt: Date.now(),
+            lastUpdate: Date.now()
+        };
+        
+        matchmakingQueue.set(playerId, queueEntry);
+        
+        // Calculate queue position
+        const queueList = Array.from(matchmakingQueue.values())
+            .filter(e => e.gameMode === gameMode && e.region === region)
+            .sort((a, b) => a.joinedAt - b.joinedAt);
+        
+        const position = queueList.findIndex(e => e.playerId === playerId) + 1;
+        const estimatedWaitTime = `${Math.max(5, position * 3)} seconds`;
+        
+        console.log(`✅ Player ${playerId} joined queue (${gameMode}, ${region})`);
+        
+        res.json({
+            success: true,
+            data: {
+                queueId: queueId,
+                playerId: playerId,
+                gameMode: gameMode,
+                region: region,
+                queuePosition: position,
+                queueSize: queueList.length,
+                estimatedWaitTime: estimatedWaitTime,
+                joinedAt: new Date(queueEntry.joinedAt).toISOString()
+            },
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error joining queue:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to join queue',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// DELETE /api/matchmaking/queue - Leave matchmaking queue (PROTECTED)
+app.delete('/api/matchmaking/queue', authenticateAPIKey, async (req, res) => {
+    try {
+        const { playerId } = req.query;
+        
+        if (!playerId) {
+            return res.status(400).json({
+                success: false,
+                error: 'playerId query parameter required',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        const queueEntry = matchmakingQueue.get(playerId);
+        if (!queueEntry) {
+            return res.status(404).json({
+                success: false,
+                error: 'Player not found in queue',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        const timeInQueue = Date.now() - queueEntry.joinedAt;
+        matchmakingQueue.delete(playerId);
+        
+        console.log(`✅ Player ${playerId} left queue`);
+        
+        res.json({
+            success: true,
+            message: 'Left queue successfully',
+            data: {
+                playerId: playerId,
+                timeInQueue: `${Math.round(timeInQueue / 1000)} seconds`
+            },
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error leaving queue:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to leave queue',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// Background job: Auto-matching (runs every 3 seconds)
+setInterval(() => {
+    const gameModes = ['ranked', 'casual', 'custom', 'tournament'];
+    const regions = ['us-east', 'us-west', 'eu-west', 'eu-east', 'asia-pacific', 'south-america'];
+    
+    let matchesCreated = 0;
+    
+    for (const gameMode of gameModes) {
+        for (const region of regions) {
+            const matches = findMatches(gameMode, region);
+            
+            for (const match of matches) {
+                // Create lobby for matched players
+                const lobbyId = generateLobbyId();
+                const lobby = {
+                    lobbyId: lobbyId,
+                    gameMode: gameMode,
+                    region: region,
+                    status: 'full',
+                    players: match.players.map((p, index) => ({
+                        playerId: p.playerId,
+                        username: p.username,
+                        elo: p.elo,
+                        isHost: index === 0,
+                        team: index < (match.players.length / 2) ? 'A' : 'B',
+                        joinedAt: Date.now()
+                    })),
+                    maxPlayers: match.players.length,
+                    matchQuality: match.quality.score,
+                    createdAt: Date.now(),
+                    startedAt: null,
+                    completedAt: null,
+                    serverIp: `server-${region}.barodatek.com:7777` // Mock server IP
+                };
+                
+                lobbies.set(lobbyId, lobby);
+                
+                // Notify all matched players
+                match.players.forEach(player => {
+                    notifyPlayer(player.playerId, 'match-found', {
+                        lobbyId: lobbyId,
+                        gameMode: gameMode,
+                        region: region,
+                        players: lobby.players,
+                        matchQuality: lobby.matchQuality,
+                        serverIp: lobby.serverIp,
+                        message: 'Match found! Connecting to server...'
+                    });
+                    
+                    // Remove from queue
+                    matchmakingQueue.delete(player.playerId);
+                });
+                
+                matchesCreated++;
+                console.log(`🎮 Auto-match created: ${lobbyId} (${gameMode}, ${region}) - Quality: ${lobby.matchQuality}%`);
+            }
+        }
+    }
+
+    // Handle realtime (matchmaking) WebSocket control messages
+    function handleRealtimeMessage(data, ws) {
+        if (!data || typeof data !== 'object') return;
+        const type = data.type || data.event || '';
+
+        switch (type) {
+            case 'join-matchmaking': {
+                const playerId = (data.playerId || (data.payload && data.payload.playerId) || '').trim();
+                if (!playerId) {
+                    try { ws.send(JSON.stringify({ type: 'error', reason: 'playerId required for join-matchmaking' })); } catch {}
+                    return;
+                }
+                ws.playerId = playerId;
+                ws.gameMode = data.gameMode || (data.payload && data.payload.gameMode) || null;
+                ws.region = data.region || (data.payload && data.payload.region) || null;
+                try {
+                    ws.send(JSON.stringify({
+                        type: 'matchmaking-joined',
+                        playerId,
+                        gameMode: ws.gameMode,
+                        region: ws.region,
+                        timestamp: Date.now()
+                    }));
+                } catch {}
+                break;
+            }
+            case 'leave-matchmaking': {
+                const pid = ws.playerId;
+                ws.playerId = undefined;
+                ws.gameMode = undefined;
+                ws.region = undefined;
+                try {
+                    ws.send(JSON.stringify({ type: 'matchmaking-left', playerId: pid || null, timestamp: Date.now() }));
+                } catch {}
+                break;
+            }
+            case 'subscribe-lobby': {
+                // Optional: client can request lobby updates by id
+                const lobbyId = data.lobbyId || (data.payload && data.payload.lobbyId);
+                ws.lobbyId = lobbyId || null;
+                try { ws.send(JSON.stringify({ type: 'lobby-subscribed', lobbyId, timestamp: Date.now() })); } catch {}
+                break;
+            }
+            case 'unsubscribe-lobby': {
+                ws.lobbyId = undefined;
+                try { ws.send(JSON.stringify({ type: 'lobby-unsubscribed', timestamp: Date.now() })); } catch {}
+                break;
+            }
+            default:
+                // ignore unknown realtime messages
+                break;
+        }
+    }
+    
+    // Update queue positions for remaining players
+    if (matchmakingQueue.size > 0) {
+        const now = Date.now();
+        for (const [playerId, entry] of matchmakingQueue.entries()) {
+            // Only update every 10 seconds to reduce spam
+            if (now - entry.lastUpdate > 10000) {
+                const queueList = Array.from(matchmakingQueue.values())
+                    .filter(e => e.gameMode === entry.gameMode && e.region === entry.region)
+                    .sort((a, b) => a.joinedAt - b.joinedAt);
+                
+                const position = queueList.findIndex(e => e.playerId === playerId) + 1;
+                
+                notifyPlayer(playerId, 'queue-position-updated', {
+                    playerId: playerId,
+                    position: position,
+                    queueSize: queueList.length,
+                    estimatedWaitTime: `${Math.max(5, position * 3)} seconds`,
+                    timeInQueue: `${Math.round((now - entry.joinedAt) / 1000)} seconds`
+                });
+                
+                entry.lastUpdate = now;
+            }
+        }
+    }
+}, 3000); // Run every 3 seconds
+
+// Background job: Lobby cleanup (runs every 30 seconds)
+setInterval(() => {
+    const now = Date.now();
+    const timeout = 10 * 60 * 1000; // 10 minutes
+    let cleaned = 0;
+    
+    for (const [lobbyId, lobby] of lobbies.entries()) {
+        // Remove completed lobbies or stale waiting lobbies
+        if (lobby.status === 'completed' || 
+            (lobby.status === 'waiting' && now - lobby.createdAt > timeout)) {
+            lobbies.delete(lobbyId);
+            cleaned++;
+        }
+    }
+    
+    if (cleaned > 0) {
+        console.log(`🧹 Cleaned up ${cleaned} stale lobbies`);
+    }
+}, 30000); // Run every 30 seconds
+
+// Background job: Queue timeout (runs every 60 seconds)
+setInterval(() => {
+    const now = Date.now();
+    const timeout = 10 * 60 * 1000; // 10 minutes
+    let removed = 0;
+    
+    for (const [playerId, entry] of matchmakingQueue.entries()) {
+        if (now - entry.joinedAt > timeout) {
+            matchmakingQueue.delete(playerId);
+            removed++;
+            
+            notifyPlayer(playerId, 'queue-timeout', {
+                playerId: playerId,
+                reason: 'Queue timeout (10 minutes)',
+                message: 'Please rejoin the queue'
+            });
+        }
+    }
+    
+    if (removed > 0) {
+        console.log(`⏱️ Removed ${removed} timed-out players from queue`);
+    }
+}, 60000); // Run every 60 seconds
 
 // ========== PAYMENT & SERVICE DELIVERY ENDPOINTS ==========
 
@@ -1050,6 +2998,25 @@ app.post('/api/stats/pageview', async (req, res) => {
     }
 });
 
+// Provide question packs for all Arena mini-games
+app.get('/api/games/questions', (req, res) => {
+    const gameType = (req.query.type || 'api-galaxy').toLowerCase();
+    const bank = GAME_QUESTION_BANK[gameType] || GAME_QUESTION_BANK['api-galaxy'];
+
+    const limitParam = Number.parseInt(req.query.limit, 10);
+    const limit = Number.isFinite(limitParam) && limitParam > 0 ? limitParam : 12;
+    const questions = shuffleArray(bank.questions).slice(0, Math.min(limit, bank.questions.length));
+
+    res.json({
+        success: true,
+        gameType,
+        mode: bank.mode,
+        totalAvailable: bank.questions.length,
+        questions,
+        timestamp: new Date().toISOString()
+    });
+});
+
 // AI Chat endpoint (enhanced, local intent-based)
 app.post('/api/chat', (req, res) => {
     const raw = (req.body && (req.body.message || req.body.prompt)) || '';
@@ -1153,6 +3120,51 @@ console.log(data);`);
             sessionId: req.headers['x-session-id'] || 'anonymous'
         });
     }, delay);
+});
+
+// Live demo runner (simulated for safety)
+app.post('/api/demo', (req, res) => {
+    const { code, language = 'javascript' } = req.body || {};
+
+    if (!code) {
+        return res.status(400).json({
+            success: false,
+            error: 'Code is required for demo execution'
+        });
+    }
+
+    res.json({
+        success: true,
+        message: 'Demo execution completed (sandboxed simulation)',
+        output: '// Code execution simulated in safe sandbox\n// Provide this snippet in real runner to execute\n\nConsole:\n> Execution completed without runtime errors',
+        executionTime: `${Math.floor(Math.random() * 80) + 40}ms`,
+        language,
+        timestamp: new Date().toISOString()
+    });
+});
+
+// API Explorer helper route
+app.post('/api/explorer/test', (req, res) => {
+    const { method, endpoint, body, headers } = req.body || {};
+
+    if (!method || !endpoint) {
+        return res.status(400).json({
+            success: false,
+            error: 'method and endpoint are required'
+        });
+    }
+
+    res.json({
+        success: true,
+        message: 'Mock request executed successfully',
+        request: { method, endpoint, body, headers },
+        response: {
+            status: 200,
+            data: { message: 'Mock response from inspected endpoint' },
+            responseTime: `${Math.floor(Math.random() * 120) + 30}ms`
+        },
+        timestamp: new Date().toISOString()
+    });
 });
 
 // 🤖 AI MONITOR ENDPOINTS

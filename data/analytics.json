@@ -1,5 +1,5 @@
 {
-  "pageViews": 7,
+  "pageViews": 53,
   "uniqueVisitors": 0,
   "totalSessions": 0,
   "events": [
@@ -1377,13 +1377,5653 @@
       },
       "source": "barodatek_analytics",
       "timestamp": "2025-10-15T02:16:45.205Z"
+    },
+    {
+      "id": 71,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionId": "barodatek_1760658165871_9yatzu7j3",
+        "timestamp": 1760658616728
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-16T23:50:16.730Z"
+    },
+    {
+      "id": 72,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 471870,
+        "pageViews": 1,
+        "interactions": 35,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3125397,
+          "total": 4337893,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-16T23:50:37.741Z"
+    },
+    {
+      "id": 73,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 531880,
+        "pageViews": 1,
+        "interactions": 35,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3444541,
+          "total": 4387757,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-16T23:51:37.752Z"
+    },
+    {
+      "id": 74,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 591873,
+        "pageViews": 1,
+        "interactions": 35,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3768570,
+          "total": 4700662,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-16T23:52:37.745Z"
+    },
+    {
+      "id": 75,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 651873,
+        "pageViews": 1,
+        "interactions": 35,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4113498,
+          "total": 5014030,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-16T23:53:37.745Z"
+    },
+    {
+      "id": 76,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionId": "barodatek_1760658165871_9yatzu7j3",
+        "timestamp": 1760658962811
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-16T23:56:02.813Z"
+    },
+    {
+      "id": 77,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 831873,
+        "pageViews": 1,
+        "interactions": 35,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3959687,
+          "total": 5018819,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-16T23:56:37.746Z"
+    },
+    {
+      "id": 78,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 891869,
+        "pageViews": 1,
+        "interactions": 35,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4282672,
+          "total": 5334088,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-16T23:57:37.742Z"
+    },
+    {
+      "id": 79,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 951865,
+        "pageViews": 1,
+        "interactions": 35,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3213271,
+          "total": 4600815,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-16T23:58:37.737Z"
+    },
+    {
+      "id": 80,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1011877,
+        "pageViews": 1,
+        "interactions": 35,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3354845,
+          "total": 4655381,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-16T23:59:37.749Z"
+    },
+    {
+      "id": 81,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1071879,
+        "pageViews": 1,
+        "interactions": 35,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3495911,
+          "total": 4710439,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:00:37.751Z"
+    },
+    {
+      "id": 82,
+      "type": "interaction",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": false,
+          "visibilityState": "visible"
+        },
+        "timestamp": 1760659248499,
+        "sessionId": "barodatek_1760658165871_9yatzu7j3",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:00:48.500Z"
+    },
+    {
+      "id": 83,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1082632,
+        "pageViews": 1,
+        "interactions": 36,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3778324,
+          "total": 5083424,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:00:48.504Z"
+    },
+    {
+      "id": 84,
+      "type": "interaction",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760659249031,
+        "sessionId": "barodatek_1760658165871_9yatzu7j3",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:00:49.032Z"
+    },
+    {
+      "id": 85,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1110869,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4087208,
+          "total": 5460312,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:01:16.741Z"
+    },
+    {
+      "id": 86,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1140865,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4247215,
+          "total": 5519163,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:01:46.737Z"
+    },
+    {
+      "id": 87,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1191881,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4434622,
+          "total": 5839738,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:02:37.752Z"
+    },
+    {
+      "id": 88,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1251869,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3079759,
+          "total": 4075743,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:03:37.741Z"
+    },
+    {
+      "id": 89,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1311876,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3237502,
+          "total": 4135166,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:04:37.749Z"
+    },
+    {
+      "id": 90,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1371868,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3390505,
+          "total": 4195081,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:05:37.741Z"
+    },
+    {
+      "id": 91,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1431870,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3587722,
+          "total": 4517634,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:06:37.743Z"
+    },
+    {
+      "id": 92,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1491878,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3743161,
+          "total": 4578537,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:07:37.750Z"
+    },
+    {
+      "id": 93,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1551875,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3899838,
+          "total": 4639934,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:08:37.748Z"
+    },
+    {
+      "id": 94,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1611876,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4057761,
+          "total": 4963969,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:09:37.748Z"
+    },
+    {
+      "id": 95,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1671877,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4216932,
+          "total": 5026352,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:10:37.750Z"
+    },
+    {
+      "id": 96,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1731876,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4426041,
+          "total": 5351373,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:11:37.748Z"
+    },
+    {
+      "id": 97,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1791874,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3649720,
+          "total": 4628312,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:12:37.746Z"
+    },
+    {
+      "id": 98,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1851866,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3812588,
+          "total": 4692180,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:13:37.738Z"
+    },
+    {
+      "id": 99,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1911876,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3977174,
+          "total": 4756542,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:14:37.749Z"
+    },
+    {
+      "id": 100,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 1971875,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4161706,
+          "total": 5083542,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:15:37.747Z"
+    },
+    {
+      "id": 101,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2031878,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4330148,
+          "total": 5148892,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:16:37.750Z"
+    },
+    {
+      "id": 102,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2091870,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4556776,
+          "total": 5476880,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:17:37.743Z"
+    },
+    {
+      "id": 103,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2151867,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4725796,
+          "total": 5543220,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:18:37.739Z"
+    },
+    {
+      "id": 104,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2211867,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4954844,
+          "total": 5872196,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:19:37.739Z"
+    },
+    {
+      "id": 105,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2271873,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 5126300,
+          "total": 5939524,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:20:37.745Z"
+    },
+    {
+      "id": 106,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2331868,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4354538,
+          "total": 5220914,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:21:37.740Z"
+    },
+    {
+      "id": 107,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2391872,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4529168,
+          "total": 5289228,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:22:37.744Z"
+    },
+    {
+      "id": 108,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2451879,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4713658,
+          "total": 5620182,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:23:37.752Z"
+    },
+    {
+      "id": 109,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2511868,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4889867,
+          "total": 5689487,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:24:37.741Z"
+    },
+    {
+      "id": 110,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2571869,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 5117517,
+          "total": 6021429,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:25:37.742Z"
+    },
+    {
+      "id": 111,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2631873,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 5296059,
+          "total": 6091719,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:26:37.745Z"
+    },
+    {
+      "id": 112,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2691876,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 5521507,
+          "total": 6424647,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:27:37.748Z"
+    },
+    {
+      "id": 113,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2751866,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4750792,
+          "total": 5709496,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:28:37.739Z"
+    },
+    {
+      "id": 114,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2811874,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4932991,
+          "total": 5781271,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:29:37.746Z"
+    },
+    {
+      "id": 115,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 2871880,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 5116348,
+          "total": 5853540,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:30:37.752Z"
+    },
+    {
+      "id": 116,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionId": "barodatek_1760658165871_9yatzu7j3",
+        "timestamp": 1760661406545
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:36:46.561Z"
+    },
+    {
+      "id": 117,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 3291874,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4003747,
+          "total": 5350011,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:37:37.745Z"
+    },
+    {
+      "id": 118,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 3351869,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4198233,
+          "total": 5426397,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:38:37.742Z"
+    },
+    {
+      "id": 119,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 3411880,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4410077,
+          "total": 5503277,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:39:37.752Z"
+    },
+    {
+      "id": 120,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionId": "barodatek_1760658165871_9yatzu7j3",
+        "timestamp": 1760661639753
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:40:39.755Z"
+    },
+    {
+      "id": 121,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "sessionDuration": 3531880,
+        "pageViews": 1,
+        "interactions": 37,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4121411,
+          "total": 5212263,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:41:37.752Z"
+    },
+    {
+      "id": 122,
+      "type": "interaction",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": false,
+          "visibilityState": "visible"
+        },
+        "timestamp": 1760661701245,
+        "sessionId": "barodatek_1760658165871_9yatzu7j3",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:41:41.246Z"
+    },
+    {
+      "id": 123,
+      "type": "interaction",
+      "sessionId": "barodatek_1760658165871_9yatzu7j3",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760661702440,
+        "sessionId": "barodatek_1760658165871_9yatzu7j3",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T00:41:42.442Z"
+    },
+    {
+      "id": 124,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721566471_zhnq7os0a",
+      "data": {
+        "sessionId": "barodatek_1760721566471_zhnq7os0a",
+        "timestamp": 1760721566674
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:19:26.676Z"
+    },
+    {
+      "id": 125,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721566471_zhnq7os0a",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "mb-4",
+        "text": "\n                        \n                    ",
+        "details": {
+          "x": 1253,
+          "y": 167,
+          "button": 0
+        },
+        "timestamp": 1760721570128,
+        "sessionId": "barodatek_1760721566471_zhnq7os0a",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:19:30.129Z"
+    },
+    {
+      "id": 126,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760721566471_zhnq7os0a",
+      "data": {
+        "sessionDuration": 30013,
+        "pageViews": 1,
+        "interactions": 1,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4896599,
+          "total": 7429043,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:19:56.486Z"
+    },
+    {
+      "id": 127,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721566471_zhnq7os0a",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 25
+        },
+        "timestamp": 1760721606993,
+        "sessionId": "barodatek_1760721566471_zhnq7os0a",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:20:06.994Z"
+    },
+    {
+      "id": 128,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721566471_zhnq7os0a",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721621884,
+        "sessionId": "barodatek_1760721566471_zhnq7os0a",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:20:21.885Z"
+    },
+    {
+      "id": 129,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721621995_q6v0ggga7",
+      "data": {
+        "sessionId": "barodatek_1760721621995_q6v0ggga7",
+        "timestamp": 1760721622102
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:20:22.104Z"
+    },
+    {
+      "id": 130,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721621995_q6v0ggga7",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721631509,
+        "sessionId": "barodatek_1760721621995_q6v0ggga7",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:20:31.511Z"
+    },
+    {
+      "id": 131,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721631657_0g0bpmfuo",
+      "data": {
+        "sessionId": "barodatek_1760721631657_0g0bpmfuo",
+        "timestamp": 1760721631743
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:20:31.745Z"
+    },
+    {
+      "id": 132,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721631657_0g0bpmfuo",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 25
+        },
+        "timestamp": 1760721635108,
+        "sessionId": "barodatek_1760721631657_0g0bpmfuo",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:20:35.109Z"
+    },
+    {
+      "id": 133,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760721631657_0g0bpmfuo",
+      "data": {
+        "sessionDuration": 30010,
+        "pageViews": 1,
+        "interactions": 1,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4207919,
+          "total": 5445403,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:21:01.669Z"
+    },
+    {
+      "id": 134,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721631657_0g0bpmfuo",
+      "data": {
+        "type": "click",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "x": 1703,
+          "y": 95,
+          "button": 0
+        },
+        "timestamp": 1760721667773,
+        "sessionId": "barodatek_1760721631657_0g0bpmfuo",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:21:07.775Z"
+    },
+    {
+      "id": 135,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721631657_0g0bpmfuo",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721689754,
+        "sessionId": "barodatek_1760721631657_0g0bpmfuo",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:21:29.755Z"
+    },
+    {
+      "id": 136,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721689892_68mk5a2c7",
+      "data": {
+        "sessionId": "barodatek_1760721689892_68mk5a2c7",
+        "timestamp": 1760721689896
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:21:29.899Z"
+    },
+    {
+      "id": 137,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721689892_68mk5a2c7",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "home",
+        "className": "hero-section crt-effect",
+        "text": "\n        \n            \n                \n                    \n                    \n                  ",
+        "details": {
+          "x": 189,
+          "y": 183,
+          "button": 0
+        },
+        "timestamp": 1760721690674,
+        "sessionId": "barodatek_1760721689892_68mk5a2c7",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:21:30.675Z"
+    },
+    {
+      "id": 138,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721689892_68mk5a2c7",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721712339,
+        "sessionId": "barodatek_1760721689892_68mk5a2c7",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:21:52.340Z"
+    },
+    {
+      "id": 139,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721712435_ek2ieiy03",
+      "data": {
+        "sessionId": "barodatek_1760721712435_ek2ieiy03",
+        "timestamp": 1760721712513
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:21:52.515Z"
+    },
+    {
+      "id": 140,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721712435_ek2ieiy03",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "row align-items-center",
+        "text": "\n                \n                    \n                    \n                        \n               ",
+        "details": {
+          "x": 701,
+          "y": 456,
+          "button": 0
+        },
+        "timestamp": 1760721714535,
+        "sessionId": "barodatek_1760721712435_ek2ieiy03",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:21:54.537Z"
+    },
+    {
+      "id": 141,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721712435_ek2ieiy03",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "col-lg-8 mx-auto",
+        "text": "\n                    \n                    \n                        \n                    \n           ",
+        "details": {
+          "x": 658,
+          "y": 476,
+          "button": 0
+        },
+        "timestamp": 1760721716426,
+        "sessionId": "barodatek_1760721712435_ek2ieiy03",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:21:56.429Z"
+    },
+    {
+      "id": 142,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721712435_ek2ieiy03",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "col-lg-8 mx-auto",
+        "text": "\n                    \n                    \n                        \n                    \n           ",
+        "details": {
+          "x": 1212,
+          "y": 524,
+          "button": 0
+        },
+        "timestamp": 1760721717584,
+        "sessionId": "barodatek_1760721712435_ek2ieiy03",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:21:57.585Z"
+    },
+    {
+      "id": 143,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721712435_ek2ieiy03",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "col-lg-8 mx-auto",
+        "text": "\n                    \n                    \n                        \n                    \n           ",
+        "details": {
+          "x": 1233,
+          "y": 482,
+          "button": 0
+        },
+        "timestamp": 1760721721515,
+        "sessionId": "barodatek_1760721712435_ek2ieiy03",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:22:01.517Z"
+    },
+    {
+      "id": 144,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760721712435_ek2ieiy03",
+      "data": {
+        "sessionDuration": 30013,
+        "pageViews": 1,
+        "interactions": 4,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4067189,
+          "total": 5005041,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:22:22.449Z"
+    },
+    {
+      "id": 145,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721712435_ek2ieiy03",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721745289,
+        "sessionId": "barodatek_1760721712435_ek2ieiy03",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:22:25.290Z"
+    },
+    {
+      "id": 146,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721745373_qpg2bnquv",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 25
+        },
+        "timestamp": 1760721755270,
+        "sessionId": "barodatek_1760721745373_qpg2bnquv",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:22:35.272Z"
+    },
+    {
+      "id": 147,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721745373_qpg2bnquv",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "design-tools",
+        "className": "py-5 bg-light",
+        "text": "\n        \n            \n                🎨 Free Graphic Design Software\n                Professional ",
+        "details": {
+          "x": 1188,
+          "y": 513,
+          "button": 0
+        },
+        "timestamp": 1760721758695,
+        "sessionId": "barodatek_1760721745373_qpg2bnquv",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:22:38.697Z"
+    },
+    {
+      "id": 148,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721745373_qpg2bnquv",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "text-center mb-5",
+        "text": "\n                🎨 Free Graphic Design Software\n                Professional design tools - 100% fr",
+        "details": {
+          "x": 587,
+          "y": 725,
+          "button": 0
+        },
+        "timestamp": 1760721760467,
+        "sessionId": "barodatek_1760721745373_qpg2bnquv",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:22:40.468Z"
+    },
+    {
+      "id": 149,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721745373_qpg2bnquv",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "dev-tools",
+        "className": "py-5 bg-light",
+        "text": "\n        \n            \n                🛠️ Developer Tools & Software\n                Essential deve",
+        "details": {
+          "x": 1165,
+          "y": 552,
+          "button": 0
+        },
+        "timestamp": 1760721766663,
+        "sessionId": "barodatek_1760721745373_qpg2bnquv",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:22:46.665Z"
+    },
+    {
+      "id": 150,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760721745373_qpg2bnquv",
+      "data": {
+        "sessionDuration": 30004,
+        "pageViews": 1,
+        "interactions": 4,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4269170,
+          "total": 5464422,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:22:55.378Z"
+    },
+    {
+      "id": 151,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721745373_qpg2bnquv",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721797893,
+        "sessionId": "barodatek_1760721745373_qpg2bnquv",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:23:17.894Z"
+    },
+    {
+      "id": 152,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721797983_le9olsgdn",
+      "data": {
+        "sessionId": "barodatek_1760721797983_le9olsgdn",
+        "timestamp": 1760721798001
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:23:18.006Z"
+    },
+    {
+      "id": 153,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721797983_le9olsgdn",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721821090,
+        "sessionId": "barodatek_1760721797983_le9olsgdn",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:23:41.091Z"
+    },
+    {
+      "id": 154,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721821142_y2r5ez73a",
+      "data": {
+        "sessionId": "barodatek_1760721821142_y2r5ez73a",
+        "timestamp": 1760721821221
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:23:41.225Z"
+    },
+    {
+      "id": 155,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721821142_y2r5ez73a",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "home",
+        "className": "hero-section crt-effect",
+        "text": "\n        \n            \n                \n                    \n                    \n                  ",
+        "details": {
+          "x": 1742,
+          "y": 222,
+          "button": 0
+        },
+        "timestamp": 1760721829340,
+        "sessionId": "barodatek_1760721821142_y2r5ez73a",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:23:49.342Z"
+    },
+    {
+      "id": 156,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721821142_y2r5ez73a",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721836196,
+        "sessionId": "barodatek_1760721821142_y2r5ez73a",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:23:56.197Z"
+    },
+    {
+      "id": 157,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721836247_kjh7ju6in",
+      "data": {
+        "sessionId": "barodatek_1760721836247_kjh7ju6in",
+        "timestamp": 1760721836332
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:23:56.337Z"
+    },
+    {
+      "id": 158,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721836247_kjh7ju6in",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 25
+        },
+        "timestamp": 1760721839918,
+        "sessionId": "barodatek_1760721836247_kjh7ju6in",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:23:59.919Z"
+    },
+    {
+      "id": 159,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721836247_kjh7ju6in",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760721842486,
+        "sessionId": "barodatek_1760721836247_kjh7ju6in",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:24:02.488Z"
+    },
+    {
+      "id": 160,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721836247_kjh7ju6in",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "row",
+        "text": "\n                \n                    \n                        Base URL\n                        http",
+        "details": {
+          "x": 1180,
+          "y": 330,
+          "button": 0
+        },
+        "timestamp": 1760721848619,
+        "sessionId": "barodatek_1760721836247_kjh7ju6in",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:24:08.621Z"
+    },
+    {
+      "id": 161,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721836247_kjh7ju6in",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721864419,
+        "sessionId": "barodatek_1760721836247_kjh7ju6in",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:24:24.421Z"
+    },
+    {
+      "id": 162,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721864484_a8v63zj01",
+      "data": {
+        "sessionId": "barodatek_1760721864484_a8v63zj01",
+        "timestamp": 1760721864529
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:24:24.531Z"
+    },
+    {
+      "id": 163,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721864484_a8v63zj01",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760721865450,
+        "sessionId": "barodatek_1760721864484_a8v63zj01",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:24:25.452Z"
+    },
+    {
+      "id": 164,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721864484_a8v63zj01",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 75
+        },
+        "timestamp": 1760721867884,
+        "sessionId": "barodatek_1760721864484_a8v63zj01",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:24:27.885Z"
+    },
+    {
+      "id": 165,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721864484_a8v63zj01",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 100
+        },
+        "timestamp": 1760721869217,
+        "sessionId": "barodatek_1760721864484_a8v63zj01",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:24:29.219Z"
+    },
+    {
+      "id": 166,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721864484_a8v63zj01",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "col-lg-8 mx-auto",
+        "text": "\n                    \n                    \n                        \n                    \n           ",
+        "details": {
+          "x": 1253,
+          "y": 487,
+          "button": 0
+        },
+        "timestamp": 1760721877091,
+        "sessionId": "barodatek_1760721864484_a8v63zj01",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:24:37.093Z"
+    },
+    {
+      "id": 167,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760721864484_a8v63zj01",
+      "data": {
+        "sessionDuration": 30005,
+        "pageViews": 1,
+        "interactions": 4,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4625371,
+          "total": 6078315,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:24:54.494Z"
+    },
+    {
+      "id": 168,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721864484_a8v63zj01",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721904586,
+        "sessionId": "barodatek_1760721864484_a8v63zj01",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:04.588Z"
+    },
+    {
+      "id": 169,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721904641_31kpzve2n",
+      "data": {
+        "sessionId": "barodatek_1760721904641_31kpzve2n",
+        "timestamp": 1760721904685
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:04.689Z"
+    },
+    {
+      "id": 170,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721904641_31kpzve2n",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "col-lg-8 mx-auto",
+        "text": "\n                    \n                    \n                        \n                    \n           ",
+        "details": {
+          "x": 1178,
+          "y": 494,
+          "button": 0
+        },
+        "timestamp": 1760721907522,
+        "sessionId": "barodatek_1760721904641_31kpzve2n",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:07.524Z"
+    },
+    {
+      "id": 171,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721904641_31kpzve2n",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "col-lg-8 mx-auto",
+        "text": "\n                    \n                    \n                        \n                    \n           ",
+        "details": {
+          "x": 1023,
+          "y": 445,
+          "button": 0
+        },
+        "timestamp": 1760721908961,
+        "sessionId": "barodatek_1760721904641_31kpzve2n",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:08.963Z"
+    },
+    {
+      "id": 172,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721904641_31kpzve2n",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "badge me-2 mb-2 px-3 py-2",
+        "text": "\n                                DEV TOOLS\n                            ",
+        "details": {
+          "x": 968,
+          "y": 459,
+          "button": 0
+        },
+        "timestamp": 1760721909441,
+        "sessionId": "barodatek_1760721904641_31kpzve2n",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:09.443Z"
+    },
+    {
+      "id": 173,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721904641_31kpzve2n",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "col-lg-8 mx-auto",
+        "text": "\n                    \n                    \n                        \n                    \n           ",
+        "details": {
+          "x": 1236,
+          "y": 496,
+          "button": 0
+        },
+        "timestamp": 1760721911428,
+        "sessionId": "barodatek_1760721904641_31kpzve2n",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:11.430Z"
+    },
+    {
+      "id": 174,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760721904641_31kpzve2n",
+      "data": {
+        "sessionDuration": 30002,
+        "pageViews": 1,
+        "interactions": 4,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4081618,
+          "total": 6837810,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:34.644Z"
+    },
+    {
+      "id": 175,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721904641_31kpzve2n",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721939971,
+        "sessionId": "barodatek_1760721904641_31kpzve2n",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:39.973Z"
+    },
+    {
+      "id": 176,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721940031_23il5jm66",
+      "data": {
+        "sessionId": "barodatek_1760721940031_23il5jm66",
+        "timestamp": 1760721940071
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:40.076Z"
+    },
+    {
+      "id": 177,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721940031_23il5jm66",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "home",
+        "className": "hero-section crt-effect",
+        "text": "\n        \n            \n                \n                    \n                    \n                  ",
+        "details": {
+          "x": 1703,
+          "y": 263,
+          "button": 0
+        },
+        "timestamp": 1760721951116,
+        "sessionId": "barodatek_1760721940031_23il5jm66",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:51.117Z"
+    },
+    {
+      "id": 178,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721940031_23il5jm66",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721952356,
+        "sessionId": "barodatek_1760721940031_23il5jm66",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:52.357Z"
+    },
+    {
+      "id": 179,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721952406_plplsw3iy",
+      "data": {
+        "sessionId": "barodatek_1760721952406_plplsw3iy",
+        "timestamp": 1760721952546
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:52.548Z"
+    },
+    {
+      "id": 180,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721952406_plplsw3iy",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "alert alert-success alert-dismissible fade show position-fixed",
+        "text": "\n        \n        🎉 Welcome to BarodaTek.com! All features are now fully interactive and functional",
+        "details": {
+          "x": 1860,
+          "y": 47,
+          "button": 0
+        },
+        "timestamp": 1760721955280,
+        "sessionId": "barodatek_1760721952406_plplsw3iy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:55.282Z"
+    },
+    {
+      "id": 181,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721952406_plplsw3iy",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "home",
+        "className": "hero-section crt-effect",
+        "text": "\n        \n            \n                \n                    \n                    \n                  ",
+        "details": {
+          "x": 1769,
+          "y": 235,
+          "button": 0
+        },
+        "timestamp": 1760721956711,
+        "sessionId": "barodatek_1760721952406_plplsw3iy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:25:56.713Z"
+    },
+    {
+      "id": 182,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721952406_plplsw3iy",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721966542,
+        "sessionId": "barodatek_1760721952406_plplsw3iy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:26:06.543Z"
+    },
+    {
+      "id": 183,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721966600_adftkd61e",
+      "data": {
+        "sessionId": "barodatek_1760721966600_adftkd61e",
+        "timestamp": 1760721966674
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:26:06.678Z"
+    },
+    {
+      "id": 184,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721966600_adftkd61e",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "alert alert-success alert-dismissible fade show position-fixed",
+        "text": "\n        \n        🎉 Welcome to BarodaTek.com! All features are now fully interactive and functional",
+        "details": {
+          "x": 1865,
+          "y": 49,
+          "button": 0
+        },
+        "timestamp": 1760721969821,
+        "sessionId": "barodatek_1760721966600_adftkd61e",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:26:09.822Z"
+    },
+    {
+      "id": 185,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721966600_adftkd61e",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760721995131,
+        "sessionId": "barodatek_1760721966600_adftkd61e",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:26:35.133Z"
+    },
+    {
+      "id": 186,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760721995216_fqdyluiq0",
+      "data": {
+        "sessionId": "barodatek_1760721995216_fqdyluiq0",
+        "timestamp": 1760721995284
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:26:35.286Z"
+    },
+    {
+      "id": 187,
+      "type": "interaction",
+      "sessionId": "barodatek_1760721995216_fqdyluiq0",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722009487,
+        "sessionId": "barodatek_1760721995216_fqdyluiq0",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:26:49.489Z"
+    },
+    {
+      "id": 188,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722009540_n3re07jcb",
+      "data": {
+        "sessionId": "barodatek_1760722009540_n3re07jcb",
+        "timestamp": 1760722009580
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:26:49.586Z"
+    },
+    {
+      "id": 189,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722009540_n3re07jcb",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722021548,
+        "sessionId": "barodatek_1760722009540_n3re07jcb",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:27:01.549Z"
+    },
+    {
+      "id": 190,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722021598_4e3uggo67",
+      "data": {
+        "sessionId": "barodatek_1760722021598_4e3uggo67",
+        "timestamp": 1760722021683
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:27:01.688Z"
+    },
+    {
+      "id": 191,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722021598_4e3uggo67",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722028749,
+        "sessionId": "barodatek_1760722021598_4e3uggo67",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:27:08.750Z"
+    },
+    {
+      "id": 192,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722028803_gtt5sgc1s",
+      "data": {
+        "sessionId": "barodatek_1760722028803_gtt5sgc1s",
+        "timestamp": 1760722028867
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:27:08.870Z"
+    },
+    {
+      "id": 193,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722028803_gtt5sgc1s",
+      "data": {
+        "type": "click",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "x": 1715,
+          "y": 663,
+          "button": 0
+        },
+        "timestamp": 1760722055925,
+        "sessionId": "barodatek_1760722028803_gtt5sgc1s",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:27:35.927Z"
+    },
+    {
+      "id": 194,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722028803_gtt5sgc1s",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "home",
+        "className": "hero-section crt-effect",
+        "text": "\n        \n            \n                \n                    \n                    \n                  ",
+        "details": {
+          "x": 1749,
+          "y": 530,
+          "button": 0
+        },
+        "timestamp": 1760722056371,
+        "sessionId": "barodatek_1760722028803_gtt5sgc1s",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:27:36.373Z"
+    },
+    {
+      "id": 195,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722028803_gtt5sgc1s",
+      "data": {
+        "sessionDuration": 30001,
+        "pageViews": 1,
+        "interactions": 2,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 5017606,
+          "total": 5772754,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:27:38.807Z"
+    },
+    {
+      "id": 196,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722028803_gtt5sgc1s",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722081927,
+        "sessionId": "barodatek_1760722028803_gtt5sgc1s",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:28:01.928Z"
+    },
+    {
+      "id": 197,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722082009_ad5dd1nxu",
+      "data": {
+        "sessionId": "barodatek_1760722082009_ad5dd1nxu",
+        "timestamp": 1760722082023
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:28:02.027Z"
+    },
+    {
+      "id": 198,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722082009_ad5dd1nxu",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722085333,
+        "sessionId": "barodatek_1760722082009_ad5dd1nxu",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:28:05.335Z"
+    },
+    {
+      "id": 199,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722085382_44kze4yhn",
+      "data": {
+        "sessionId": "barodatek_1760722085382_44kze4yhn",
+        "timestamp": 1760722085457
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:28:05.462Z"
+    },
+    {
+      "id": 200,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722085382_44kze4yhn",
+      "data": {
+        "sessionDuration": 30003,
+        "pageViews": 1,
+        "interactions": 0,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 10470997,
+          "total": 12887837,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:28:35.386Z"
+    },
+    {
+      "id": 201,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722085382_44kze4yhn",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722116795,
+        "sessionId": "barodatek_1760722085382_44kze4yhn",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:28:36.796Z"
+    },
+    {
+      "id": 202,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722116872_04ti5mi7t",
+      "data": {
+        "sessionId": "barodatek_1760722116872_04ti5mi7t",
+        "timestamp": 1760722116892
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:28:36.898Z"
+    },
+    {
+      "id": 203,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722116872_04ti5mi7t",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "col-lg-8 mx-auto",
+        "text": "\n                    \n                    \n                        \n                    \n           ",
+        "details": {
+          "x": 1225,
+          "y": 478,
+          "button": 0
+        },
+        "timestamp": 1760722121503,
+        "sessionId": "barodatek_1760722116872_04ti5mi7t",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:28:41.504Z"
+    },
+    {
+      "id": 204,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722116872_04ti5mi7t",
+      "data": {
+        "sessionDuration": 30011,
+        "pageViews": 1,
+        "interactions": 1,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4067927,
+          "total": 5002191,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:06.884Z"
+    },
+    {
+      "id": 205,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722116872_04ti5mi7t",
+      "data": {
+        "sessionDuration": 60011,
+        "pageViews": 1,
+        "interactions": 1,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4072254,
+          "total": 5002430,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:36.885Z"
+    },
+    {
+      "id": 206,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722116872_04ti5mi7t",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722181526,
+        "sessionId": "barodatek_1760722116872_04ti5mi7t",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:41.528Z"
+    },
+    {
+      "id": 207,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722181590_e46y1tq7l",
+      "data": {
+        "sessionId": "barodatek_1760722181590_e46y1tq7l",
+        "timestamp": 1760722181637
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:41.639Z"
+    },
+    {
+      "id": 208,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722181590_e46y1tq7l",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722195720,
+        "sessionId": "barodatek_1760722181590_e46y1tq7l",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:55.722Z"
+    },
+    {
+      "id": 209,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722195772_w4bal9jqq",
+      "data": {
+        "sessionId": "barodatek_1760722195772_w4bal9jqq",
+        "timestamp": 1760722195804
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:55.807Z"
+    },
+    {
+      "id": 210,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722195772_w4bal9jqq",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722196727,
+        "sessionId": "barodatek_1760722195772_w4bal9jqq",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:56.729Z"
+    },
+    {
+      "id": 211,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722196804_3el0xt97m",
+      "data": {
+        "sessionId": "barodatek_1760722196804_3el0xt97m",
+        "timestamp": 1760722196945
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:56.946Z"
+    },
+    {
+      "id": 212,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722196804_3el0xt97m",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722197651,
+        "sessionId": "barodatek_1760722196804_3el0xt97m",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:57.652Z"
+    },
+    {
+      "id": 213,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722197762_89i2k9amx",
+      "data": {
+        "sessionId": "barodatek_1760722197762_89i2k9amx",
+        "timestamp": 1760722197871
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:57.875Z"
+    },
+    {
+      "id": 214,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722197762_89i2k9amx",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722198734,
+        "sessionId": "barodatek_1760722197762_89i2k9amx",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:58.736Z"
+    },
+    {
+      "id": 215,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722198795_z0d2blyds",
+      "data": {
+        "sessionId": "barodatek_1760722198795_z0d2blyds",
+        "timestamp": 1760722199036
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:59.039Z"
+    },
+    {
+      "id": 216,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722198795_z0d2blyds",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722199975,
+        "sessionId": "barodatek_1760722198795_z0d2blyds",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:29:59.976Z"
+    },
+    {
+      "id": 217,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722200064_9cj48qjpt",
+      "data": {
+        "sessionId": "barodatek_1760722200064_9cj48qjpt",
+        "timestamp": 1760722200135
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:00.137Z"
+    },
+    {
+      "id": 218,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722200064_9cj48qjpt",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722205791,
+        "sessionId": "barodatek_1760722200064_9cj48qjpt",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:05.793Z"
+    },
+    {
+      "id": 219,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722205849_1p5918qug",
+      "data": {
+        "sessionId": "barodatek_1760722205849_1p5918qug",
+        "timestamp": 1760722205955
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:05.959Z"
+    },
+    {
+      "id": 220,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722205849_1p5918qug",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722206881,
+        "sessionId": "barodatek_1760722205849_1p5918qug",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:06.883Z"
+    },
+    {
+      "id": 221,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722206939_bvx9ut4ih",
+      "data": {
+        "sessionId": "barodatek_1760722206939_bvx9ut4ih",
+        "timestamp": 1760722207054
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:07.059Z"
+    },
+    {
+      "id": 222,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722206939_bvx9ut4ih",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722207858,
+        "sessionId": "barodatek_1760722206939_bvx9ut4ih",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:07.860Z"
+    },
+    {
+      "id": 223,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722207882_yzh8eyirt",
+      "data": {
+        "sessionId": "barodatek_1760722207882_yzh8eyirt",
+        "timestamp": 1760722207981
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:07.983Z"
+    },
+    {
+      "id": 224,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722207882_yzh8eyirt",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722215429,
+        "sessionId": "barodatek_1760722207882_yzh8eyirt",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:15.430Z"
+    },
+    {
+      "id": 225,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722215478_24rju7ujd",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722216598,
+        "sessionId": "barodatek_1760722215478_24rju7ujd",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:16.600Z"
+    },
+    {
+      "id": 226,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722216645_ckcb5l1rg",
+      "data": {
+        "sessionId": "barodatek_1760722216645_ckcb5l1rg",
+        "timestamp": 1760722216721
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:16.726Z"
+    },
+    {
+      "id": 227,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722216645_ckcb5l1rg",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "row justify-content-center mb-4",
+        "text": "\n                        \n                            \n                                DOWNLOADABLE\n",
+        "details": {
+          "x": 978,
+          "y": 473,
+          "button": 0
+        },
+        "timestamp": 1760722231934,
+        "sessionId": "barodatek_1760722216645_ckcb5l1rg",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:31.936Z"
+    },
+    {
+      "id": 228,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722216645_ckcb5l1rg",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "row align-items-center",
+        "text": "\n                \n                    \n                    \n                        \n               ",
+        "details": {
+          "x": 1232,
+          "y": 476,
+          "button": 0
+        },
+        "timestamp": 1760722236247,
+        "sessionId": "barodatek_1760722216645_ckcb5l1rg",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:36.249Z"
+    },
+    {
+      "id": 229,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722216645_ckcb5l1rg",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "home",
+        "className": "hero-section crt-effect",
+        "text": "\n        \n            \n                \n                    \n                    \n                  ",
+        "details": {
+          "x": 308,
+          "y": 107,
+          "button": 0
+        },
+        "timestamp": 1760722243272,
+        "sessionId": "barodatek_1760722216645_ckcb5l1rg",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:43.273Z"
+    },
+    {
+      "id": 230,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722216645_ckcb5l1rg",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722244210,
+        "sessionId": "barodatek_1760722216645_ckcb5l1rg",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:44.212Z"
+    },
+    {
+      "id": 231,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722244260_h3qfymisw",
+      "data": {
+        "sessionId": "barodatek_1760722244260_h3qfymisw",
+        "timestamp": 1760722244358
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:30:44.360Z"
+    },
+    {
+      "id": 232,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722244260_h3qfymisw",
+      "data": {
+        "sessionDuration": 30004,
+        "pageViews": 1,
+        "interactions": 0,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 7587477,
+          "total": 9735373,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:31:14.266Z"
+    },
+    {
+      "id": 233,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722244260_h3qfymisw",
+      "data": {
+        "sessionDuration": 60002,
+        "pageViews": 1,
+        "interactions": 0,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4039631,
+          "total": 4999323,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:31:44.264Z"
+    },
+    {
+      "id": 234,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722244260_h3qfymisw",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722311829,
+        "sessionId": "barodatek_1760722244260_h3qfymisw",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:31:51.832Z"
+    },
+    {
+      "id": 235,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722311892_svigxlc10",
+      "data": {
+        "sessionId": "barodatek_1760722311892_svigxlc10",
+        "timestamp": 1760722311952
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:31:51.956Z"
+    },
+    {
+      "id": 236,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722311892_svigxlc10",
+      "data": {
+        "type": "click",
+        "element": "button",
+        "id": "",
+        "className": "btn btn-outline-light btn-sm",
+        "text": "\n                                        Refresh Stats\n                                    ",
+        "details": {
+          "x": 1573,
+          "y": 796,
+          "button": 0
+        },
+        "timestamp": 1760722322339,
+        "sessionId": "barodatek_1760722311892_svigxlc10",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:32:02.341Z"
+    },
+    {
+      "id": 237,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722311892_svigxlc10",
+      "data": {
+        "type": "click",
+        "element": "a",
+        "id": "",
+        "className": "nav-link",
+        "text": "💰 Pricing",
+        "details": {
+          "x": 1359,
+          "y": 23,
+          "button": 0
+        },
+        "timestamp": 1760722324855,
+        "sessionId": "barodatek_1760722311892_svigxlc10",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:32:04.856Z"
+    },
+    {
+      "id": 238,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722311892_svigxlc10",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722324874,
+        "sessionId": "barodatek_1760722311892_svigxlc10",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:32:04.876Z"
+    },
+    {
+      "id": 239,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722505673_ljf65ehgy",
+      "data": {
+        "sessionId": "barodatek_1760722505673_ljf65ehgy",
+        "timestamp": 1760722505849
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:35:05.851Z"
+    },
+    {
+      "id": 240,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722505673_ljf65ehgy",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 25
+        },
+        "timestamp": 1760722522024,
+        "sessionId": "barodatek_1760722505673_ljf65ehgy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:35:22.025Z"
+    },
+    {
+      "id": 241,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722505673_ljf65ehgy",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760722523563,
+        "sessionId": "barodatek_1760722505673_ljf65ehgy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:35:23.564Z"
+    },
+    {
+      "id": 242,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722505673_ljf65ehgy",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "col-lg-8 mx-auto",
+        "text": "\n                    \n                        Base URL\n                        http://localhost:8080",
+        "details": {
+          "x": 755,
+          "y": 216,
+          "button": 0
+        },
+        "timestamp": 1760722526210,
+        "sessionId": "barodatek_1760722505673_ljf65ehgy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:35:26.212Z"
+    },
+    {
+      "id": 243,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722505673_ljf65ehgy",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "api",
+        "className": "py-5",
+        "text": "\n        \n            🔗 API Documentation\n            \n            \n                \n              ",
+        "details": {
+          "x": 1047,
+          "y": 645,
+          "button": 0
+        },
+        "timestamp": 1760722528205,
+        "sessionId": "barodatek_1760722505673_ljf65ehgy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:35:28.207Z"
+    },
+    {
+      "id": 244,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722505673_ljf65ehgy",
+      "data": {
+        "sessionDuration": 30007,
+        "pageViews": 1,
+        "interactions": 4,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 7260901,
+          "total": 10374957,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:35:35.683Z"
+    },
+    {
+      "id": 245,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722505673_ljf65ehgy",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "row",
+        "text": "\n                \n                    \n                        Base URL\n                        http",
+        "details": {
+          "x": 326,
+          "y": 525,
+          "button": 0
+        },
+        "timestamp": 1760722563826,
+        "sessionId": "barodatek_1760722505673_ljf65ehgy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:36:03.828Z"
+    },
+    {
+      "id": 246,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722505673_ljf65ehgy",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "row",
+        "text": "\n                \n                    \n                        Base URL\n                        http",
+        "details": {
+          "x": 430,
+          "y": 451,
+          "button": 0
+        },
+        "timestamp": 1760722564886,
+        "sessionId": "barodatek_1760722505673_ljf65ehgy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:36:04.889Z"
+    },
+    {
+      "id": 247,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722505673_ljf65ehgy",
+      "data": {
+        "sessionDuration": 60017,
+        "pageViews": 1,
+        "interactions": 6,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 5421407,
+          "total": 6416295,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:36:05.699Z"
+    },
+    {
+      "id": 248,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722505673_ljf65ehgy",
+      "data": {
+        "sessionDuration": 90012,
+        "pageViews": 1,
+        "interactions": 6,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4437835,
+          "total": 5633671,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:36:35.688Z"
+    },
+    {
+      "id": 249,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722505673_ljf65ehgy",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722623129,
+        "sessionId": "barodatek_1760722505673_ljf65ehgy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:03.131Z"
+    },
+    {
+      "id": 250,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722623198_actv40dyb",
+      "data": {
+        "sessionId": "barodatek_1760722623198_actv40dyb",
+        "timestamp": 1760722623281
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:03.283Z"
+    },
+    {
+      "id": 251,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722623198_actv40dyb",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722624047,
+        "sessionId": "barodatek_1760722623198_actv40dyb",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:04.049Z"
+    },
+    {
+      "id": 252,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722624210_5wt4kl0g4",
+      "data": {
+        "sessionId": "barodatek_1760722624210_5wt4kl0g4",
+        "timestamp": 1760722624275
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:04.278Z"
+    },
+    {
+      "id": 253,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722624210_5wt4kl0g4",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722624850,
+        "sessionId": "barodatek_1760722624210_5wt4kl0g4",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:04.852Z"
+    },
+    {
+      "id": 254,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722624947_xd3um8dxs",
+      "data": {
+        "sessionId": "barodatek_1760722624947_xd3um8dxs",
+        "timestamp": 1760722625056
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:05.058Z"
+    },
+    {
+      "id": 255,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722624947_xd3um8dxs",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722625482,
+        "sessionId": "barodatek_1760722624947_xd3um8dxs",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:05.484Z"
+    },
+    {
+      "id": 256,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722625536_p2gxkxa1x",
+      "data": {
+        "sessionId": "barodatek_1760722625536_p2gxkxa1x",
+        "timestamp": 1760722625615
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:05.619Z"
+    },
+    {
+      "id": 257,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722625536_p2gxkxa1x",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722626883,
+        "sessionId": "barodatek_1760722625536_p2gxkxa1x",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:06.885Z"
+    },
+    {
+      "id": 258,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722626903_ud3m0ugdl",
+      "data": {
+        "sessionId": "barodatek_1760722626903_ud3m0ugdl",
+        "timestamp": 1760722627131
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:07.133Z"
+    },
+    {
+      "id": 259,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722626903_ud3m0ugdl",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722627787,
+        "sessionId": "barodatek_1760722626903_ud3m0ugdl",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:07.788Z"
+    },
+    {
+      "id": 260,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722627835_cdt3hxucm",
+      "data": {
+        "sessionId": "barodatek_1760722627835_cdt3hxucm",
+        "timestamp": 1760722627917
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:07.920Z"
+    },
+    {
+      "id": 261,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722627835_cdt3hxucm",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722634037,
+        "sessionId": "barodatek_1760722627835_cdt3hxucm",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:14.039Z"
+    },
+    {
+      "id": 262,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722634090_jr9884c4v",
+      "data": {
+        "sessionId": "barodatek_1760722634090_jr9884c4v",
+        "timestamp": 1760722634130
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:14.135Z"
+    },
+    {
+      "id": 263,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722634090_jr9884c4v",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722634733,
+        "sessionId": "barodatek_1760722634090_jr9884c4v",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:14.734Z"
+    },
+    {
+      "id": 264,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722634808_2igyxxfui",
+      "data": {
+        "sessionId": "barodatek_1760722634808_2igyxxfui",
+        "timestamp": 1760722634823
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:14.825Z"
+    },
+    {
+      "id": 265,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722634808_2igyxxfui",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "tools",
+        "className": "py-5 interactive-section",
+        "text": "\n        \n            🛠️ Interactive Developer Tools & Platform\n            \n            \n         ",
+        "details": {
+          "x": 1287,
+          "y": 451,
+          "button": 0
+        },
+        "timestamp": 1760722649783,
+        "sessionId": "barodatek_1760722634808_2igyxxfui",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:29.785Z"
+    },
+    {
+      "id": 266,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722634808_2igyxxfui",
+      "data": {
+        "type": "click",
+        "element": "div",
+        "id": "",
+        "className": "row",
+        "text": "\n                \n                    \n                        Base URL\n                        http",
+        "details": {
+          "x": 1499,
+          "y": 317,
+          "button": 0
+        },
+        "timestamp": 1760722650434,
+        "sessionId": "barodatek_1760722634808_2igyxxfui",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:30.437Z"
+    },
+    {
+      "id": 267,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722634808_2igyxxfui",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760722650975,
+        "sessionId": "barodatek_1760722634808_2igyxxfui",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:30.977Z"
+    },
+    {
+      "id": 268,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722634808_2igyxxfui",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "tools",
+        "className": "py-5 interactive-section",
+        "text": "\n        \n            🛠️ Interactive Developer Tools & Platform\n            \n            \n         ",
+        "details": {
+          "x": 1249,
+          "y": 194,
+          "button": 0
+        },
+        "timestamp": 1760722656393,
+        "sessionId": "barodatek_1760722634808_2igyxxfui",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:36.395Z"
+    },
+    {
+      "id": 269,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722634808_2igyxxfui",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "api",
+        "className": "py-5",
+        "text": "\n        \n            🔗 API Documentation\n            \n            \n                \n              ",
+        "details": {
+          "x": 1580,
+          "y": 140,
+          "button": 0
+        },
+        "timestamp": 1760722656869,
+        "sessionId": "barodatek_1760722634808_2igyxxfui",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:36.871Z"
+    },
+    {
+      "id": 270,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722634808_2igyxxfui",
+      "data": {
+        "sessionDuration": 30008,
+        "pageViews": 1,
+        "interactions": 5,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 5391904,
+          "total": 6094140,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:44.818Z"
+    },
+    {
+      "id": 271,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722634808_2igyxxfui",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722677077,
+        "sessionId": "barodatek_1760722634808_2igyxxfui",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:57.079Z"
+    },
+    {
+      "id": 272,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722677134_4eztdh48b",
+      "data": {
+        "sessionId": "barodatek_1760722677134_4eztdh48b",
+        "timestamp": 1760722677210
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:57.215Z"
+    },
+    {
+      "id": 273,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722677134_4eztdh48b",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760722679075,
+        "sessionId": "barodatek_1760722677134_4eztdh48b",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:37:59.078Z"
+    },
+    {
+      "id": 274,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722677134_4eztdh48b",
+      "data": {
+        "type": "click",
+        "element": "h2",
+        "id": "",
+        "className": "text-center mb-5",
+        "text": "🛠️ Interactive Developer Tools & Platform",
+        "details": {
+          "x": 1270,
+          "y": 279,
+          "button": 0
+        },
+        "timestamp": 1760722705652,
+        "sessionId": "barodatek_1760722677134_4eztdh48b",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:38:25.654Z"
+    },
+    {
+      "id": 275,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722677134_4eztdh48b",
+      "data": {
+        "sessionDuration": 30005,
+        "pageViews": 1,
+        "interactions": 2,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 8988664,
+          "total": 10061404,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:38:27.140Z"
+    },
+    {
+      "id": 276,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722677134_4eztdh48b",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722736165,
+        "sessionId": "barodatek_1760722677134_4eztdh48b",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:38:56.167Z"
+    },
+    {
+      "id": 277,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "timestamp": 1760722736260
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:38:56.266Z"
+    },
+    {
+      "id": 278,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760722736512,
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:38:56.514Z"
+    },
+    {
+      "id": 279,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 75
+        },
+        "timestamp": 1760722738156,
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:38:58.158Z"
+    },
+    {
+      "id": 280,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 100
+        },
+        "timestamp": 1760722739358,
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:38:59.359Z"
+    },
+    {
+      "id": 281,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "type": "click",
+        "element": "button",
+        "id": "",
+        "className": "btn btn-primary mt-3",
+        "text": "\n                                Write a Review\n                            ",
+        "details": {
+          "x": 954,
+          "y": 878,
+          "button": 0
+        },
+        "timestamp": 1760722742947,
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:39:02.948Z"
+    },
+    {
+      "id": 282,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "type": "click",
+        "element": "button",
+        "id": "",
+        "className": "btn btn-primary btn-lg w-100",
+        "text": "\n                                        Subscribe Now\n                                    ",
+        "details": {
+          "x": 805,
+          "y": 173,
+          "button": 0
+        },
+        "timestamp": 1760722746462,
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:39:06.464Z"
+    },
+    {
+      "id": 283,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "type": "input_focus",
+        "element": "input",
+        "id": "subscribeEmail",
+        "className": "form-control form-control-lg",
+        "text": "",
+        "details": {
+          "inputType": "text",
+          "name": ""
+        },
+        "timestamp": 1760722747104,
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:39:07.106Z"
+    },
+    {
+      "id": 284,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "type": "click",
+        "element": "input",
+        "id": "subscribeEmail",
+        "className": "form-control form-control-lg",
+        "text": "",
+        "details": {
+          "x": 662,
+          "y": 70,
+          "button": 0
+        },
+        "timestamp": 1760722747220,
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:39:07.222Z"
+    },
+    {
+      "id": 285,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722754293,
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:39:14.294Z"
+    },
+    {
+      "id": 286,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "sessionDuration": 30525,
+        "pageViews": 1,
+        "interactions": 8,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4635023,
+          "total": 5813107,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:39:26.750Z"
+    },
+    {
+      "id": 287,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "type": "input_focus",
+        "element": "input",
+        "id": "subscribeEmail",
+        "className": "form-control form-control-lg",
+        "text": "",
+        "details": {
+          "inputType": "text",
+          "name": ""
+        },
+        "timestamp": 1760722792179,
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:39:52.181Z"
+    },
+    {
+      "id": 288,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": false,
+          "visibilityState": "visible"
+        },
+        "timestamp": 1760722792198,
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:39:52.201Z"
+    },
+    {
+      "id": 289,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722736222_bd59pww8y",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722794660,
+        "sessionId": "barodatek_1760722736222_bd59pww8y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:39:54.662Z"
+    },
+    {
+      "id": 290,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722794937_97wtvjtd7",
+      "data": {
+        "sessionId": "barodatek_1760722794937_97wtvjtd7",
+        "timestamp": 1760722794964
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:39:54.966Z"
+    },
+    {
+      "id": 291,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722794937_97wtvjtd7",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722800334,
+        "sessionId": "barodatek_1760722794937_97wtvjtd7",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:00.336Z"
+    },
+    {
+      "id": 292,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722800393_ezyizirh6",
+      "data": {
+        "sessionId": "barodatek_1760722800393_ezyizirh6",
+        "timestamp": 1760722800502
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:00.504Z"
+    },
+    {
+      "id": 293,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722800393_ezyizirh6",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722806448,
+        "sessionId": "barodatek_1760722800393_ezyizirh6",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:06.450Z"
+    },
+    {
+      "id": 294,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722806575_3yltmvyd5",
+      "data": {
+        "sessionId": "barodatek_1760722806575_3yltmvyd5",
+        "timestamp": 1760722806610
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:06.612Z"
+    },
+    {
+      "id": 295,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722806575_3yltmvyd5",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760722806686,
+        "sessionId": "barodatek_1760722806575_3yltmvyd5",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:06.688Z"
+    },
+    {
+      "id": 296,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722806575_3yltmvyd5",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "tools",
+        "className": "py-5 interactive-section",
+        "text": "\n        \n            🛠️ Interactive Developer Tools & Platform\n            \n            \n         ",
+        "details": {
+          "x": 1649,
+          "y": 274,
+          "button": 0
+        },
+        "timestamp": 1760722811589,
+        "sessionId": "barodatek_1760722806575_3yltmvyd5",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:11.590Z"
+    },
+    {
+      "id": 297,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722806575_3yltmvyd5",
+      "data": {
+        "sessionDuration": 30036,
+        "pageViews": 1,
+        "interactions": 2,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4287916,
+          "total": 5463336,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:36.613Z"
+    },
+    {
+      "id": 298,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722806575_3yltmvyd5",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722854337,
+        "sessionId": "barodatek_1760722806575_3yltmvyd5",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:54.339Z"
+    },
+    {
+      "id": 299,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722854426_hheczbj8e",
+      "data": {
+        "sessionId": "barodatek_1760722854426_hheczbj8e",
+        "timestamp": 1760722854500
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:54.503Z"
+    },
+    {
+      "id": 300,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722854426_hheczbj8e",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760722854607,
+        "sessionId": "barodatek_1760722854426_hheczbj8e",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:54.609Z"
+    },
+    {
+      "id": 301,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722854426_hheczbj8e",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722856889,
+        "sessionId": "barodatek_1760722854426_hheczbj8e",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:56.891Z"
+    },
+    {
+      "id": 302,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722856950_lby8oewo6",
+      "data": {
+        "sessionId": "barodatek_1760722856950_lby8oewo6",
+        "timestamp": 1760722857033
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:40:57.041Z"
+    },
+    {
+      "id": 303,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722856950_lby8oewo6",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722873355,
+        "sessionId": "barodatek_1760722856950_lby8oewo6",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:41:13.357Z"
+    },
+    {
+      "id": 304,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722873410_0isv35cmz",
+      "data": {
+        "sessionId": "barodatek_1760722873410_0isv35cmz",
+        "timestamp": 1760722873441
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:41:13.447Z"
+    },
+    {
+      "id": 305,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722873410_0isv35cmz",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722878802,
+        "sessionId": "barodatek_1760722873410_0isv35cmz",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:41:18.806Z"
+    },
+    {
+      "id": 306,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722878858_573wqrgsf",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722881483,
+        "sessionId": "barodatek_1760722878858_573wqrgsf",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:41:21.485Z"
+    },
+    {
+      "id": 307,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722881588_hx9jvmlk5",
+      "data": {
+        "sessionId": "barodatek_1760722881588_hx9jvmlk5",
+        "timestamp": 1760722881654
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:41:21.657Z"
+    },
+    {
+      "id": 308,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722881588_hx9jvmlk5",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760722881828,
+        "sessionId": "barodatek_1760722881588_hx9jvmlk5",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:41:21.830Z"
+    },
+    {
+      "id": 309,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722881588_hx9jvmlk5",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722884360,
+        "sessionId": "barodatek_1760722881588_hx9jvmlk5",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:41:24.362Z"
+    },
+    {
+      "id": 310,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722890138_oqljuzifz",
+      "data": {
+        "sessionId": "barodatek_1760722890138_oqljuzifz",
+        "timestamp": 1760722890305
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:41:30.307Z"
+    },
+    {
+      "id": 311,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722890138_oqljuzifz",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 25
+        },
+        "timestamp": 1760722895618,
+        "sessionId": "barodatek_1760722890138_oqljuzifz",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:41:35.620Z"
+    },
+    {
+      "id": 312,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722890138_oqljuzifz",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760722897628,
+        "sessionId": "barodatek_1760722890138_oqljuzifz",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:41:37.629Z"
+    },
+    {
+      "id": 313,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722890138_oqljuzifz",
+      "data": {
+        "sessionDuration": 30006,
+        "pageViews": 1,
+        "interactions": 2,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 6707824,
+          "total": 10054496,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:42:00.147Z"
+    },
+    {
+      "id": 314,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760722890138_oqljuzifz",
+      "data": {
+        "sessionDuration": 60006,
+        "pageViews": 1,
+        "interactions": 2,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4327179,
+          "total": 5104567,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:42:30.146Z"
+    },
+    {
+      "id": 315,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722890138_oqljuzifz",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722957681,
+        "sessionId": "barodatek_1760722890138_oqljuzifz",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:42:37.683Z"
+    },
+    {
+      "id": 316,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722957749_ejfpazv1r",
+      "data": {
+        "sessionId": "barodatek_1760722957749_ejfpazv1r",
+        "timestamp": 1760722957787
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:42:37.789Z"
+    },
+    {
+      "id": 317,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722957749_ejfpazv1r",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722971171,
+        "sessionId": "barodatek_1760722957749_ejfpazv1r",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:42:51.173Z"
+    },
+    {
+      "id": 318,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722971242_3gp5mg1pv",
+      "data": {
+        "sessionId": "barodatek_1760722971242_3gp5mg1pv",
+        "timestamp": 1760722971346
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:42:51.348Z"
+    },
+    {
+      "id": 319,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722971242_3gp5mg1pv",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722984018,
+        "sessionId": "barodatek_1760722971242_3gp5mg1pv",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:43:04.020Z"
+    },
+    {
+      "id": 320,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722984115_v9dzqzz98",
+      "data": {
+        "sessionId": "barodatek_1760722984115_v9dzqzz98",
+        "timestamp": 1760722984209
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:43:04.211Z"
+    },
+    {
+      "id": 321,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722984115_v9dzqzz98",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760722986207,
+        "sessionId": "barodatek_1760722984115_v9dzqzz98",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:43:06.209Z"
+    },
+    {
+      "id": 322,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760722986359_8ezxpmfye",
+      "data": {
+        "sessionId": "barodatek_1760722986359_8ezxpmfye",
+        "timestamp": 1760722986389
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:43:06.391Z"
+    },
+    {
+      "id": 323,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722986359_8ezxpmfye",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760722986451,
+        "sessionId": "barodatek_1760722986359_8ezxpmfye",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:43:06.453Z"
+    },
+    {
+      "id": 324,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722986359_8ezxpmfye",
+      "data": {
+        "type": "click",
+        "element": "h2",
+        "id": "",
+        "className": "text-center mb-5",
+        "text": "🛠️ Interactive Developer Tools & Platform",
+        "details": {
+          "x": 1265,
+          "y": 552,
+          "button": 0
+        },
+        "timestamp": 1760722995643,
+        "sessionId": "barodatek_1760722986359_8ezxpmfye",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:43:15.644Z"
+    },
+    {
+      "id": 325,
+      "type": "interaction",
+      "sessionId": "barodatek_1760722986359_8ezxpmfye",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723001519,
+        "sessionId": "barodatek_1760722986359_8ezxpmfye",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:43:21.521Z"
+    },
+    {
+      "id": 326,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723001572_ov1jdy34y",
+      "data": {
+        "sessionId": "barodatek_1760723001572_ov1jdy34y",
+        "timestamp": 1760723001643
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:43:21.648Z"
+    },
+    {
+      "id": 327,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723001572_ov1jdy34y",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "tools",
+        "className": "py-5 interactive-section",
+        "text": "\n        \n            🛠️ Interactive Developer Tools & Platform\n            \n            \n         ",
+        "details": {
+          "x": 1245,
+          "y": 555,
+          "button": 0
+        },
+        "timestamp": 1760723004339,
+        "sessionId": "barodatek_1760723001572_ov1jdy34y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:43:24.340Z"
+    },
+    {
+      "id": 328,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723001572_ov1jdy34y",
+      "data": {
+        "sessionDuration": 30009,
+        "pageViews": 1,
+        "interactions": 1,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 9208695,
+          "total": 10350499,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:43:51.583Z"
+    },
+    {
+      "id": 329,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723001572_ov1jdy34y",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723043686,
+        "sessionId": "barodatek_1760723001572_ov1jdy34y",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:44:03.688Z"
+    },
+    {
+      "id": 330,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723043768_qt77xsrhd",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723044598,
+        "sessionId": "barodatek_1760723043768_qt77xsrhd",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:44:04.600Z"
+    },
+    {
+      "id": 331,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723053387_cyj2urgna",
+      "data": {
+        "sessionId": "barodatek_1760723053387_cyj2urgna",
+        "timestamp": 1760723053607
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:44:13.609Z"
+    },
+    {
+      "id": 332,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723053387_cyj2urgna",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 25
+        },
+        "timestamp": 1760723054979,
+        "sessionId": "barodatek_1760723053387_cyj2urgna",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:44:14.981Z"
+    },
+    {
+      "id": 333,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723053387_cyj2urgna",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723078279,
+        "sessionId": "barodatek_1760723053387_cyj2urgna",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:44:38.281Z"
+    },
+    {
+      "id": 334,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723078379_gxbaj391h",
+      "data": {
+        "sessionId": "barodatek_1760723078379_gxbaj391h",
+        "timestamp": 1760723078457
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:44:38.458Z"
+    },
+    {
+      "id": 335,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723078379_gxbaj391h",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723086985,
+        "sessionId": "barodatek_1760723078379_gxbaj391h",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:44:46.987Z"
+    },
+    {
+      "id": 336,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723087036_9w50kbmlp",
+      "data": {
+        "sessionId": "barodatek_1760723087036_9w50kbmlp",
+        "timestamp": 1760723087115
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:44:47.121Z"
+    },
+    {
+      "id": 337,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723087036_9w50kbmlp",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723096017,
+        "sessionId": "barodatek_1760723087036_9w50kbmlp",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:44:56.018Z"
+    },
+    {
+      "id": 338,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723096068_sqh28coti",
+      "data": {
+        "sessionId": "barodatek_1760723096068_sqh28coti",
+        "timestamp": 1760723096143
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:44:56.149Z"
+    },
+    {
+      "id": 339,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723096068_sqh28coti",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723118109,
+        "sessionId": "barodatek_1760723096068_sqh28coti",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:45:18.112Z"
+    },
+    {
+      "id": 340,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723118138_sugpko759",
+      "data": {
+        "sessionId": "barodatek_1760723118138_sugpko759",
+        "timestamp": 1760723118241
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:45:18.243Z"
+    },
+    {
+      "id": 341,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723118138_sugpko759",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723123580,
+        "sessionId": "barodatek_1760723118138_sugpko759",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:45:23.582Z"
+    },
+    {
+      "id": 342,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723123637_qaudnnavi",
+      "data": {
+        "sessionId": "barodatek_1760723123637_qaudnnavi",
+        "timestamp": 1760723123715
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:45:23.722Z"
+    },
+    {
+      "id": 343,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723123637_qaudnnavi",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723133765,
+        "sessionId": "barodatek_1760723123637_qaudnnavi",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:45:33.769Z"
+    },
+    {
+      "id": 344,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723133877_otdlcete3",
+      "data": {
+        "sessionId": "barodatek_1760723133877_otdlcete3",
+        "timestamp": 1760723133913
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:45:33.916Z"
+    },
+    {
+      "id": 345,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723133877_otdlcete3",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760723135977,
+        "sessionId": "barodatek_1760723133877_otdlcete3",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:45:35.978Z"
+    },
+    {
+      "id": 346,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723133877_otdlcete3",
+      "data": {
+        "sessionDuration": 30026,
+        "pageViews": 1,
+        "interactions": 1,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4156156,
+          "total": 5183528,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:46:03.905Z"
+    },
+    {
+      "id": 347,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723133877_otdlcete3",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723181564,
+        "sessionId": "barodatek_1760723133877_otdlcete3",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:46:21.567Z"
+    },
+    {
+      "id": 348,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+      "data": {
+        "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+        "timestamp": 1760723184682
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:46:24.684Z"
+    },
+    {
+      "id": 349,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 25
+        },
+        "timestamp": 1760723186009,
+        "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:46:26.011Z"
+    },
+    {
+      "id": 350,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760723187008,
+        "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:46:27.010Z"
+    },
+    {
+      "id": 351,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+      "data": {
+        "sessionDuration": 30165,
+        "pageViews": 1,
+        "interactions": 3,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4326828,
+          "total": 5628632,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:46:53.499Z"
+    },
+    {
+      "id": 352,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+      "data": {
+        "sessionDuration": 60169,
+        "pageViews": 1,
+        "interactions": 3,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4331282,
+          "total": 5366742,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:47:23.502Z"
+    },
+    {
+      "id": 353,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+      "data": {
+        "sessionDuration": 90166,
+        "pageViews": 1,
+        "interactions": 3,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4335161,
+          "total": 5366981,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:47:53.500Z"
+    },
+    {
+      "id": 354,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+      "data": {
+        "sessionDuration": 120159,
+        "pageViews": 1,
+        "interactions": 3,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3272324,
+          "total": 4953192,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:48:23.492Z"
+    },
+    {
+      "id": 355,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+      "data": {
+        "type": "click",
+        "element": "section",
+        "id": "tools",
+        "className": "py-5 interactive-section",
+        "text": "\n        \n            🛠️ Interactive Developer Tools & Platform\n            \n            \n         ",
+        "details": {
+          "x": 29,
+          "y": 232,
+          "button": 0
+        },
+        "timestamp": 1760723304801,
+        "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:48:24.803Z"
+    },
+    {
+      "id": 356,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723306793,
+        "sessionId": "barodatek_1760723183332_hwvwl7fhy",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:48:26.794Z"
+    },
+    {
+      "id": 357,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723307090_k2ad3kwbm",
+      "data": {
+        "sessionId": "barodatek_1760723307090_k2ad3kwbm",
+        "timestamp": 1760723307249
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:48:27.252Z"
+    },
+    {
+      "id": 358,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723307090_k2ad3kwbm",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723308766,
+        "sessionId": "barodatek_1760723307090_k2ad3kwbm",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:48:28.768Z"
+    },
+    {
+      "id": 359,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723308833_dj9zyqufz",
+      "data": {
+        "sessionId": "barodatek_1760723308833_dj9zyqufz",
+        "timestamp": 1760723308915
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:48:28.922Z"
+    },
+    {
+      "id": 360,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723308833_dj9zyqufz",
+      "data": {
+        "sessionDuration": 30014,
+        "pageViews": 1,
+        "interactions": 0,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 10085382,
+          "total": 12473406,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:48:58.849Z"
+    },
+    {
+      "id": 361,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723308833_dj9zyqufz",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723357619,
+        "sessionId": "barodatek_1760723308833_dj9zyqufz",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:49:17.621Z"
+    },
+    {
+      "id": 362,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723357707_ta1q8ykuo",
+      "data": {
+        "sessionId": "barodatek_1760723357707_ta1q8ykuo",
+        "timestamp": 1760723357757
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:49:17.765Z"
+    },
+    {
+      "id": 363,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723357707_ta1q8ykuo",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723385770,
+        "sessionId": "barodatek_1760723357707_ta1q8ykuo",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:49:45.771Z"
+    },
+    {
+      "id": 364,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723385887_x1xil9tnl",
+      "data": {
+        "sessionId": "barodatek_1760723385887_x1xil9tnl",
+        "timestamp": 1760723385931
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:49:45.933Z"
+    },
+    {
+      "id": 365,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723385887_x1xil9tnl",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 50
+        },
+        "timestamp": 1760723385997,
+        "sessionId": "barodatek_1760723385887_x1xil9tnl",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:49:45.999Z"
+    },
+    {
+      "id": 366,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723385887_x1xil9tnl",
+      "data": {
+        "type": "scroll",
+        "element": "body",
+        "id": "",
+        "className": "arena-theme",
+        "text": "\n    \n    \n        (async function checkMaintenance() {\n            try {\n                const resp",
+        "details": {
+          "scrollPercent": 75
+        },
+        "timestamp": 1760723389103,
+        "sessionId": "barodatek_1760723385887_x1xil9tnl",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:49:49.104Z"
+    },
+    {
+      "id": 367,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723385887_x1xil9tnl",
+      "data": {
+        "type": "click",
+        "element": "strong",
+        "id": "",
+        "className": "",
+        "text": "Codecademy",
+        "details": {
+          "x": 1055,
+          "y": 323,
+          "button": 0
+        },
+        "timestamp": 1760723397058,
+        "sessionId": "barodatek_1760723385887_x1xil9tnl",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:49:57.060Z"
+    },
+    {
+      "id": 368,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723385887_x1xil9tnl",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723397078,
+        "sessionId": "barodatek_1760723385887_x1xil9tnl",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:49:57.081Z"
+    },
+    {
+      "id": 369,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723385887_x1xil9tnl",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": false,
+          "visibilityState": "visible"
+        },
+        "timestamp": 1760723399005,
+        "sessionId": "barodatek_1760723385887_x1xil9tnl",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:49:59.008Z"
+    },
+    {
+      "id": 370,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723385887_x1xil9tnl",
+      "data": {
+        "sessionDuration": 30038,
+        "pageViews": 1,
+        "interactions": 5,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4442042,
+          "total": 5367098,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:50:15.927Z"
+    },
+    {
+      "id": 371,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723385887_x1xil9tnl",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723441269,
+        "sessionId": "barodatek_1760723385887_x1xil9tnl",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:50:41.271Z"
+    },
+    {
+      "id": 372,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723441336_n1ll5dja0",
+      "data": {
+        "sessionId": "barodatek_1760723441336_n1ll5dja0",
+        "timestamp": 1760723441442
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:50:41.444Z"
+    },
+    {
+      "id": 373,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723441336_n1ll5dja0",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723458566,
+        "sessionId": "barodatek_1760723441336_n1ll5dja0",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:50:58.569Z"
+    },
+    {
+      "id": 374,
+      "type": "websocket_connected",
+      "sessionId": "barodatek_1760723458685_yesyy6x4z",
+      "data": {
+        "sessionId": "barodatek_1760723458685_yesyy6x4z",
+        "timestamp": 1760723458723
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:50:58.725Z"
+    },
+    {
+      "id": 375,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723458685_yesyy6x4z",
+      "data": {
+        "sessionDuration": 30039,
+        "pageViews": 1,
+        "interactions": 0,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4049184,
+          "total": 4999808,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:51:28.726Z"
+    },
+    {
+      "id": 376,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723458685_yesyy6x4z",
+      "data": {
+        "sessionDuration": 60038,
+        "pageViews": 1,
+        "interactions": 0,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 4040588,
+          "total": 4999556,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:51:58.724Z"
+    },
+    {
+      "id": 377,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723458685_yesyy6x4z",
+      "data": {
+        "type": "input_focus",
+        "element": "input",
+        "id": "custom-code-input",
+        "className": "form-control",
+        "text": "",
+        "details": {
+          "inputType": "text",
+          "name": ""
+        },
+        "timestamp": 1760723528769,
+        "sessionId": "barodatek_1760723458685_yesyy6x4z",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:52:08.773Z"
+    },
+    {
+      "id": 378,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723458685_yesyy6x4z",
+      "data": {
+        "type": "click",
+        "element": "input",
+        "id": "custom-code-input",
+        "className": "form-control",
+        "text": "",
+        "details": {
+          "x": 1166,
+          "y": 434,
+          "button": 0
+        },
+        "timestamp": 1760723528882,
+        "sessionId": "barodatek_1760723458685_yesyy6x4z",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:52:08.884Z"
+    },
+    {
+      "id": 379,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723458685_yesyy6x4z",
+      "data": {
+        "sessionDuration": 90033,
+        "pageViews": 1,
+        "interactions": 2,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3022499,
+          "total": 4061875,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:52:28.719Z"
+    },
+    {
+      "id": 380,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723458685_yesyy6x4z",
+      "data": {
+        "type": "input_focus",
+        "element": "input",
+        "id": "custom-code-input",
+        "className": "form-control",
+        "text": "",
+        "details": {
+          "inputType": "text",
+          "name": ""
+        },
+        "timestamp": 1760723563952,
+        "sessionId": "barodatek_1760723458685_yesyy6x4z",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:52:43.954Z"
+    },
+    {
+      "id": 381,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723458685_yesyy6x4z",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723564071,
+        "sessionId": "barodatek_1760723458685_yesyy6x4z",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:52:44.074Z"
+    },
+    {
+      "id": 382,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723458685_yesyy6x4z",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": false,
+          "visibilityState": "visible"
+        },
+        "timestamp": 1760723577463,
+        "sessionId": "barodatek_1760723458685_yesyy6x4z",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:52:57.465Z"
+    },
+    {
+      "id": 383,
+      "type": "heartbeat",
+      "sessionId": "barodatek_1760723458685_yesyy6x4z",
+      "data": {
+        "sessionDuration": 120035,
+        "pageViews": 1,
+        "interactions": 6,
+        "downloads": 0,
+        "memoryUsage": {
+          "used": 3023119,
+          "total": 4061875,
+          "limit": 4294705152
+        }
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:52:58.722Z"
+    },
+    {
+      "id": 384,
+      "type": "interaction",
+      "sessionId": "barodatek_1760723458685_yesyy6x4z",
+      "data": {
+        "type": "visibility_change",
+        "element": "unknown",
+        "id": "",
+        "className": "",
+        "text": "",
+        "details": {
+          "hidden": true,
+          "visibilityState": "hidden"
+        },
+        "timestamp": 1760723580023,
+        "sessionId": "barodatek_1760723458685_yesyy6x4z",
+        "url": "http://localhost:8080/"
+      },
+      "source": "barodatek_analytics",
+      "timestamp": "2025-10-17T17:53:00.027Z"
     }
   ],
   "topPages": [
     {
       "path": "/",
-      "views": 7
+      "views": 53
     }
   ],
-  "lastUpdated": "2025-10-15T02:06:03.742Z"
+  "lastUpdated": "2025-10-17T17:50:58.688Z"
 }
