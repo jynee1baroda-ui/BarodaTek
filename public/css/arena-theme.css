@@ -228,7 +228,13 @@ body.arena-theme .panel,
 body.arena-theme .arena-card,
 body.arena-theme .list-group-item,
 body.arena-theme .accordion-item,
-body.arena-theme .endpoint-card {
+body.arena-theme .endpoint-card,
+body .card,
+body .panel,
+body .arena-card,
+body .list-group-item,
+body .accordion-item,
+body .endpoint-card {
   background: var(--arena-surface) !important;
   border: 1px solid var(--arena-border);
   border-radius: 8px;
@@ -241,12 +247,19 @@ body.arena-theme .panel *,
 body.arena-theme .arena-card *,
 body.arena-theme .list-group-item *,
 body.arena-theme .accordion-item *,
-body.arena-theme .endpoint-card * {
+body.arena-theme .endpoint-card *,
+body .card *,
+body .panel *,
+body .arena-card *,
+body .list-group-item *,
+body .accordion-item *,
+body .endpoint-card * {
   color: #ffffff !important;
 }
 
 /* Force all card content to be white */
-body.arena-theme .card *:not(.badge):not(.btn) {
+body.arena-theme .card *:not(.badge):not(.btn),
+body .card *:not(.badge):not(.btn) {
   color: #ffffff !important;
 }
 
@@ -262,7 +275,20 @@ body.arena-theme .card h5,
 body.arena-theme .card h6,
 body.arena-theme .card p,
 body.arena-theme .card span,
-body.arena-theme .card li {
+body.arena-theme .card li,
+body .card-title,
+body .card-header,
+body .card-body,
+body .card-text,
+body .card h1,
+body .card h2,
+body .card h3,
+body .card h4,
+body .card h5,
+body .card h6,
+body .card p,
+body .card span,
+body .card li {
   color: #ffffff !important;
 }
 
@@ -455,14 +481,20 @@ body.arena-theme .tooltip-inner {
 
 body.arena-theme .bg-light,
 body.arena-theme .bg-body,
-body.arena-theme .bg-white {
+body.arena-theme .bg-white,
+body .bg-light,
+body .bg-body,
+body .bg-white {
   background: rgba(15, 15, 22, 0.92) !important;
   color: #ffffff !important;
 }
 
 body.arena-theme .bg-light *,
 body.arena-theme .bg-body *,
-body.arena-theme .bg-white * {
+body.arena-theme .bg-white *,
+body .bg-light *,
+body .bg-body *,
+body .bg-white * {
   color: #ffffff !important;
 }
 
