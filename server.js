@@ -2872,6 +2872,10 @@ app.delete('/api/reviews/:id', async (req, res) => {
 
 // ========== NEWSLETTER SUBSCRIPTION ENDPOINT ==========
 
+// Import newsletter manager
+const NewsletterManager = require('./newsletter-manager');
+const newsletterManager = new NewsletterManager();
+
 app.post('/api/newsletter/subscribe', async (req, res) => {
     try {
         const { email, name, subscribedAt, source } = req.body;
@@ -2884,7 +2888,28 @@ app.post('/api/newsletter/subscribe', async (req, res) => {
             });
         }
         
-        // Store subscription in database
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid email format',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Add subscriber using newsletter manager
+        const result = newsletterManager.addSubscriber(email, name || 'Anonymous');
+        
+        if (!result.success) {
+            return res.status(400).json({
+                success: false,
+                error: result.message,
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Store subscription details
         const subscription = {
             email,
             name: name || 'Anonymous',
@@ -2893,7 +2918,6 @@ app.post('/api/newsletter/subscribe', async (req, res) => {
             status: 'active'
         };
         
-        // Save to database (you can implement this in your db module)
         console.log('📧 NEW NEWSLETTER SUBSCRIPTION:', subscription);
         
         // Send email notification to you
@@ -2905,7 +2929,10 @@ New subscriber details:
 - Subscribed at: ${subscribedAt || new Date().toISOString()}
 - Source: ${source || 'website'}
 
-You can now add this email to your newsletter list!
+Total subscribers: ${newsletterManager.getStats().totalSubscribers}
+Active subscribers: ${newsletterManager.getStats().activeSubscribers}
+
+You can now add this email to your monthly newsletter list!
         `;
         
         // Log for now - you can integrate with nodemailer or other email service
@@ -2924,6 +2951,74 @@ You can now add this email to your newsletter list!
         res.status(500).json({
             success: false,
             error: 'Failed to process subscription',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// GET all newsletter subscribers
+app.get('/api/newsletter/subscribers', (req, res) => {
+    try {
+        const subscribers = newsletterManager.getSubscribers();
+        const stats = newsletterManager.getStats();
+        
+        res.json({
+            success: true,
+            data: subscribers,
+            stats: stats,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error fetching subscribers:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch subscribers',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// Export subscribers as CSV
+app.get('/api/newsletter/export-csv', (req, res) => {
+    try {
+        const csv = newsletterManager.exportSubscribersCSV();
+        
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename=subscribers.csv');
+        res.send(csv);
+    } catch (error) {
+        console.error('Error exporting subscribers:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to export subscribers',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// Generate newsletter template
+app.get('/api/newsletter/template', (req, res) => {
+    try {
+        const now = new Date();
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                        'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        const template = newsletterManager.generateNewsletterTemplate(
+            months[now.getMonth()], 
+            now.getFullYear()
+        );
+        
+        res.json({
+            success: true,
+            data: template,
+            subscribers: newsletterManager.getStats(),
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error generating template:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to generate template',
             timestamp: new Date().toISOString()
         });
     }
@@ -2978,14 +3073,10 @@ You can approve this review in your admin panel.
         console.log('Body:', notificationBody);
         console.log('Review data:', reviewData);
         
-        // Your Google Business review URL
-        const googleReviewUrl = 'https://g.page/r/YOUR_GOOGLE_PLACE_ID/review'; // REPLACE WITH YOUR ACTUAL URL
-        
         res.status(201).json({
             success: true,
             message: 'Review submitted successfully. Thank you!',
             data: newReview,
-            googleReviewUrl: googleReviewUrl,
             timestamp: new Date().toISOString()
         });
     } catch (error) {

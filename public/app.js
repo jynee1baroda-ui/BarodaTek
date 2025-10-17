@@ -4334,16 +4334,8 @@ window.submitReviewForm = async function() {
             const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
             modal.hide();
             
-            // Show success with Google Business link
-            showNotification(`✅ Thank you for your ${rating}-star review, ${name}! 🌟`, 'success');
-            
-            // Prompt to also review on Google
-            setTimeout(() => {
-                if (confirm('Would you like to also leave a review on our Google Business page? This helps others find us!')) {
-                    // Replace with your actual Google Business review URL
-                    window.open(result.googleReviewUrl || 'https://g.page/r/YOUR_GOOGLE_PLACE_ID/review', '_blank');
-                }
-            }, 1000);
+            // Show success message
+            showNotification(`✅ Thank you for your ${rating}-star review, ${name}! 🌟 We appreciate your feedback!`, 'success');
             
             console.log('✅ Review submitted successfully');
         } else {

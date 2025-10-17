@@ -217,10 +217,16 @@ body.arena-theme button:focus,
 body.arena-theme .btn:focus,
 body.arena-theme .form-control:focus,
 body.arena-theme input:focus,
-body.arena-theme textarea:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 26, 64, 0.2);
-  border-color: var(--arena-border-strong);
+body.arena-theme textarea:focus,
+body button:focus,
+body .btn:focus,
+body .form-control:focus,
+body input:focus,
+body textarea:focus,
+body select:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(255, 26, 64, 0.2) !important;
+  border-color: var(--arena-border-strong) !important;
 }
 
 body.arena-theme .card,
@@ -434,12 +440,36 @@ body.arena-theme table thead {
 body.arena-theme .form-control,
 body.arena-theme input,
 body.arena-theme select,
-body.arena-theme textarea {
-  background: rgba(10, 10, 16, 0.88);
-  border: 1px solid var(--arena-border);
-  color: #ffffff;
-  border-radius: 12px;
+body.arena-theme textarea,
+body .form-control,
+body input[type="text"],
+body input[type="email"],
+body input[type="password"],
+body input[type="number"],
+body select,
+body textarea {
+  background: rgba(10, 10, 16, 0.88) !important;
+  border: 1px solid var(--arena-border) !important;
+  color: #ffffff !important;
+  border-radius: 12px !important;
   transition: border-color var(--arena-transition), box-shadow var(--arena-transition);
+  pointer-events: auto !important;
+  cursor: text !important;
+}
+
+/* Ensure form inputs are interactive */
+body input,
+body textarea,
+body select {
+  pointer-events: auto !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+/* Placeholder text styling */
+body input::placeholder,
+body textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 
 body.arena-theme .form-check-input {
