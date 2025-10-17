@@ -22,7 +22,7 @@ let performanceData = {
 function showNotification(message, type = 'success') {
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);';
+    alertDiv.style.cssText = 'top: 180px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);';
     alertDiv.innerHTML = `
         <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
         ${message}
@@ -1085,10 +1085,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Start performance monitoring
     setInterval(updatePerformanceDisplay, 1000);
     
-    // Show welcome notification
-    setTimeout(() => {
-        showNotification('🎉 Welcome to BarodaTek.com! All features are now fully interactive and functional!', 'success');
-    }, 1000);
+    // Removed welcome notification to avoid blocking content
+    // setTimeout(() => {
+    //     showNotification('🎉 Welcome to BarodaTek.com! All features are now fully interactive and functional!', 'success');
+    // }, 1000);
 });
 
 // 🔧 Export functions to global scope for onclick handlers

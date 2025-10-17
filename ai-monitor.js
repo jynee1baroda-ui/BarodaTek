@@ -119,24 +119,24 @@ function reconnectWebSocket(retries = 0) {
         return this.knowledgeDB.get(issueKey);
     }
     
-    // Start all monitoring tasks
+    // Start all monitoring tasks (reduced frequency to save resources)
     startMonitoring() {
-        // Monitor every 10 seconds
+        // Monitor every 60 seconds (reduced from 10s)
         this.activeMonitors.set('health', setInterval(() => {
             this.checkSystemHealth();
-        }, 10000));
-        
-        // Performance monitoring every 30 seconds
-        this.activeMonitors.set('performance', setInterval(() => {
-            this.checkPerformance();
-        }, 30000));
-        
-        // Log analysis every 60 seconds
-        this.activeMonitors.set('logs', setInterval(() => {
-            this.analyzeLogs();
         }, 60000));
         
-        console.log('🔍 Started 3 monitoring tasks');
+        // Performance monitoring every 2 minutes (reduced from 30s)
+        this.activeMonitors.set('performance', setInterval(() => {
+            this.checkPerformance();
+        }, 120000));
+        
+        // Log analysis every 5 minutes (reduced from 60s)
+        this.activeMonitors.set('logs', setInterval(() => {
+            this.analyzeLogs();
+        }, 300000));
+        
+        console.log('🔍 Started 3 monitoring tasks (optimized intervals)');
     }
     
     // Check system health
@@ -151,11 +151,11 @@ function reconnectWebSocket(retries = 0) {
             percent: Math.round(memPercent)
         };
         
-        // Check for high memory usage
-        if (memPercent > 80) {
-            this.detectIssue('HIGH_MEMORY_USAGE', {
+        // Check for CRITICALLY high memory usage only (reduced reporting)
+        if (memPercent > 90) {
+            this.detectIssue('CRITICAL_MEMORY_USAGE', {
                 current: memPercent,
-                threshold: 80
+                threshold: 90
             });
         }
         
@@ -214,28 +214,6 @@ function reconnectWebSocket(retries = 0) {
             }
         }
     }
-
-    // Public: report an arbitrary error into the monitor
-    reportError(issueKey, error, context = {}) {
-        try {
-            const payload = {
-                ...context,
-                errorMessage: error && error.message ? error.message : String(error),
-                stack: error && error.stack ? error.stack : undefined,
-                timestamp: new Date().toISOString(),
-            };
-            this.sendNotification({
-                type: 'error',
-                issue: issueKey,
-                message: payload.errorMessage,
-                context: payload,
-                timestamp: new Date(),
-            });
-            this.detectIssue(issueKey, payload);
-        } catch (e) {
-            console.error('AIMonitor.reportError failed:', e);
-        }
-    }
     
     // Detect and handle issue
     detectIssue(issueKey, context = {}) {
@@ -251,30 +229,37 @@ function reconnectWebSocket(retries = 0) {
         knowledge.timesEncountered++;
         knowledge.lastSeen = new Date();
         
-        console.log(`⚠️  Detected: ${issueKey} - ${knowledge.description}`);
-        console.log(`💡 Solution: ${knowledge.solution}`);
+        // Only log critical issues (reduce console spam)
+        if (issueKey.includes('CRITICAL')) {
+            console.log(`⚠️  CRITICAL: ${issueKey} - ${knowledge.description}`);
+            console.log(`💡 Solution: ${knowledge.solution}`);
+        }
         
-        // Try auto-fix if enabled
+        // Try auto-fix if enabled (silently)
         if (knowledge.autoFix) {
             this.attemptAutoFix(issueKey, knowledge, context);
         }
         
-        // Send notification
-        this.sendNotification({
-            type: knowledge.type,
-            issue: issueKey,
-            description: knowledge.description,
-            solution: knowledge.solution,
-            autoFixed: knowledge.autoFix,
-            context
-        });
+        // Send notification only for critical issues
+        if (issueKey.includes('CRITICAL') || issueKey.includes('ERROR')) {
+            this.sendNotification({
+                type: knowledge.type,
+                issue: issueKey,
+                description: knowledge.description,
+                solution: knowledge.solution,
+                autoFixed: knowledge.autoFix,
+                context
+            });
+        }
         
-        // Share with chatbot
-        this.shareToChatbot({
-            type: 'issue-detected',
-            issue: issueKey,
-            knowledge
-        });
+        // Share with chatbot (less frequently)
+        if (knowledge.timesEncountered % 10 === 0) {
+            this.shareToChatbot({
+                type: 'issue-detected',
+                issue: issueKey,
+                knowledge
+            });
+        }
     }
     
     // Learn about new issue
@@ -324,7 +309,7 @@ function reconnectWebSocket(retries = 0) {
         }
     }
     
-    // Send notification to separate dashboard
+    // Send notification to separate dashboard (reduced logging)
     sendNotification(notification) {
         notification.timestamp = new Date();
         
@@ -335,18 +320,20 @@ function reconnectWebSocket(retries = 0) {
             this.healthMetrics.warnings.push(notification);
         }
         
-        // Keep only last 50 entries
-        this.healthMetrics.errors = this.healthMetrics.errors.slice(-50);
-        this.healthMetrics.warnings = this.healthMetrics.warnings.slice(-50);
+        // Keep only last 20 entries (reduced from 50)
+        this.healthMetrics.errors = this.healthMetrics.errors.slice(-20);
+        this.healthMetrics.warnings = this.healthMetrics.warnings.slice(-20);
         
         // Emit event for dashboard
         this.emit('notification', notification);
         
-        // Log to file
-        this.logNotification(notification);
+        // Log to file only for critical issues (reduced file I/O)
+        if (notification.issue && notification.issue.includes('CRITICAL')) {
+            this.logNotification(notification);
+        }
     }
     
-    // Log notification to file
+    // Log notification to file (reduced frequency)
     logNotification(notification) {
         const logDir = path.join(__dirname, 'logs', 'ai-monitor');
         const logFile = path.join(logDir, `${new Date().toISOString().split('T')[0]}.log`);
@@ -359,7 +346,7 @@ function reconnectWebSocket(retries = 0) {
         const logEntry = `[${notification.timestamp.toISOString()}] ${notification.type.toUpperCase()}: ${JSON.stringify(notification)}\n`;
         
         fs.appendFile(logFile, logEntry, (err) => {
-            if (err) console.error('Failed to write log:', err);
+            if (err && err.code !== 'ENOENT') console.error('Failed to write log:', err);
         });
     }
     

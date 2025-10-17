@@ -1,6 +1,32 @@
 // 🚀 BarodaTek.com - Fully Interactive API Mock Platform
 // All functions are now REAL and WORKING! No more fake buttons!
 
+(function activateArenaTheme() {
+    if (typeof document === 'undefined') return;
+
+    const THEME_PATH = '/css/arena-theme.css';
+    const head = document.head || document.getElementsByTagName('head')[0];
+
+    if (head && !document.querySelector(`link[href="${THEME_PATH}"]`)) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = THEME_PATH;
+        head.appendChild(link);
+    }
+
+    const applyClass = () => {
+        if (document.body) {
+            document.body.classList.add('arena-theme');
+        }
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applyClass, { once: true });
+    } else {
+        applyClass();
+    }
+})();
+
 // Dynamic API configuration
 const API_CONFIG = {
     baseURL: window.location.origin,
@@ -22,7 +48,7 @@ let performanceData = {
 function showNotification(message, type = 'success') {
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);';
+    alertDiv.style.cssText = 'top: 180px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);';
     alertDiv.innerHTML = `
         <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
         ${message}
@@ -3938,6 +3964,10 @@ let statsData = {
     requestsPerMin: 0
 };
 
+const isLocalHost = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+let statsAPIAvailable = isLocalHost;
+let statsAvailabilityNotified = false;
+
 function initializeRealTimeStats() {
     // REAL-TIME TRACKING - Connected to actual WebSocket data
     // Start with 1 visitor (current user)
@@ -3948,7 +3978,9 @@ function initializeRealTimeStats() {
     statsData.requestsPerMin = 0;
     
     // Track THIS session's page view
-    incrementPageView();
+    if (statsAPIAvailable) {
+        incrementPageView();
+    }
     
     // Listen to WebSocket for REAL visitor updates
     if (window.websocket && window.websocket.readyState === WebSocket.OPEN) {
@@ -3971,7 +4003,11 @@ function initializeRealTimeStats() {
     }
     
     // Fetch real stats from server
-    fetchRealStats();
+    if (statsAPIAvailable) {
+        fetchRealStats();
+    } else {
+        notifyStatsUnavailable();
+    }
     
     updateStatsDisplay();
     
@@ -3983,12 +4019,23 @@ function initializeRealTimeStats() {
 }
 
 function fetchRealStats() {
-    // Fetch REAL statistics from server
+    if (!statsAPIAvailable) {
+        return;
+    }
+
     fetch('/api/stats')
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                if (res.status === 404) {
+                    statsAPIAvailable = false;
+                    notifyStatsUnavailable();
+                }
+                throw new Error(`Stats endpoint responded with ${res.status}`);
+            }
+            return res.json();
+        })
         .then(data => {
             if (data && data.success) {
-                // Update with REAL data from server
                 statsData.totalViews = data.totalViews || statsData.totalViews;
                 statsData.viewsToday = data.viewsToday || statsData.viewsToday;
                 statsData.apiRequests = data.apiRequests || statsData.apiRequests;
@@ -3997,12 +4044,15 @@ function fetchRealStats() {
             }
         })
         .catch(() => {
-            // If API fails, keep current values (no fake increments)
+            // Keep current values when offline/unavailable
         });
 }
 
 function incrementPageView() {
-    // Send page view to server for REAL tracking
+    if (!statsAPIAvailable) {
+        return;
+    }
+
     fetch('/api/stats/pageview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -4010,6 +4060,11 @@ function incrementPageView() {
             page: window.location.pathname,
             timestamp: new Date().toISOString()
         })
+    }).then(res => {
+        if (res.status === 404) {
+            statsAPIAvailable = false;
+            notifyStatsUnavailable();
+        }
     }).catch(() => {
         // Silently fail if offline
     });
@@ -4030,6 +4085,15 @@ function updateRequestsPerMin() {
     if (rpmEl) {
         rpmEl.textContent = statsData.requestsPerMin;
     }
+}
+
+function notifyStatsUnavailable() {
+    if (statsAvailabilityNotified) {
+        return;
+    }
+    statsAvailabilityNotified = true;
+    console.warn('Live stats API not available. Realtime dashboard switched to offline mode.');
+    showNotification('ℹ️ Live stats are unavailable in this environment. Dashboard running in offline mode.', 'warning');
 }
 
 function updateStatsDisplay() {
@@ -4405,10 +4469,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Start performance monitoring
     setInterval(updatePerformanceDisplay, 1000);
     
-    // Show welcome notification
-    setTimeout(() => {
-        showNotification('🎉 Welcome to BarodaTek.com! All features are now fully interactive and functional!', 'success');
-    }, 1000);
+    // Removed welcome notification to avoid blocking content
+    // setTimeout(() => {
+    //     showNotification('🎉 Welcome to BarodaTek.com! All features are now fully interactive and functional!', 'success');
+    // }, 1000);
     
     // Delegated click handler for data-action
     document.addEventListener('click', function(e) {

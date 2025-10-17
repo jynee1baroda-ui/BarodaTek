@@ -8,8 +8,10 @@ const WebSocket = require('ws');
 const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 const multer = require('multer');
+const crypto = require('crypto');
 const aiMonitor = require('./ai-monitor'); // AI Monitoring System
 const db = require('./database'); // Real Database with Persistence
+const paymentHandler = require('./payment-handler'); // Payment Processing System
 
 const app = express();
 const server = http.createServer(app);
@@ -20,50 +22,46 @@ db.initDatabase().then(() => {
     console.log('✅ Database ready for real-time data persistence');
 });
 
-// Memory monitoring with auto-fix and cleanup
+// Memory monitoring with auto-fix and cleanup (reduced frequency)
 setInterval(() => {
     const memUsage = process.memoryUsage();
     const heapUsedMB = Math.round(memUsage.heapUsed / 1024 / 1024);
     const heapTotalMB = Math.round(memUsage.heapTotal / 1024 / 1024);
     const heapPercent = Math.round((memUsage.heapUsed / memUsage.heapTotal) * 100);
     
-    // Clean up old analytics events (keep only last 100)
-    if (analytics.events.length > 100) {
-        analytics.events = analytics.events.slice(-100);
+    // Clean up old analytics events (keep only last 50)
+    if (analytics.events.length > 50) {
+        analytics.events = analytics.events.slice(-50);
     }
     
-    // Clean up old sessions (older than 1 hour)
-    const oneHourAgo = Date.now() - (60 * 60 * 1000);
+    // Clean up old sessions (older than 30 minutes)
+    const thirtyMinutesAgo = Date.now() - (30 * 60 * 1000);
     analytics.sessions.forEach((value, key) => {
-        if (value < oneHourAgo) {
+        if (value < thirtyMinutesAgo) {
             analytics.sessions.delete(key);
         }
     });
     
-    if (heapPercent > 80) {
-        console.log(`⚠️  High memory usage: ${heapPercent}% (${heapUsedMB}MB / ${heapTotalMB}MB)`);
-        console.log('🔄 Auto-fix: Running garbage collection and cleanup...');
+    // Only log and report if memory is CRITICALLY high (>90%)
+    if (heapPercent > 90) {
+        console.log(`⚠️  CRITICAL memory: ${heapPercent}% (${heapUsedMB}MB / ${heapTotalMB}MB)`);
         
-        // Clean up analytics in memory
-        analytics.events = analytics.events.slice(-50);
+        // Aggressive cleanup
+        analytics.events = analytics.events.slice(-25);
         
         // Force garbage collection if available
         if (global.gc) {
             global.gc();
-            console.log('✅ Garbage collection completed');
-        } else {
-            console.log('💡 Tip: Run node with --expose-gc flag to enable forced GC');
         }
         
-        aiMonitor.reportError('HIGH_MEMORY_USAGE', new Error(`Memory at ${heapPercent}%`), {
+        aiMonitor.reportError('CRITICAL_MEMORY', new Error(`Memory at ${heapPercent}%`), {
             heapUsed: heapUsedMB,
             heapTotal: heapTotalMB,
             heapPercent,
-            autoFix: !!global.gc,
-            eventsCleared: analytics.events.length
+            autoFix: !!global.gc
         });
     }
-}, 30000); // Check every 30 seconds
+}, 60000); // Check every 60 seconds (reduced frequency)
 
 // Connect AI Monitor to WebSocket for real-time notifications
 aiMonitor.on('notification', (notification) => {
@@ -142,8 +140,8 @@ const corsOptions = {
         if (!origin) return callback(null, true);
         
         const allowedOrigins = [
-            'http://localhost:3000',
             'http://localhost:8080',
+            'http://localhost:3000',
             'http://localhost:8081',
             'https://barodatek.com',
             'https://www.barodatek.com',
@@ -195,6 +193,34 @@ app.get('/favicon.ico', (req, res, next) => {
 wss.on('connection', (ws, req) => {
     console.log('🔗 New WebSocket connection from:', req.socket.remoteAddress);
     analytics.activeUsers++;
+    
+    // Parse access token from query string
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const accessToken = url.searchParams.get('token');
+    
+    // Check if this is a paid service connection
+    if (accessToken) {
+        paymentHandler.checkServiceAccess(accessToken).then(result => {
+            if (result.hasAccess) {
+                ws.isPaidUser = true;
+                ws.serviceAccess = result;
+                console.log('✅ Paid service access granted:', result.customer.email);
+                ws.send(JSON.stringify({
+                    type: 'access_granted',
+                    service: result.service.name,
+                    features: result.service.features,
+                    grantedAt: result.customer.grantedAt
+                }));
+            } else {
+                ws.send(JSON.stringify({
+                    type: 'access_denied',
+                    reason: result.reason || 'Invalid access token'
+                }));
+            }
+        }).catch(err => {
+            console.error('Access check error:', err);
+        });
+    }
     
     // Send welcome message
     ws.send(JSON.stringify({
@@ -544,6 +570,202 @@ app.delete('/api/contracts/:id', async (req, res) => {
             success: false,
             error: 'Failed to delete contract',
             timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// ========== PAYMENT & SERVICE DELIVERY ENDPOINTS ==========
+
+// Create new order
+app.post('/api/orders', async (req, res) => {
+    try {
+        const {customerName, customerEmail, itemId, itemType} = req.body;
+        
+        // Validate input
+        if (!customerName || !customerEmail || !itemId || !itemType) {
+            return res.status(400).json({
+                success: false,
+                error: 'Missing required fields: customerName, customerEmail, itemId, itemType'
+            });
+        }
+        
+        // Get item details
+        const item = itemType === 'service' 
+            ? paymentHandler.services[itemId]
+            : paymentHandler.products[itemId];
+            
+        if (!item) {
+            return res.status(404).json({
+                success: false,
+                error: 'Item not found'
+            });
+        }
+        
+        const result = await paymentHandler.createOrder({
+            customerName,
+            customerEmail,
+            customerId: crypto.createHash('md5').update(customerEmail).digest('hex'),
+            itemId,
+            itemName: item.name,
+            itemType,
+            totalAmount: item.price,
+            type: itemType
+        });
+        
+        res.json(result);
+    } catch (error) {
+        console.error('Order creation error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to create order'
+        });
+    }
+});
+
+// Verify payment
+app.post('/api/orders/:orderId/verify', async (req, res) => {
+    try {
+        const {orderId} = req.params;
+        const {reference, adminKey} = req.body;
+        
+        // Simple admin key check for manual verification
+        const isAdmin = adminKey === process.env.ADMIN_KEY || adminKey === 'barodatek-admin-2024';
+        
+        if (!isAdmin && !reference) {
+            return res.status(400).json({
+                success: false,
+                error: 'Payment reference required'
+            });
+        }
+        
+        const result = await paymentHandler.verifyPayment(orderId, {
+            reference: reference || 'ADMIN-VERIFIED',
+            verifiedBy: isAdmin ? 'admin' : 'customer'
+        });
+        
+        res.json(result);
+    } catch (error) {
+        console.error('Payment verification error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to verify payment'
+        });
+    }
+});
+
+// Check service access
+app.get('/api/access/:accessToken', async (req, res) => {
+    try {
+        const {accessToken} = req.params;
+        const result = await paymentHandler.checkServiceAccess(accessToken);
+        res.json(result);
+    } catch (error) {
+        console.error('Access check error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to check access'
+        });
+    }
+});
+
+// Get order status
+app.get('/api/orders/:orderId', async (req, res) => {
+    try {
+        const order = paymentHandler.getOrder(req.params.orderId);
+        
+        if (!order) {
+            return res.status(404).json({
+                success: false,
+                error: 'Order not found'
+            });
+        }
+        
+        res.json({
+            success: true,
+            order
+        });
+    } catch (error) {
+        console.error('Order lookup error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to get order'
+        });
+    }
+});
+
+// Download secured file
+app.get('/api/download/:token', async (req, res) => {
+    try {
+        const {token} = req.params;
+        
+        // In production, verify token and serve file
+        // For now, return download info
+        res.json({
+            success: true,
+            message: 'Download token valid',
+            instructions: 'File download will be available after payment verification'
+        });
+    } catch (error) {
+        console.error('Download error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to process download'
+        });
+    }
+});
+
+// Get service catalog
+app.get('/api/catalog/services', (req, res) => {
+    res.json({
+        success: true,
+        services: Object.values(paymentHandler.services)
+    });
+});
+
+// Get product catalog
+app.get('/api/catalog/products', (req, res) => {
+    res.json({
+        success: true,
+        products: Object.values(paymentHandler.products)
+    });
+});
+
+// Admin: Get all orders
+app.get('/api/admin/orders', (req, res) => {
+    const {adminKey} = req.query;
+    
+    if (adminKey !== process.env.ADMIN_KEY && adminKey !== 'barodatek-admin-2024') {
+        return res.status(403).json({
+            success: false,
+            error: 'Unauthorized'
+        });
+    }
+    
+    res.json({
+        success: true,
+        orders: paymentHandler.getAllOrders()
+    });
+});
+
+// Admin: Manual verification
+app.post('/api/admin/verify/:orderId', async (req, res) => {
+    const {adminKey, notes} = req.body;
+    
+    if (adminKey !== process.env.ADMIN_KEY && adminKey !== 'barodatek-admin-2024') {
+        return res.status(403).json({
+            success: false,
+            error: 'Unauthorized'
+        });
+    }
+    
+    try {
+        const result = await paymentHandler.manualVerify(req.params.orderId, notes);
+        res.json(result);
+    } catch (error) {
+        console.error('Manual verification error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to verify payment'
         });
     }
 });

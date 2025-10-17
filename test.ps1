@@ -9,7 +9,7 @@ Write-Host "`n📋 Testing API endpoints..." -ForegroundColor Yellow
 
 try {
     # Test health endpoint
-    $response = Invoke-RestMethod -Uri "http://localhost:3000/api/health" -Method GET
+    $response = Invoke-RestMethod -Uri "http://localhost:8080/api/health" -Method GET
     if ($response.success) {
         Write-Host "✅ Health check passed" -ForegroundColor Green
     } else {
@@ -24,7 +24,7 @@ try {
 
 try {
     # Test contracts endpoint
-    $response = Invoke-RestMethod -Uri "http://localhost:3000/api/contracts" -Method GET
+    $response = Invoke-RestMethod -Uri "http://localhost:8080/api/contracts" -Method GET
     if ($response.success) {
         Write-Host "✅ Contracts endpoint working - Found $($response.count) contracts" -ForegroundColor Green
     } else {
@@ -36,7 +36,7 @@ try {
 
 try {
     # Test stats endpoint
-    $response = Invoke-RestMethod -Uri "http://localhost:3000/api/stats" -Method GET
+    $response = Invoke-RestMethod -Uri "http://localhost:8080/api/stats" -Method GET
     if ($response.success) {
         Write-Host "✅ Statistics endpoint working" -ForegroundColor Green
         Write-Host "   Total Contracts: $($response.data.totalContracts)" -ForegroundColor White
@@ -50,7 +50,7 @@ try {
 }
 
 Write-Host "`n🎉 API testing completed!" -ForegroundColor Green
-Write-Host "`n🌐 Web interface: http://localhost:3000" -ForegroundColor Cyan
-Write-Host "🔗 API documentation: http://localhost:3000/#api" -ForegroundColor Cyan
+Write-Host "`n🌐 Web interface: http://localhost:8080" -ForegroundColor Cyan
+Write-Host "🔗 API documentation: http://localhost:8080/#api" -ForegroundColor Cyan
 
 pause

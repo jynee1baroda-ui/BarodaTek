@@ -15,7 +15,7 @@
                 "type": "text/javascript",
                 "exec": [
                     "// Set base URL",
-                    "pm.globals.set('baseURL', 'http://localhost:3000/api');"
+                    "pm.globals.set('baseURL', 'http://localhost:8080/api');"
                 ]
             }
         }
@@ -23,7 +23,7 @@
     "variable": [
         {
             "key": "baseURL",
-            "value": "http://localhost:3000/api",
+            "value": "http://localhost:8080/api",
             "type": "string"
         }
     ],

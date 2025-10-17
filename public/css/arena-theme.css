@@ -1,0 +1,587 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap');
+
+/* Force html and body to always have dark background */
+html {
+  background: #0a0a0a !important;
+}
+
+body {
+  background: #0a0a0a !important;
+  background-image: linear-gradient(180deg, #0a0a0a 0%, #141414 100%) !important;
+}
+
+:root {
+  --arena-bg: #0a0a0a;
+  --arena-bg-alt: #141414;
+  --arena-surface: #1a1a1a;
+  --arena-border: rgba(255, 26, 64, 0.2);
+  --arena-border-strong: rgba(255, 26, 64, 0.4);
+  --arena-red: #ff1a40;
+  --arena-red-dark: #c40028;
+  --arena-gray: #a0a0a8;
+  --arena-gray-light: #d0d0d8;
+  --arena-text: #ffffff;
+  --arena-heading-font: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
+  --arena-body-font: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
+  --arena-transition: 0.2s ease;
+  --arena-shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --arena-shadow-strong: 0 4px 16px rgba(255, 26, 64, 0.2);
+}
+
+body.arena-theme {
+  background: linear-gradient(180deg, #0a0a0a 0%, #141414 100%);
+  color: var(--arena-text);
+  font-family: var(--arena-body-font);
+  margin: 0;
+  min-height: 100vh;
+  letter-spacing: 0.01em;
+}
+
+/* Force all sections and containers to have dark background */
+body.arena-theme section,
+body.arena-theme .section,
+body.arena-theme .container,
+body.arena-theme .container-fluid {
+  background-color: transparent !important;
+  color: var(--arena-text) !important;
+}
+
+/* Ensure rows and columns don't have light backgrounds */
+body.arena-theme .row,
+body.arena-theme .col,
+body.arena-theme [class*="col-"] {
+  background-color: transparent !important;
+}
+
+/* Ensure interactive sections have proper dark background */
+body.arena-theme .interactive-section {
+  background-color: var(--arena-bg) !important;
+}
+
+body.arena-theme::before {
+  display: none;
+}
+
+body.arena-theme * {
+  z-index: inherit;
+}
+
+body.arena-theme a {
+  color: var(--arena-red);
+  text-decoration: none;
+  transition: color var(--arena-transition), text-shadow var(--arena-transition);
+}
+
+body.arena-theme a:hover {
+  color: #ff5271;
+  text-shadow: none;
+}
+
+body.arena-theme h1,
+body.arena-theme h2,
+body.arena-theme h3,
+body.arena-theme h4,
+body.arena-theme h5,
+body.arena-theme h6 {
+  font-family: var(--arena-heading-font);
+  font-weight: 600;
+  color: #ffffff !important;
+  margin-top: 0;
+  text-shadow: none;
+}
+
+/* Force all headings to be white regardless of context */
+body.arena-theme section h1,
+body.arena-theme section h2,
+body.arena-theme section h3,
+body.arena-theme section h4,
+body.arena-theme section h5,
+body.arena-theme section h6,
+body.arena-theme .container h1,
+body.arena-theme .container h2,
+body.arena-theme .container h3,
+body.arena-theme .container h4,
+body.arena-theme .container h5,
+body.arena-theme .container h6 {
+  color: #ffffff !important;
+}
+
+body.arena-theme h1 {
+  font-size: 2.5rem;
+}
+
+body.arena-theme h2 {
+  font-size: 2rem;
+}
+
+body.arena-theme h3 {
+  font-size: 1.5rem;
+}
+
+body.arena-theme h4,
+body.arena-theme h5,
+body.arena-theme h6 {
+  color: #ffffff !important;
+}
+
+body.arena-theme p,
+body.arena-theme li,
+body.arena-theme span,
+body.arena-theme input,
+body.arena-theme textarea,
+body.arena-theme label {
+  color: var(--arena-text) !important;
+}
+
+body.arena-theme .text-muted,
+body.arena-theme .text-secondary {
+  color: var(--arena-text) !important;
+  opacity: 0.9;
+}
+
+/* Override Bootstrap text-white class to ensure visibility */
+body.arena-theme .text-white {
+  color: #ffffff !important;
+}
+
+body.arena-theme button,
+body.arena-theme .btn,
+body.arena-theme [role='button'],
+body.arena-theme .nav-link,
+body.arena-theme .tab-button {
+  font-family: var(--arena-body-font);
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  box-shadow: var(--arena-shadow-soft);
+  transition: transform var(--arena-transition), box-shadow var(--arena-transition),
+              background var(--arena-transition), border-color var(--arena-transition);
+  color: #ffffff !important;
+}
+
+body.arena-theme button,
+body.arena-theme .btn-primary,
+body.arena-theme .btn-danger,
+body.arena-theme .btn-cta {
+  background: linear-gradient(135deg, var(--arena-red), var(--arena-red-dark));
+  border-color: var(--arena-border-strong);
+  color: var(--arena-text) !important;
+}
+
+body.arena-theme .btn-secondary,
+body.arena-theme .btn-outline,
+body.arena-theme .btn-outline-primary,
+body.arena-theme .btn-outline-danger,
+body.arena-theme .nav-link,
+body.arena-theme .tab-button {
+  background: transparent;
+  border-color: var(--arena-border);
+  color: var(--arena-gray-light) !important;
+}
+
+body.arena-theme button:hover,
+body.arena-theme .btn:hover,
+body.arena-theme [role='button']:hover,
+body.arena-theme .nav-link:hover,
+body.arena-theme .tab-button:hover,
+body.arena-theme .nav-link.active,
+body.arena-theme .tab-button.active {
+  transform: translateY(-1px);
+  box-shadow: var(--arena-shadow-strong);
+  border-color: var(--arena-border-strong);
+  color: var(--arena-text) !important;
+}
+
+body.arena-theme button:focus,
+body.arena-theme .btn:focus,
+body.arena-theme .form-control:focus,
+body.arena-theme input:focus,
+body.arena-theme textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 26, 64, 0.2);
+  border-color: var(--arena-border-strong);
+}
+
+body.arena-theme .card,
+body.arena-theme .panel,
+body.arena-theme .arena-card,
+body.arena-theme .list-group-item,
+body.arena-theme .accordion-item,
+body.arena-theme .endpoint-card {
+  background: var(--arena-surface) !important;
+  border: 1px solid var(--arena-border);
+  border-radius: 8px;
+  box-shadow: var(--arena-shadow-soft);
+  color: #ffffff !important;
+}
+
+body.arena-theme .card *,
+body.arena-theme .panel *,
+body.arena-theme .arena-card *,
+body.arena-theme .list-group-item *,
+body.arena-theme .accordion-item *,
+body.arena-theme .endpoint-card * {
+  color: #ffffff !important;
+}
+
+/* Force all card content to be white */
+body.arena-theme .card *:not(.badge):not(.btn) {
+  color: #ffffff !important;
+}
+
+body.arena-theme .card-title,
+body.arena-theme .card-header,
+body.arena-theme .card-body,
+body.arena-theme .card-text,
+body.arena-theme .card h1,
+body.arena-theme .card h2,
+body.arena-theme .card h3,
+body.arena-theme .card h4,
+body.arena-theme .card h5,
+body.arena-theme .card h6,
+body.arena-theme .card p,
+body.arena-theme .card span,
+body.arena-theme .card li {
+  color: #ffffff !important;
+}
+
+body.arena-theme .endpoint-card {
+  border-left: 3px solid var(--arena-border-strong);
+  overflow: hidden;
+}
+
+body.arena-theme .endpoint-card.get {
+  border-left-color: #28a745;
+}
+
+body.arena-theme .endpoint-card.post {
+  border-left-color: #335dff;
+}
+
+body.arena-theme .endpoint-card.put {
+  border-left-color: #ff8c00;
+}
+
+body.arena-theme .endpoint-card.delete {
+  border-left-color: #dc3545;
+}
+
+body.arena-theme .card-header,
+body.arena-theme .modal-header,
+body.arena-theme .accordion-header {
+  border-bottom: 1px solid rgba(255, 26, 64, 0.2);
+  background: rgba(255, 26, 64, 0.1);
+}
+
+/* Bootstrap color backgrounds - force dark background with white text */
+body.arena-theme .card-header.bg-primary,
+body.arena-theme .card-header.bg-success,
+body.arena-theme .card-header.bg-info,
+body.arena-theme .card-header.bg-warning,
+body.arena-theme .card-header.bg-danger {
+  background: var(--arena-surface) !important;
+  color: #ffffff !important;
+  border-left: 4px solid var(--arena-red);
+}
+
+body.arena-theme .card-header.bg-primary {
+  border-left-color: #007bff;
+}
+
+body.arena-theme .card-header.bg-success {
+  border-left-color: #28a745;
+}
+
+body.arena-theme .card-header.bg-info {
+  border-left-color: #17a2b8;
+}
+
+body.arena-theme .card-header.bg-warning {
+  border-left-color: #ffc107;
+}
+
+body.arena-theme .card-header.bg-danger {
+  border-left-color: #dc3545;
+}
+
+/* Ensure all text in card headers is white */
+body.arena-theme .card-header *,
+body.arena-theme .card-header h1,
+body.arena-theme .card-header h2,
+body.arena-theme .card-header h3,
+body.arena-theme .card-header h4,
+body.arena-theme .card-header h5,
+body.arena-theme .card-header h6 {
+  color: #ffffff !important;
+}
+
+body.arena-theme .modal-content,
+body.arena-theme .modal-body,
+body.arena-theme .modal-footer {
+  background: rgba(10, 10, 16, 0.95);
+  border-color: var(--arena-border);
+  color: #ffffff;
+}
+
+body.arena-theme .alert,
+body.arena-theme .badge,
+body.arena-theme .label,
+body.arena-theme .tag {
+  background: rgba(255, 26, 64, 0.1);
+  border: 1px solid rgba(255, 26, 64, 0.25);
+  color: #ffffff !important;
+  box-shadow: none;
+}
+
+/* Force white text on all badges */
+body.arena-theme .badge {
+  color: #ffffff !important;
+}
+
+body.arena-theme .badge.get,
+body.arena-theme .method-badge.get,
+body.arena-theme .badge.bg-success {
+  background: linear-gradient(135deg, #28a745, #1b7f32);
+  color: #ffffff !important;
+}
+
+body.arena-theme .badge.post,
+body.arena-theme .method-badge.post,
+body.arena-theme .badge.bg-primary {
+  background: linear-gradient(135deg, #007bff, #335dff);
+  color: #ffffff !important;
+}
+
+body.arena-theme .badge.put,
+body.arena-theme .method-badge.put,
+body.arena-theme .badge.bg-warning {
+  background: linear-gradient(135deg, #ffc107, #ff8c00);
+  color: #ffffff !important;
+}
+
+body.arena-theme .badge.delete,
+body.arena-theme .method-badge.delete,
+body.arena-theme .badge.bg-danger {
+  background: linear-gradient(135deg, #dc3545, #9f1d28);
+  color: #ffffff !important;
+}
+
+body.arena-theme .table,
+body.arena-theme table {
+  color: #ffffff;
+  background: rgba(12, 12, 18, 0.9);
+}
+
+body.arena-theme .table-striped tbody tr:nth-child(odd),
+body.arena-theme table tbody tr:nth-child(odd) {
+  background: rgba(255, 26, 64, 0.08);
+}
+
+body.arena-theme table thead {
+  background: rgba(255, 26, 64, 0.14);
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+body.arena-theme .form-control,
+body.arena-theme input,
+body.arena-theme select,
+body.arena-theme textarea {
+  background: rgba(10, 10, 16, 0.88);
+  border: 1px solid var(--arena-border);
+  color: #ffffff;
+  border-radius: 12px;
+  transition: border-color var(--arena-transition), box-shadow var(--arena-transition);
+}
+
+body.arena-theme .form-check-input {
+  background-color: rgba(255, 26, 64, 0.2);
+  border-color: var(--arena-border);
+}
+
+body.arena-theme hr {
+  border-color: rgba(255, 26, 64, 0.25);
+}
+
+body.arena-theme .navbar,
+body.arena-theme nav,
+body.arena-theme header {
+  background: rgba(5, 5, 10, 0.88);
+  border-bottom: 1px solid rgba(255, 26, 64, 0.22);
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.6);
+}
+
+body.arena-theme .navbar.bg-dark,
+body.arena-theme .bg-dark {
+  background: rgba(5, 5, 10, 0.88) !important;
+}
+
+body.arena-theme footer {
+  background: rgba(5, 5, 8, 0.92);
+  border-top: 1px solid rgba(255, 26, 64, 0.18);
+  color: #ffffff;
+}
+
+body.arena-theme .dropdown-menu,
+body.arena-theme .list-group,
+body.arena-theme .popover,
+body.arena-theme .tooltip-inner {
+  background: rgba(10, 10, 16, 0.95);
+  border: 1px solid var(--arena-border);
+  color: #ffffff;
+}
+
+body.arena-theme .bg-light,
+body.arena-theme .bg-body,
+body.arena-theme .bg-white {
+  background: rgba(15, 15, 22, 0.92) !important;
+  color: #ffffff !important;
+}
+
+body.arena-theme .bg-light *,
+body.arena-theme .bg-body *,
+body.arena-theme .bg-white * {
+  color: #ffffff !important;
+}
+
+body.arena-theme .alert-light {
+  background: rgba(255, 26, 64, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 26, 64, 0.32);
+}
+
+body.arena-theme .spinner-border,
+body.arena-theme .loading-indicator {
+  border-top-color: var(--arena-red) !important;
+}
+
+body.arena-theme .loading-spinner {
+  display: none;
+}
+
+body.arena-theme .response-area,
+body.arena-theme pre code {
+  background: rgba(10, 10, 16, 0.78);
+  color: #ffffff;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 26, 64, 0.15);
+  box-shadow: none;
+}
+
+body.arena-theme .api-explorer,
+body.arena-theme .hero,
+body.arena-theme .page-banner {
+  background: linear-gradient(180deg, rgba(255, 26, 64, 0.08) 0%, transparent 40%),
+              var(--arena-bg-alt);
+  color: var(--arena-text);
+  position: relative;
+  overflow: hidden;
+  padding: clamp(2rem, 5vw, 3.5rem) 0;
+}
+
+body.arena-theme .api-explorer::after,
+body.arena-theme .hero::after,
+body.arena-theme .page-banner::after {
+  display: none;
+}
+
+body.arena-theme .arena-llama {
+  width: clamp(56px, 6.5vw, 80px);
+  height: clamp(56px, 6.5vw, 80px);
+  background: url('../assets/llama-icon.png') center/contain no-repeat;
+  animation: arena-llama-float 4.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 14px rgba(255, 26, 64, 0.65));
+}
+
+@keyframes arena-llama-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(-2deg);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(2deg);
+  }
+}
+
+body.arena-theme .fade-in,
+body.arena-theme .slide-in,
+body.arena-theme .modal,
+body.arena-theme .offcanvas {
+  transition: opacity var(--arena-transition), transform var(--arena-transition);
+}
+
+body.arena-theme .glow-text {
+  text-shadow: none;
+}
+
+body.arena-theme .chip,
+body.arena-theme .pill,
+body.arena-theme .tag-pill {
+  border-radius: 4px;
+  background: rgba(255, 26, 64, 0.1);
+  border: 1px solid rgba(255, 26, 64, 0.25);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  color: #ffffff !important;
+}
+
+body.arena-theme .test-button {
+  transition: transform var(--arena-transition);
+}
+
+body.arena-theme .test-button:hover {
+  transform: translateY(-1px);
+}
+
+body.arena-theme .sample-data {
+  background: rgba(12, 12, 19, 0.82);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 26, 64, 0.15);
+  box-shadow: none;
+  padding: 1rem;
+}
+
+/* API Endpoint Cards - Force dark background and white text */
+body.arena-theme .api-endpoint {
+  background: var(--arena-surface) !important;
+  border: 1px solid var(--arena-border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--arena-shadow-soft);
+}
+
+body.arena-theme .api-endpoint *,
+body.arena-theme .api-endpoint h5,
+body.arena-theme .api-endpoint p,
+body.arena-theme .api-endpoint small,
+body.arena-theme .api-endpoint code {
+  color: #ffffff !important;
+}
+
+body.arena-theme .api-endpoint code {
+  background: rgba(0, 0, 0, 0.4) !important;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  display: block;
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+  body.arena-theme {
+    font-size: 0.96rem;
+  }
+
+  body.arena-theme .card,
+  body.arena-theme .panel,
+  body.arena-theme .modal-content {
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  body.arena-theme button,
+  body.arena-theme .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -36,7 +36,7 @@
 
 ### Current Photo Location
 The photo appears in the hero section of your About page at:
-`http://localhost:8080/about.html`
+`https://barodatek.com/#home`
 
 ### Photo Requirements
 - **Size:** 400x400 pixels (square) works best

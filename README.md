@@ -86,11 +86,11 @@ docker-compose up
 > ⚠️ **Note**: If visitors see "Access Required", you need to disable Deployment Protection in Vercel dashboard. See [IMGUR-FIXED-ACCESS-HOWTO.md](IMGUR-FIXED-ACCESS-HOWTO.md) for instructions.
 
 #### 💻 Local Development
-- **Web Interface**: http://localhost:3000
-- **AI Monitor Dashboard**: http://localhost:3000/public/ai-monitor-dashboard.html
-- **Interactive API Explorer**: http://localhost:3000/api-explorer.html
-- **API Health Check**: http://localhost:3000/api/health
-- **API Documentation**: http://localhost:3000/#api
+- **Web Interface**: http://localhost:8080
+- **AI Monitor Dashboard**: http://localhost:8080/public/ai-monitor-dashboard.html
+- **Interactive API Explorer**: http://localhost:8080/api-explorer.html
+- **API Health Check**: http://localhost:8080/api/health
+- **API Documentation**: http://localhost:8080/#api
 
 ## 📋 API Endpoints
 
@@ -110,7 +110,7 @@ docker-compose up
 - Built-in web interface for testing all API endpoints
 - Real-time response display with syntax highlighting
 - Sample data loading and export functionality
-- Access at: http://localhost:3000/api-explorer.html
+- Access at: http://localhost:8080/api-explorer.html
 
 ### **Postman Collection**
 - Import `postman-collection.json` into Postman
@@ -134,12 +134,12 @@ docker-compose up
 
 ### Get All Contracts
 ```bash
-curl http://localhost:3000/api/contracts
+curl http://localhost:8080/api/contracts
 ```
 
 ### Create New Contract
 ```bash
-curl -X POST http://localhost:3000/api/contracts \
+curl -X POST http://localhost:8080/api/contracts \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Software Development Contract",
@@ -152,7 +152,7 @@ curl -X POST http://localhost:3000/api/contracts \
 
 ### Get Statistics
 ```bash
-curl http://localhost:3000/api/stats
+curl http://localhost:8080/api/stats
 ```
 
 ## 🛠️ Development Commands
@@ -235,7 +235,7 @@ Replace the in-memory `contracts` array with:
 
 ### Local Development
 - Run with `.\start.ps1`
-- Access at http://localhost:3000
+- Access at http://localhost:8080
 
 ### Docker Desktop
 - Run with `.\docker-run.ps1`
