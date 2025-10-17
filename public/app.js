@@ -242,11 +242,18 @@ async function loadContracts() {
 
 // Display contracts in the UI
 function displayContracts(contracts) {
-    const contractsContainer = document.getElementById('contracts-container');
-    if (!contractsContainer) return;
+    const contractsContainer = document.getElementById('contractsContainer');
+    if (!contractsContainer) {
+        console.error('Contracts container not found!');
+        return;
+    }
+    
+    // Hide loading spinner
+    const loadingDiv = document.querySelector('#contracts .loading');
+    if (loadingDiv) loadingDiv.style.display = 'none';
     
     if (!contracts || contracts.length === 0) {
-        contractsContainer.innerHTML = '<div class="alert alert-info">No contracts found. Create your first contract!</div>';
+        contractsContainer.innerHTML = '<div class="col-12"><div class="alert alert-info">No contracts found. Create your first contract!</div></div>';
         return;
     }
     
