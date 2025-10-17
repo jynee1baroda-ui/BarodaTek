@@ -18,7 +18,7 @@
             background: var(--dark-bg);
             background-image: 
                 repeating-linear-gradient(0deg, rgba(255, 26, 64, 0.03) 0px, transparent 1px, transparent 2px, rgba(255, 26, 64, 0.03) 3px),
-                linear-gradient(90deg, rgba(255, 26, 64, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 26, 64, 0.322) 1px, transparent 1px),
                 linear-gradient(180deg, rgba(255, 26, 64, 0.05) 1px, transparent 1px);
             background-size: 100% 100%, 40px 40px, 40px 40px;
             color: #ffffff;
@@ -476,20 +476,24 @@
                 return;
             }
             
-            container.innerHTML = knowledge.map(item => `
-                <div class="knowledge-card">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5>${item.issue}</h5>
-                        <span class="badge-custom badge-${item.type}">${item.type.toUpperCase()}</span>
+            container.innerHTML = knowledge.map(item => {
+                const type = item.type ? item.type : 'unknown';
+                const typeLabel = item.type ? item.type.toUpperCase() : 'UNKNOWN';
+                return `
+                    <div class="knowledge-card">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5>${item.issue || 'No Issue Title'}</h5>
+                            <span class="badge-custom badge-${type}">${typeLabel}</span>
+                        </div>
+                        <p class="mb-2">${item.description || ''}</p>
+                        <strong style="color: #ff1a40;">💡 Solution:</strong>
+                        <p class="mb-2">${item.solution || ''}</p>
+                        ${item.autoFix ? '<span class="badge bg-success">✅ Auto-Fix Available</span>' : ''}
+                        ${item.timesEncountered ? `<span class="badge bg-info">Encountered ${item.timesEncountered}x</span>` : ''}
+                        ${item.chatbotContribution ? '<span class="badge bg-primary">🤖 Chatbot Contribution</span>' : ''}
                     </div>
-                    <p class="mb-2">${item.description}</p>
-                    <strong style="color: #10b981;">💡 Solution:</strong>
-                    <p class="mb-2">${item.solution}</p>
-                    ${item.autoFix ? '<span class="badge bg-success">✅ Auto-Fix Available</span>' : ''}
-                    ${item.timesEncountered ? `<span class="badge bg-info">Encountered ${item.timesEncountered}x</span>` : ''}
-                    ${item.chatbotContribution ? '<span class="badge bg-primary">🤖 Chatbot Contribution</span>' : ''}
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         
         // Handle real-time notification
