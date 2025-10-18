@@ -87,12 +87,12 @@ async function checkAdminStatus() {
 function updateAIMonitorVisibility() {
     const aiSection = document.getElementById('aiMonitorSection');
     if (!state.isAdmin && !state.demoMode) {
-        aiSection.innerHTML = `
+        aiSection.innerHTML = (window.sanitizeHTML || sanitizeHTML)(`
             <div class="locked-panel">
                 <h2>🔒 ADMIN ONLY - AI MONITOR LOCKED</h2>
                 <p>Monitoring Active - Admin Access Required</p>
             </div>
-        `;
+        `);
     }
 }
 
@@ -488,7 +488,7 @@ function addAIAction(status, title, description, time) {
 async function executeEndpoint(endpointName) {
     const responseDiv = document.getElementById(`response-${endpointName}`);
     responseDiv.classList.add('active');
-    responseDiv.innerHTML = '<div class="loading">⏳ Executing request...</div>';
+    responseDiv.innerHTML = (window.sanitizeHTML || sanitizeHTML)('<div class="loading">⏳ Executing request...</div>');
     
     try {
         let result;
@@ -595,19 +595,19 @@ function displayResponse(container, data) {
     const statusCode = data.status || 200;
     const statusClass = statusCode < 300 ? 'success' : 'error';
     
-    container.innerHTML = `
+    container.innerHTML = (window.sanitizeHTML || sanitizeHTML)(`
         <div class="response-status ${statusClass}">
             ${statusCode} ${statusCode < 300 ? 'OK' : 'ERROR'}
         </div>
         <pre>${JSON.stringify(data, null, 2)}</pre>
-    `;
+    `);
 }
 
 function displayError(container, error) {
-    container.innerHTML = `
+    container.innerHTML = (window.sanitizeHTML || sanitizeHTML)(`
         <div class="response-status error">ERROR</div>
-        <pre>${sanitizeHTML(error.message)}</pre>
-    `;
+        <pre>${(window.escapeHtml || escapeHtml ? (window.escapeHtml || escapeHtml)(error.message) : error.message)}</pre>
+    `);
 }
 
 // ============================================

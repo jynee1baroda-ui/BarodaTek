@@ -37,6 +37,45 @@ const API_CONFIG = {
 };
 const API_BASE_URL = API_CONFIG.apiBaseURL;
 
+// Lightweight sanitizer used by non-module pages. Keeps a tight whitelist.
+function sanitizeHTML(html) {
+    if (!html) return '';
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+
+    // Remove dangerous elements
+    const blocked = temp.querySelectorAll('script, style, iframe, object, embed');
+    blocked.forEach(el => el.remove());
+
+    // Allowed tags and attributes
+    const allowedTags = ['div','span','p','a','strong','em','b','i','u','br','hr','pre','code','ul','ol','li'];
+    const allowedAttrs = ['class','id','href','title','alt','src','rel','target'];
+
+    const all = temp.querySelectorAll('*');
+    all.forEach(el => {
+        const tag = el.tagName.toLowerCase();
+        if (!allowedTags.includes(tag)) {
+            while (el.firstChild) el.parentNode.insertBefore(el.firstChild, el);
+            el.parentNode.removeChild(el);
+            return;
+        }
+
+        Array.from(el.attributes).forEach(attr => {
+            const name = attr.name.toLowerCase();
+            const value = attr.value || '';
+            if (!allowedAttrs.includes(name) && !name.startsWith('data-')) {
+                el.removeAttribute(attr.name);
+                return;
+            }
+            if (typeof value === 'string' && (value.toLowerCase().includes('javascript:') || value.toLowerCase().includes('data:text/html'))) {
+                el.removeAttribute(attr.name);
+            }
+        });
+    });
+
+    return temp.innerHTML;
+}
+
 let performanceData = {
     requests: 0,
     startTime: Date.now(),
@@ -1057,7 +1096,6 @@ Happy Coding! 🎉
 `;
 
     downloadFile(sourcePackage, 'BarodaTek-COMPLETE-SOURCE-CODE.txt', 'text/plain');
-    showNotification('📦 Complete source code package downloaded! Includes server.js, package.json, Docker files, and full setup instructions!', 'success');
 }
 
 // Download Postman collection
@@ -1653,6 +1691,7 @@ function startGame() {
     let usedHint = false;
     
     // API Knowledge Questions
+    // --- Add more questions for the mini game ---
     const questions = [
         {
             question: "What HTTP method is used to retrieve data?",
@@ -1678,7 +1717,83 @@ function startGame() {
             question: "What status code indicates 'Not Found'?",
             options: ["200", "404", "500", "301"],
             correct: 1
-        }
+        },
+        {
+            question: "Which HTTP method updates existing resources?",
+            options: ["GET", "POST", "PUT", "DELETE"],
+            correct: 2
+        },
+        {
+            question: "What is the default port for HTTP?",
+            options: ["80", "443", "22", "8080"],
+            correct: 0
+        },
+        {
+            question: "Which status code means 'Forbidden'?",
+            options: ["403", "401", "404", "500"],
+            correct: 0
+        },
+        {
+            question: "Which protocol is secure?",
+            options: ["HTTP", "FTP", "HTTPS", "SMTP"],
+            correct: 2
+        },
+        {
+            question: "What does JSON stand for?",
+            options: ["JavaScript Object Notation", "Java Source Output Name", "Just Simple Object Naming", "Junction Service Oriented Network"],
+            correct: 0
+        },
+        {
+            question: "Which tool is used for API testing?",
+            options: ["Postman", "Photoshop", "Excel", "Word"],
+            correct: 0
+        },
+        {
+            question: "Which HTTP method deletes resources?",
+            options: ["GET", "POST", "PUT", "DELETE"],
+            correct: 3
+        },
+        {
+            question: "What does CORS stand for?",
+            options: ["Cross-Origin Resource Sharing", "Core Object Resource Service", "Custom Output Response System", "Centralized Online Routing Service"],
+            correct: 0
+        },
+        {
+            question: "Which status code means 'Unauthorized'?",
+            options: ["401", "403", "404", "500"],
+            correct: 0
+        },
+        {
+            question: "Which HTTP method is idempotent?",
+            options: ["POST", "PUT", "DELETE", "GET"],
+            correct: 3
+        },
+        {
+            question: "What does API stand for?",
+            options: ["Application Programming Interface", "Advanced Protocol Integration", "Automated Process Instruction", "Active Page Index"],
+            correct: 0
+        },
+        {
+            question: "Which status code means 'Internal Server Error'?",
+            options: ["404", "500", "200", "301"],
+            correct: 1
+        },
+        {
+            question: "Which HTTP method is used to partially update resources?",
+            options: ["GET", "PATCH", "PUT", "DELETE"],
+            correct: 1
+        },
+        {
+            question: "What does SSL stand for?",
+            options: ["Secure Sockets Layer", "Simple Service Logic", "Server Side Language", "System Security Level"],
+            correct: 0
+        },
+        {
+            question: "Which tool generates API documentation?",
+            options: ["Swagger", "Word", "Excel", "Photoshop"],
+            correct: 0
+        },
+        // ...add up to 25 questions as needed...
     ];
 
     const hints = [
@@ -1726,15 +1841,32 @@ function startGame() {
         questionText.textContent = `Q${currentQuestionIndex + 1}: ${q.question}`;
         answersContainer.innerHTML = '';
         
-        q.options.forEach((option, index) => {
+        // --- Fix answer selection to always move to next question ---
+        q.options.forEach((opt, i) => {
             const btn = document.createElement('button');
-            btn.className = 'btn btn-outline-light btn-lg';
-            btn.textContent = option;
-            btn.setAttribute('data-answer-index', index);
-            btn.setAttribute('data-correct-index', q.correct);
-            btn.addEventListener('click', function() {
-                checkAnswer(index, q.correct, this);
-            });
+            btn.className = 'btn btn-outline-light w-100 mb-2';
+            btn.textContent = opt;
+            btn.setAttribute('data-answer-index', i);
+            btn.onclick = () => {
+                if (answered) return;
+                answered = true;
+                btn.disabled = true;
+                if (i === q.correct) {
+                    btn.classList.remove('btn-outline-light');
+                    btn.classList.add('btn-success');
+                    btn.innerHTML = `✅ ${opt}`;
+                    performanceData.gameScore += 100;
+                    scoreElement.textContent = performanceData.gameScore;
+                } else {
+                    btn.classList.remove('btn-outline-light');
+                    btn.classList.add('btn-danger');
+                    btn.innerHTML = `❌ ${opt}`;
+                    performanceData.gameScore = Math.max(0, performanceData.gameScore - 50);
+                    scoreElement.textContent = performanceData.gameScore;
+                }
+                // Move to next question after short delay
+                setTimeout(nextQuestion, 1200);
+            };
             answersContainer.appendChild(btn);
         });
 
@@ -1748,6 +1880,21 @@ function startGame() {
         `;
         answersContainer.appendChild(controls);
 
+        // --- Add refresh and home buttons to mini game UI ---
+        const controlRow = document.createElement('div');
+        controlRow.className = 'd-flex justify-content-center mt-3';
+        controlRow.innerHTML = `
+            <button id="api-quiz-refresh-btn" class="btn btn-secondary mx-2">🔄 Refresh</button>
+            <button id="api-quiz-home-btn" class="btn btn-danger mx-2">🏠 Home</button>
+        `;
+        document.getElementById('api-quiz-controls').appendChild(controlRow);
+        document.getElementById('api-quiz-refresh-btn').onclick = () => {
+            location.reload();
+        };
+        document.getElementById('api-quiz-home-btn').onclick = () => {
+            window.location.href = '/index.html';
+        };
+
         // Hint box area
         const hintBox = document.createElement('div');
         hintBox.id = 'api-quiz-hint-box';
@@ -1759,13 +1906,12 @@ function startGame() {
             usedHint = true;
             const msg = hints[currentQuestionIndex] || 'Focus on the HTTP method or status semantics.';
             hintBox.innerHTML = `<div class="alert alert-warning"><strong>Hint:</strong> ${msg}</div>`;
-            // Optional small penalty
             performanceData.gameScore = Math.max(0, performanceData.gameScore - 20);
             scoreElement.textContent = performanceData.gameScore;
+            setTimeout(nextQuestion, 1500);
         };
 
         document.getElementById('api-quiz-reveal-btn').onclick = () => {
-            // Highlight correct answer and move on
             const btns = answersContainer.querySelectorAll('button.btn');
             btns.forEach((b, i) => {
                 b.disabled = true;
@@ -1781,6 +1927,15 @@ function startGame() {
         document.getElementById('api-quiz-skip-btn').onclick = () => {
             nextQuestion();
         };
+        
+        // Improve hint/reveal/skip feedback readability
+        hintBox.style.fontSize = '1.15rem';
+        hintBox.style.color = '#fff';
+        hintBox.style.textShadow = '0 0 8px #ff1a40, 0 0 2px #fff';
+        hintBox.style.background = 'rgba(30,30,30,0.95)';
+        hintBox.style.borderRadius = '8px';
+        hintBox.style.padding = '0.75rem 1rem';
+        hintBox.style.marginTop = '0.5rem';
         
         scoreElement.textContent = performanceData.gameScore;
         levelElement.textContent = currentLevel;
@@ -1833,6 +1988,12 @@ function startGame() {
                 </div>
                 <button class="btn btn-primary btn-lg" data-action="reloadPage">
                     <i class="fas fa-redo me-2"></i>Play Again
+                </button>
+                <button class="btn btn-secondary btn-lg ms-2" onclick="location.reload();">
+                    <i class="fas fa-sync-alt me-2"></i>Refresh
+                </button>
+                <button class="btn btn-dark btn-lg ms-2" onclick="window.location.href='index.html';">
+                    <i class="fas fa-home me-2"></i>Home
                 </button>
             </div>
         `;
@@ -1901,63 +2062,71 @@ function gameModal(questions) {
         const q = questions[currentQuestion];
         const gameContent = document.getElementById('game-content');
         gameContent.innerHTML = `
-            <h6>Question ${currentQuestion + 1} of ${questions.length}</h6>
-            <p class="lead">${q.question}</p>
-            <div class="d-grid gap-2" id="modal-answers"></div>
+            <h6>Find the Bug - Challenge ${currentQuestion + 1} of ${questions.length}</h6>
+            <pre class="bg-dark text-white p-3 rounded"><code>${q.code}</code></pre>
             <div class="mt-3">
-                <div class="progress">
-                    <div class="progress-bar" style="width: ${((currentQuestion + 1) / questions.length) * 100}%"></div>
+                <p><strong>What's wrong with this code?</strong></p>
+                <textarea class="form-control mb-3" id="bugAnswer" placeholder="Describe the bug..."></textarea>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary" onclick="checkDebugAnswer(${currentQuestion})">Submit Answer</button>
+                    <button class="btn btn-warning" onclick="hintDebug(${currentQuestion})">Hint</button>
+                    <button class="btn btn-secondary" onclick="revealDebug(${currentQuestion})">Reveal</button>
                 </div>
             </div>
+            <div id="bugResult" class="mt-3"></div>
         `;
-        
-        // Add buttons programmatically to avoid inline handlers
-        const answersDiv = document.getElementById('modal-answers');
-        q.options.forEach((option, index) => {
-            const btn = document.createElement('button');
-            btn.className = 'btn btn-outline-primary';
-            btn.textContent = option;
-            btn.addEventListener('click', function() {
-                answerModalQuestion(index, q.correct, this);
-            });
-            answersDiv.appendChild(btn);
-        });
     }
     
-    function answerModalQuestion(selected, correct, btn) {
-        const buttons = btn.parentNode.querySelectorAll('button');
-        buttons.forEach(b => b.disabled = true);
+    function checkDebugAnswer(selected) {
+        const bug = buggyCode[selected];
+        const userAnswer = document.getElementById('bugAnswer').value.trim().toLowerCase();
+        const result = document.getElementById('bugResult');
         
-        if (selected === correct) {
-            btn.className = 'btn btn-success';
-            performanceData.gameScore++;
-            showNotification('✅ Correct!', 'success');
+        // Simple keyword matching for demo purposes
+        if (userAnswer.includes('semicolon') && userAnswer.includes('missing')) {
+            result.innerHTML = '<div class="alert alert-success">Correct! Missing semicolon was the issue.</div>';
+            score++;
+        } else if (userAnswer.includes('type coercion')) {
+            result.innerHTML = '<div class="alert alert-success">Correct! Type coercion needed here.</div>';
+            score++;
         } else {
-            btn.className = 'btn btn-danger';
-            buttons[correct].className = 'btn btn-success';
-            showNotification('❌ Incorrect!', 'warning');
+            result.innerHTML = `<div class="alert alert-danger">Not quite. ${bug.bug}</div>`;
         }
         
         setTimeout(() => {
-            currentQuestion++;
-            if (currentQuestion < questions.length) {
+            currentBug++;
+            if (currentBug < buggyCode.length) {
                 showQuestion();
             } else {
-                const gameContent = document.getElementById('game-content');
-                gameContent.innerHTML = `
+                document.getElementById('game-content').innerHTML = `
                     <div class="text-center">
-                        <h4>🎉 Game Complete!</h4>
-                        <p class="lead">Your Score: ${performanceData.gameScore}/${questions.length}</p>
-                        <div class="badge bg-${performanceData.gameScore === questions.length ? 'success' : performanceData.gameScore > questions.length / 2 ? 'warning' : 'secondary'} fs-6">
-                            ${performanceData.gameScore === questions.length ? 'Perfect!' : performanceData.gameScore > questions.length / 2 ? 'Good Job!' : 'Keep Learning!'}
-                        </div>
-                        <div class="mt-3">
-                            <button class="btn btn-primary" data-action="startGameSafe">Play Again</button>
-                        </div>
+                        <h4>🎉 All Bugs Fixed!</h4>
+                        <p>Score: ${score}/${buggyCode.length}</p>
+                        <button class="btn btn-primary" data-action="startGame" data-arg="debug-detective">Play Again</button>
                     </div>
                 `;
             }
         }, 2000);
+    }
+    
+    function hintDebug(idx) {
+        const hints = [
+            'Check punctuation like ; and matching quotes.',
+            'Are you comparing values or assigning them?',
+            'Look at array bounds: length vs last index.'
+        ];
+        const result = document.getElementById('bugResult');
+        result.innerHTML = `<div class="alert alert-info">💡 Hint: ${hints[idx] || 'Focus on the exact operator or bounds.'}</div>`;
+    }
+    
+    function revealDebug(idx) {
+        const fixes = [
+            'Add the missing quote and a semicolon.',
+            'Use a comparison operator: if (x === 5) { ... }',
+            'Use i < arr.length or ensure index exists.'
+        ];
+        const result = document.getElementById('bugResult');
+        result.innerHTML = `<div class="alert alert-secondary">👁️ Reveal: ${fixes[idx] || 'Check operators and bounds precisely.'}</div>`;
     }
     
     showQuestion();
@@ -2164,45 +2333,28 @@ function showGameModal(title, contentFunc) {
                     <div class="modal-body" id="gameModalBody">
                         ${contentFunc()}
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="prevStepBtn" disabled>
+                            <i class="fas fa-arrow-left me-2"></i>Previous
+                        </button>
+                        <span class="mx-3" id="stepIndicator">Step 1 of ${tutorial.steps.length}</span>
+                        <button type="button" class="btn btn-primary" id="nextStepBtn">
+                            Next<i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     `;
     
-    const existing = document.getElementById('gameModal');
-    if (existing) existing.remove();
+    // Remove existing modal if any
+    const existingModal = document.getElementById('gameModal');
+    if (existingModal) existingModal.remove();
     
     document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
     const modal = new bootstrap.Modal(document.getElementById('gameModal'));
-    modal.show();
-}
-
-// === Hint/Reveal and Check handlers for mini-games ===
-function checkDebugAnswer(idx) {
-    const buggy = [
-        { must: ['semicolon', ';', 'quote'], also: ['string'] },
-        { must: ['===', '==', 'comparison'], also: ['assignment', '= 5'] },
-        { must: ['index', 'bounds', 'length', 'undefined'], also: ['arr[3]'] }
-    ];
-    const el = document.getElementById('bugAnswer');
-    const text = (el?.value || '').toLowerCase();
-    const rules = buggy[idx] || { must: [] };
-    const ok = rules.must.some(k => text.includes(k));
-    const result = document.getElementById('bugResult');
-    if (ok) {
-        result.innerHTML = '<div class="alert alert-success">Nice catch! That’s the core issue. ✅</div>';
-    } else {
-        result.innerHTML = '<div class="alert alert-warning">Close! Mention the exact issue (e.g., missing quote, wrong operator). 💡</div>';
-    }
-}
-
-function hintDebug(idx) {
-    const hints = [
-        'Look for a missing closing quote (\' vs ") and missing semicolon.',
-        'You used assignment (=) instead of comparison (==/===).',
-        'Arrays are zero-indexed; length is one past the last valid index.'
-    ];
-    const result = document.getElementById('bugResult');
+    const bodyEl = document.getElementById('gameModalBody');
     result.innerHTML = `<div class="alert alert-info">💡 Hint: ${hints[idx] || 'Focus on the exact operator or bounds.'}</div>`;
 }
 
@@ -2261,7 +2413,7 @@ function hintAlgo(idx) {
     const tips = [
         'Do multiplication before addition.',
         "Use split(''), reverse(), then join('') to reverse.",
-        'Use Math.max(...arr) to expand array to arguments.'
+        'Use Math.max(...arr) to expand array to arguments'
     ];
     document.getElementById('puzzleResult').innerHTML = `<div class="alert alert-info">💡 Hint: ${tips[idx] || ''}</div>`;
 }
@@ -2397,8 +2549,6 @@ curl -X POST "https://barodatek.com/api/contracts" \\
   -d '{
     "title": "New Contract",
     "description": "Contract description",
-    "client": "Client Name",
-    "provider": "Provider Name",
     "amount": 5000
   }'
 
@@ -2586,7 +2736,7 @@ class ${isJoke ? 'JokeChatBot' : 'ChatBot'} {
         this.conversationHistory = [];
     }
     
-    ${isjoke ? `getRandomJoke() {
+    ${isJoke ? `getRandomJoke() {
         const jokes = [
             "Why do programmers prefer dark mode? Because light attracts bugs! 🐛",
             "Why did the developer go broke? Because he used up all his cache! 💸",
@@ -2627,7 +2777,7 @@ class ${isJoke ? 'JokeChatBot' : 'ChatBot'} {
         return this.getRandomJoke();` : `// General chatbot logic
         for (const [pattern, response] of Object.entries(this.responses)) {
             if (message.includes(pattern)) {
-                return Array.isArray(response) 
+                return Array.isClass(response) 
                     ? response[Math.floor(Math.random() * response.length)]
                     : response;
             }
@@ -2641,8 +2791,8 @@ class ${isJoke ? 'JokeChatBot' : 'ChatBot'} {
 }
 
 // Usage Example:
-const bot = new ${isjoke ? 'JokeChatBot' : 'ChatBot'}();
-console.log(bot.processMessage("${isjoke ? 'Tell me a joke!' : 'Hello!'}"));
+const bot = new ${isJoke ? 'JokeChatBot' : 'ChatBot'}();
+console.log(bot.processMessage("${isJoke ? 'Tell me a joke!' : 'Hello!'}"));
 
 // Web Integration Example:
 document.getElementById('send-btn')?.addEventListener('click', () => {
@@ -2659,1919 +2809,68 @@ document.getElementById('send-btn')?.addEventListener('click', () => {
 function displayMessage(text) {
     const chatBox = document.getElementById('chat-box');
     const msgDiv = document.createElement('div');
-    msgDiv.textContent = text;
+    // Use sanitized innerHTML so assistant/markdown HTML renders while preventing XSS
+    msgDiv.innerHTML = sanitizeHTML(text);
     msgDiv.className = text.startsWith('User:') ? 'user-message' : 'bot-message';
     chatBox.appendChild(msgDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
-}`;
-    }
-    // 🎮 GAME DETECTION
-    else if (lowerDesc.includes('game') || lowerDesc.includes('play') || lowerDesc.includes('quiz')) {
-        generatedCode = `// Generated from: "${description}"
-// BarodaTek.com AI Code Generator - Game Edition
-
-class InteractiveGame {
-    constructor() {
-        this.score = 0;
-        this.level = 1;
-        this.isPlaying = false;
-    }
-    
-    startGame() {
-        this.score = 0;
-        this.level = 1;
-        this.isPlaying = true;
-        console.log('🎮 Game Started!');
-        this.nextRound();
-    }
-    
-    nextRound() {
-        if (!this.isPlaying) return;
-        
-        console.log(\`Level \${this.level} - Score: \${this.score}\`);
-        // Your game logic here
-    }
-    
-    checkAnswer(userAnswer, correctAnswer) {
-        if (userAnswer === correctAnswer) {
-            this.score += 10 * this.level;
-            this.level++;
-            console.log('✅ Correct! +' + (10 * this.level) + ' points');
-            return true;
-        } else {
-            console.log('❌ Wrong answer!');
-            return false;
-        }
-    }
-    
-    endGame() {
-        this.isPlaying = false;
-        console.log(\`🏁 Game Over! Final Score: \${this.score}\`);
-        return this.score;
-    }
 }
 
-// Usage:
-const game = new InteractiveGame();
-game.startGame();
-game.checkAnswer('answer', 'answer'); // Example
-game.endGame();`;
-    }
-    // 🧮 CALCULATOR DETECTION
-    else if (lowerDesc.includes('calculator') || lowerDesc.includes('calculate') || lowerDesc.includes('math')) {
-        generatedCode = `// Generated from: "${description}"
-// BarodaTek.com AI Code Generator - Calculator Edition
+// 🚀 PERFORMANCE TESTING - ACTUAL API RESPONSE TIMES
 
-class Calculator {
-    constructor() {
-        this.history = [];
-    }
+async function runPerformanceTest() {
+    showNotification('⏱️ Running performance test...', 'info');
+    const startTime = performance.now();
     
-    add(a, b) {
-        const result = a + b;
-        this.history.push(\`\${a} + \${b} = \${result}\`);
-        return result;
-    }
-    
-    subtract(a, b) {
-        const result = a - b;
-        this.history.push(\`\${a} - \${b} = \${result}\`);
-        return result;
-    }
-    
-    multiply(a, b) {
-        const result = a * b;
-        this.history.push(\`\${a} × \${b} = \${result}\`);
-        return result;
-    }
-    
-    divide(a, b) {
-        if (b === 0) {
-            throw new Error('Cannot divide by zero!');
-        }
-        const result = a / b;
-        this.history.push(\`\${a} ÷ \${b} = \${result}\`);
-        return result;
-    }
-    
-    power(base, exponent) {
-        const result = Math.pow(base, exponent);
-        this.history.push(\`\${base}^\${exponent} = \${result}\`);
-        return result;
-    }
-    
-    getHistory() {
-        return this.history;
-    }
-    
-    clearHistory() {
-        this.history = [];
-    }
-}
-
-// Usage:
-const calc = new Calculator();
-console.log(calc.add(5, 3));      // 8
-console.log(calc.multiply(4, 7)); // 28
-console.log(calc.divide(10, 2));  // 5
-console.log(calc.getHistory());   // See calculation history`;
-    }
-    // 📝 FORM / VALIDATION DETECTION
-    else if (lowerDesc.includes('form') || lowerDesc.includes('validate') || lowerDesc.includes('input')) {
-        generatedCode = `// Generated from: "${description}"
-// BarodaTek.com AI Code Generator - Form Validation
-
-class FormValidator {
-    constructor(formId) {
-        this.form = document.getElementById(formId);
-        this.errors = {};
-    }
-    
-    validateEmail(email) {
-        const regex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-        return regex.test(email);
-    }
-    
-    validateRequired(value) {
-        return value && value.trim().length > 0;
-    }
-    
-    validateMinLength(value, minLength) {
-        return value && value.length >= minLength;
-    }
-    
-    validatePassword(password) {
-        // At least 8 chars, 1 uppercase, 1 lowercase, 1 number
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d@$!%*?&]{8,}$/;
-        return regex.test(password);
-    }
-    
-    validate(fields) {
-        this.errors = {};
+    // Simulate multiple API calls
+    Promise.all([
+        apiCall('health'),
+        apiCall('contracts'),
+        apiCall('stats')
+    ]).then(responses => {
+        const endTime = performance.now();
+        const duration = (endTime - startTime).toFixed(2);
         
-        for (const [fieldName, rules] of Object.entries(fields)) {
-            const value = this.form[fieldName]?.value;
-            
-            if (rules.required && !this.validateRequired(value)) {
-                this.errors[fieldName] = 'This field is required';
-            } else if (rules.email && !this.validateEmail(value)) {
-                this.errors[fieldName] = 'Invalid email format';
-            } else if (rules.minLength && !this.validateMinLength(value, rules.minLength)) {
-                this.errors[fieldName] = \`Minimum \${rules.minLength} characters required\`;
-            } else if (rules.password && !this.validatePassword(value)) {
-                this.errors[fieldName] = 'Password must be 8+ chars with uppercase, lowercase, and number';
-            }
-        }
+        // Log detailed response times
+        console.log('Performance Test Results:', responses);
         
-        return Object.keys(this.errors).length === 0;
-    }
-    
-    getErrors() {
-        return this.errors;
-    }
-    
-    displayErrors() {
-        for (const [field, error] of Object.entries(this.errors)) {
-            console.error(\`\${field}: \${error}\`);
-        }
-    }
-}
-
-// Usage:
-const validator = new FormValidator('myForm');
-const isValid = validator.validate({
-    email: { required: true, email: true },
-    password: { required: true, password: true },
-    username: { required: true, minLength: 3 }
-});
-
-if (!isValid) {
-    validator.displayErrors();
-}`;
-    }
-    // 🌐 API / FETCH DETECTION
-    else if (lowerDesc.includes('fetch') || lowerDesc.includes('get') || lowerDesc.includes('api') || lowerDesc.includes('request')) {
-        generatedCode = `// Generated from: "${description}"
-// BarodaTek.com Code Generator
-
-async function fetchData() {
-    try {
-        const response = await fetch('https://barodatek.com/api/contracts');
-        
-        if (!response.ok) {
-            throw new Error(\`HTTP error! status: \${response.status}\`);
-        }
-        
-        const data = await response.json();
-        console.log('Data received:', data);
-        return data;
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        throw error;
-    }
-}
-
-// Usage
-fetchData()
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch(error => {
-        console.error('Failed:', error);
-    });`;
-    } 
-    // 📤 POST / CREATE DETECTION
-    else if (lowerDesc.includes('post') || lowerDesc.includes('create') || lowerDesc.includes('submit')) {
-        generatedCode = `// Generated from: "${description}"
-// BarodaTek.com Code Generator
-
-async function createData(payload) {
-    try {
-        const response = await fetch('https://barodatek.com/api/contracts', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload)
-        });
-        
-        if (!response.ok) {
-            throw new Error(\`HTTP error! status: \${response.status}\`);
-        }
-        
-        const result = await response.json();
-        console.log('Created successfully:', result);
-        return result;
-    } catch (error) {
-        console.error('Error creating data:', error);
-        throw error;
-    }
-}
-
-// Usage
-const newData = {
-    title: 'New Contract',
-    description: 'Contract details here'
-};
-
-createData(newData)
-    .then(result => console.log('Success:', result))
-    .catch(error => console.error('Failed:', error));`;
-    }
-    // ✏️ UPDATE DETECTION  
-    else if (lowerDesc.includes('update') || lowerDesc.includes('edit') || lowerDesc.includes('modify')) {
-        generatedCode = `// Generated from: "${description}"
-// BarodaTek.com Code Generator
-
-async function updateData(id, updates) {
-    try {
-        const response = await fetch(\`https://barodatek.com/api/contracts/\${id}\`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updates)
-        });
-        
-        if (!response.ok) {
-            throw new Error(\`HTTP error! status: \${response.status}\`);
-        }
-        
-        const result = await response.json();
-        console.log('Updated successfully:', result);
-        return result;
-    } catch (error) {
-        console.error('Error updating data:', error);
-        throw error;
-    }
-}
-
-// Usage
-updateData(1, { title: 'Updated Title' })
-    .then(result => console.log('Success:', result))
-    .catch(error => console.error('Failed:', error));`;
-    } 
-    // 🗑️ DELETE DETECTION
-    else if (lowerDesc.includes('delete') || lowerDesc.includes('remove')) {
-        generatedCode = `// Generated from: "${description}"
-// BarodaTek.com Code Generator
-
-async function deleteData(id) {
-    try {
-        const response = await fetch(\`https://barodatek.com/api/contracts/\${id}\`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error(\`HTTP error! status: \${response.status}\`);
-        }
-        
-        const result = await response.json();
-        console.log('Deleted successfully:', result);
-        return result;
-    } catch (error) {
-        console.error('Error deleting data:', error);
-        throw error;
-    }
-}
-
-// Usage
-deleteData(1)
-    .then(result => console.log('Success:', result))
-    .catch(error => console.error('Failed:', error));`;
-    } 
-    // ⏱️ TIMER / COUNTDOWN DETECTION
-    else if (lowerDesc.includes('timer') || lowerDesc.includes('countdown') || lowerDesc.includes('clock')) {
-        generatedCode = `// Generated from: "${description}"
-// BarodaTek.com AI Code Generator - Timer Edition
-
-class Timer {
-    constructor() {
-        this.seconds = 0;
-        this.interval = null;
-        this.isRunning = false;
-    }
-    
-    start(duration = 60) {
-        if (this.isRunning) return;
-        
-        this.seconds = duration;
-        this.isRunning = true;
-        
-        this.interval = setInterval(() => {
-            this.seconds--;
-            console.log(\`Time remaining: \${this.seconds}s\`);
-            
-            if (this.seconds <= 0) {
-                this.stop();
-                console.log('⏰ Time\'s up!');
-            }
-        }, 1000);
-    }
-    
-    stop() {
-        if (this.interval) {
-            clearInterval(this.interval);
-            this.interval = null;
-            this.isRunning = false;
-        }
-    }
-    
-    reset() {
-        this.stop();
-        this.seconds = 0;
-    }
-}
-
-// Usage:
-const timer = new Timer();
-timer.start(10); // 10 second countdown
-// timer.stop();  // Stop timer
-// timer.reset(); // Reset timer`;
-    }
-    // 🎲 RANDOM / GENERATOR DETECTION
-    else if (lowerDesc.includes('random') || lowerDesc.includes('generate') || lowerDesc.includes('generator')) {
-        generatedCode = `// Generated from: "${description}"
-// BarodaTek.com AI Code Generator - Random Generator
-
-class RandomGenerator {
-    // Generate random integer between min and max (inclusive)
-    randomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-    
-    // Generate random string
-    randomString(length = 10) {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result;
-    }
-    
-    // Pick random item from array
-    randomChoice(array) {
-        return array[Math.floor(Math.random() * array.length)];
-    }
-    
-    // Shuffle array
-    shuffle(array) {
-        const shuffled = [...array];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        return shuffled;
-    }
-    
-    // Generate UUID
-    generateUUID() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            const r = Math.random() * 16 | 0;
-            const v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
-}
-
-// Usage:
-const gen = new RandomGenerator();
-console.log(gen.randomInt(1, 100));           // Random number
-console.log(gen.randomString(12));            // Random string
-console.log(gen.randomChoice(['a', 'b', 'c'])); // Random choice
-console.log(gen.shuffle([1, 2, 3, 4, 5]));   // Shuffled array
-console.log(gen.generateUUID());              // UUID`;
-    }
-    // 🔄 DEFAULT / GENERIC TEMPLATE
-    else {
-        generatedCode = `// Generated from: "${description}"
-// BarodaTek.com AI Code Generator
-
-// Custom function based on your description
-function customFunction() {
-    // TODO: Implement your logic here
-    console.log('Function created for: ${description}');
-    
-    // Example structure:
-    // 1. Validate inputs
-    // 2. Process data
-    // 3. Return results
-    
-    return {
-        success: true,
-        message: 'Function ready to be implemented',
-        description: '${description}'
-    };
-}
-
-// Usage
-const result = customFunction();
-console.log(result);
-
-// Need more specific code? Try describing with keywords like:
-// - fetch, get, api (for GET requests)
-// - post, create, submit (for POST requests)
-// - update, edit, modify (for PUT requests)
-// - delete, remove (for DELETE requests)`;
-    }
-    
-    // Display generated code
-    const codeTextarea = document.getElementById('generated-code');
-    codeTextarea.value = generatedCode;
-    
-    // Clear input
-    input.value = '';
-    
-    showNotification('✅ Custom code generated! Edit as needed.', 'success');
-}
-
-// Download generated code
-function downloadGeneratedCode() {
-    const codeTextarea = document.getElementById('generated-code');
-    if (!codeTextarea || !codeTextarea.value) {
-        showNotification('⚠️ No code to download! Generate code first.', 'warning');
-        return;
-    }
-    
-    const code = codeTextarea.value;
-    const filename = 'barodatek-generated-code.js';
-    downloadFile(code, filename, 'text/plain');
-}
-
-// View contract function
-function viewContract(id) {
-    const contract = performanceData.contracts.find(c => c.id === id);
-    if (!contract) {
-        showNotification('❌ Contract not found', 'danger');
-        return;
-    }
-    
-    const modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.innerHTML = `
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">📄 ${contract.title}</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <strong>Description:</strong>
-                            <p>${contract.description}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <strong>Status:</strong> <span class="badge ${contract.status === 'active' ? 'bg-success' : 'bg-warning'}">${contract.status}</span><br><br>
-                            <strong>Created:</strong> ${contract.createdDate}<br><br>
-                            ${contract.value ? `<strong>Value:</strong> ${contract.value}` : ''}
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-action="downloadContract" data-arg="${id}">
-                        <i class="fas fa-download me-1"></i>Download
-                    </button>
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    const bsModal = new bootstrap.Modal(modal);
-    bsModal.show();
-    
-    // Clean up modal after closing
-    modal.addEventListener('hidden.bs.modal', () => {
-        document.body.removeChild(modal);
+        showNotification(`✅ Performance test complete! Total time: ${duration}ms`, 'success');
+    }).catch(err => {
+        showNotification('❌ Performance test failed: ' + err.message, 'danger');
     });
 }
 
-// Download individual contract
-function downloadContract(id) {
-    const contract = performanceData.contracts.find(c => c.id === id);
-    if (!contract) {
-        showNotification('❌ Contract not found', 'danger');
-        return;
-    }
-    
-    const contractContent = `# ${contract.title}
+// 🎨 THEME CUSTOMIZATION - USER PREFERENCES
 
-## Contract Details
-- **ID**: ${contract.id}
-- **Status**: ${contract.status}
-- **Created**: ${contract.createdDate}
-- **Value**: ${contract.value || 'Not specified'}
-
-## Description
-${contract.description}
-
-## Terms and Conditions
-[Add your terms and conditions here]
-
----
-*Generated by BarodaTek.com*
-*Created by JBaroda from California*
-`;
-    
-    downloadFile(contractContent, `Contract-${contract.id}-${contract.title.replace(/\s+/g, '-')}.md`, 'text/markdown');
-}
-
-// Create contract modal if it doesn't exist
-function createContractModal() {
-    const modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.id = 'contractModal';
-    modal.innerHTML = `
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">📝 Create New Contract</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="contractForm">
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Contract Title</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="value" class="form-label">Contract Value</label>
-                            <input type="text" class="form-control" id="value" name="value" placeholder="e.g., $5,000">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-action="createContract">Create Contract</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    const bsModal = new bootstrap.Modal(modal);
-    bsModal.show();
-}
-
-// Enhanced Quick API Test Function
-async function quickAPITest() {
-    const resultsEl = document.getElementById('quick-test-results');
-    if (!resultsEl) {
-        showNotification('🧪 Running quick API tests...', 'info');
-        return testAPI(); // Fallback to main test function
-    }
-    
-    resultsEl.innerHTML = '<div class="text-info"><i class="fas fa-spinner fa-spin me-2"></i>Running comprehensive API tests...</div>';
-    
-    const tests = [
-        { name: 'Health Check', endpoint: 'health' },
-        { name: 'Get Contracts', endpoint: 'contracts' },
-        { name: 'Get Statistics', endpoint: 'stats' },
-        { name: 'Performance Test', endpoint: 'health' } // Duplicate for performance testing
-    ];
-    
-    let results = ['=== BarodaTek API Test Results ===\n'];
-    let totalTime = 0;
-    
-    for (const test of tests) {
-        try {
-            const startTime = Date.now();
-            const { response, data, responseTime } = await apiCall(test.endpoint);
-            totalTime += responseTime;
-            
-            const status = response.ok ? '✅ PASS' : '❌ FAIL';
-            results.push(`${status} ${test.name}: ${Math.round(responseTime)}ms`);
-            
-            // Add some test details
-            if (test.endpoint === 'contracts' && data) {
-                const contractCount = Array.isArray(data) ? data.length : (data.contracts ? data.contracts.length : 0);
-                results.push(`   📊 Found ${contractCount} contracts`);
-            }
-            
-        } catch (error) {
-            results.push(`❌ FAIL ${test.name}: ${error.message}`);
-        }
-        
-        // Small delay between tests
-        await new Promise(resolve => setTimeout(resolve, 100));
-    }
-    
-    results.push(`\n📈 Total Test Time: ${Math.round(totalTime)}ms`);
-    results.push(`🎯 Average Response: ${Math.round(totalTime / tests.length)}ms`);
-    results.push(`\n🚀 Platform Status: All systems operational!`);
-    
-    resultsEl.innerHTML = `<pre class="bg-dark text-light p-3 rounded">${results.join('\n')}</pre>`;
-    showNotification('✅ API tests completed successfully!', 'success');
-}
-
-// Additional missing functions
-function showCustomizer() {
-    showNotification('🎨 Customizer feature coming soon! You can already download and modify the source code.', 'info');
-}
-
-function generateBoilerplate() {
-    const boilerplate = `// BarodaTek.com - Custom API Boilerplate
-// Generated on ${new Date().toISOString()}
-
-const express = require('express');
-const cors = require('cors');
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
-
-// Your custom endpoints here
-app.get('/api/custom', (req, res) => {
-    res.json({ message: 'Your custom API endpoint' });
-});
-
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(\`🚀 Your custom API is running on port \${PORT}\`);
-    console.log(\`Visit: http://localhost:\${PORT}\`);
-});
-
-// Created with BarodaTek.com platform
-// Happy coding! 🎉
-`;
-    
-    downloadFile(boilerplate, 'custom-api-boilerplate.js', 'text/javascript');
-}
-
-function openGitHub() {
-    window.open('https://github.com/JBaroda', '_blank');
-    showNotification('🌟 Opening JBaroda\'s GitHub profile...', 'success');
-}
-
-function forkProject() {
-    window.open('https://github.com/JBaroda', '_blank');
-    showNotification('🍴 Visit GitHub to fork the repository!', 'success');
-}
-
-function showContributionGuide() {
-    const guide = `# 🤝 BarodaTek.com - Contribution Guide
-
-## How to Contribute
-
-### 1. 🔥 Share Your Story
-- Tell others about your coding journey
-- Inspire beginners like Gal did
-
-### 2. 🛠️ Improve the Platform
-- Add new features
-- Fix bugs
-- Enhance documentation
-
-### 3. 🎯 Suggest Features
-- API improvements
-- UI enhancements
-- New tools and utilities
-
-### 4. 📚 Educational Content
-- Create tutorials
-- Write guides
-- Share best practices
-
-## Contact
-- Platform: BarodaTek.com
-- Created by: JBaroda from California
-- Mission: Making tech accessible to everyone
-
-## 🌟 From Listener to Creator
-This platform represents the journey from being curious about tech to actually building it. Your contributions can help others on the same path!
-
-Thank you for being part of the BarodaTek community! 🚀
-`;
-    
-    downloadFile(guide, 'BarodaTek-Contribution-Guide.md', 'text/markdown');
-}
-
-// 📚 LEARNING CENTER - Tutorial System
-
-function getExternalResources(tutorialId) {
-    const resources = {
-        'first-api-call': [
-            { name: 'MDN Fetch API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API', icon: 'fab fa-firefox' },
-            { name: 'W3Schools API Tutorial', url: 'https://www.w3schools.com/js/js_api_intro.asp', icon: 'fas fa-book' },
-            { name: 'freeCodeCamp', url: 'https://www.freecodecamp.org/learn/apis-and-microservices/', icon: 'fab fa-free-code-camp' }
-        ],
-        'crud-operations': [
-            { name: 'REST API Guide', url: 'https://restfulapi.net/', icon: 'fas fa-graduation-cap' },
-            { name: 'HTTP Methods', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods', icon: 'fab fa-firefox' },
-            { name: 'Codecademy REST', url: 'https://www.codecademy.com/article/what-is-rest', icon: 'fas fa-book-open' }
-        ],
-        'websockets': [
-            { name: 'WebSocket MDN', url: 'https://developer.mozilla.org/en-US/docs/Web/API/WebSocket', icon: 'fab fa-firefox' },
-            { name: 'Socket.io', url: 'https://socket.io/docs/', icon: 'fas fa-plug' }
-        ],
-        'javascript-basics': [
-            { name: 'JavaScript.info', url: 'https://javascript.info/', icon: 'fas fa-book' },
-            { name: 'MDN JavaScript', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide', icon: 'fab fa-firefox' },
-            { name: 'Codecademy JS', url: 'https://www.codecademy.com/learn/introduction-to-javascript', icon: 'fas fa-graduation-cap' },
-            { name: 'Interactive JS', url: 'https://www.codepen.io/topic/javascript/templates', icon: 'fab fa-codepen' }
-        ],
-        'python-basics': [
-            { name: 'Python.org Tutorial', url: 'https://docs.python.org/3/tutorial/', icon: 'fab fa-python' },
-            { name: 'Real Python', url: 'https://realpython.com/', icon: 'fas fa-book-open' },
-            { name: 'Python Playground', url: 'https://www.programiz.com/python-programming/online-compiler/', icon: 'fas fa-play' }
-        ],
-        'react-basics': [
-            { name: 'React Docs', url: 'https://react.dev/', icon: 'fab fa-react' },
-            { name: 'React CodeSandbox', url: 'https://codesandbox.io/s/react-new', icon: 'fas fa-code' }
-        ],
-        'nodejs-basics': [
-            { name: 'Node.js Docs', url: 'https://nodejs.org/en/docs/', icon: 'fab fa-node' },
-            { name: 'Express.js', url: 'https://expressjs.com/', icon: 'fas fa-server' }
-        ],
-        'git-basics': [
-            { name: 'Git Handbook', url: 'https://guides.github.com/introduction/git-handbook/', icon: 'fab fa-github' },
-            { name: 'Learn Git', url: 'https://www.atlassian.com/git/tutorials', icon: 'fab fa-git-alt' },
-            { name: 'Git Visualizer', url: 'https://git-school.github.io/visualizing-git/', icon: 'fas fa-project-diagram' }
-        ],
-        'sql-basics': [
-            { name: 'W3Schools SQL', url: 'https://www.w3schools.com/sql/', icon: 'fas fa-database' },
-            { name: 'SQL Fiddle', url: 'http://sqlfiddle.com/', icon: 'fas fa-play' }
-        ],
-        'css-basics': [
-            { name: 'CSS Tricks', url: 'https://css-tricks.com/', icon: 'fas fa-paint-brush' },
-            { name: 'Flexbox Game', url: 'https://flexboxfroggy.com/', icon: 'fas fa-gamepad' },
-            { name: 'CSS Grid Game', url: 'https://cssgridgarden.com/', icon: 'fas fa-th' }
-        ],
-        'debugging': [
-            { name: 'Chrome DevTools', url: 'https://developer.chrome.com/docs/devtools/', icon: 'fab fa-chrome' },
-            { name: 'Debugging Guide', url: 'https://javascript.info/debugging-chrome', icon: 'fas fa-bug' }
-        ]
-    };
-    
-    return resources[tutorialId] || null;
-}
-
-function startTutorial(tutorialId) {
-    const tutorials = {
-        'first-api-call': {
-            title: 'Your First API Call',
-            steps: [
-                {
-                    title: 'Step 1: Understanding APIs',
-                    content: `<h5>What is an API?</h5>
-                    <p>An <strong>API (Application Programming Interface)</strong> is a way for different software applications to talk to each other. Think of it like a waiter at a restaurant:</p>
-                    <ul>
-                        <li>🍽️ You (the client) ask the waiter for food</li>
-                        <li>🚶 The waiter takes your order to the kitchen (the server)</li>
-                        <li>🍕 The kitchen prepares your food (processes the request)</li>
-                        <li>✅ The waiter brings back your food (the response)</li>
-                    </ul>
-                    <p class="text-success"><strong>In web development:</strong> Your browser or app asks the API for data, and the API sends it back!</p>`,
-                    example: null
-                },
-                {
-                    title: 'Step 2: Making a GET Request',
-                    content: `<h5>Let's make our first API call!</h5>
-                    <p>We'll use <code>fetch()</code> to get data from our contract API:</p>
-                    <p class="text-info">👉 <strong>GET requests</strong> are used to <em>retrieve</em> data (like viewing a menu).</p>`,
-                    example: {
-                        code: `// Make a GET request to get all contracts
-fetch(window.location.origin + '/api/contracts')
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success! Here's the data:', data);
-    })
-    .catch(error => {
-        console.error('Oops, something went wrong:', error);
-    });`,
-                        description: 'Click "Test It Now" to run this code and see real API data!'
-                    }
-                },
-                {
-                    title: 'Step 3: Understanding the Response',
-                    content: `<h5>What did we get back?</h5>
-                    <p>The API returns data in <strong>JSON format</strong> (JavaScript Object Notation). It looks like this:</p>
-                    <pre class="bg-dark text-light p-3 rounded"><code>{
-  "contracts": [
-    {
-      "id": 1,
-      "title": "Web Development Contract",
-      "status": "active"
-    }
-  ],
-  "count": 1
-}</code></pre>
-                    <p>✨ This is easy for computers AND humans to read!</p>`,
-                    example: null
-                }
-            ]
-        },
-        'crud-operations': {
-            title: 'Contract Management 101',
-            steps: [
-                {
-                    title: 'What is CRUD?',
-                    content: `<h5>CRUD = Create, Read, Update, Delete</h5>
-                    <p>These are the 4 basic operations you can do with data:</p>
-                    <ul>
-                        <li>📝 <strong>Create</strong> - Add new data (POST)</li>
-                        <li>👀 <strong>Read</strong> - View existing data (GET)</li>
-                        <li>✏️ <strong>Update</strong> - Modify data (PUT/PATCH)</li>
-                        <li>🗑️ <strong>Delete</strong> - Remove data (DELETE)</li>
-                    </ul>`,
-                    example: null
-                },
-                {
-                    title: 'Creating a Contract (POST)',
-                    content: `<h5>Let's create a new contract!</h5>
-                    <p>We use <strong>POST</strong> requests to send data to the server:</p>`,
-                    example: {
-                        code: `// Create a new contract
-fetch(window.location.origin + '/api/contracts', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        title: 'My First Contract',
-        client: 'BarodaTek',
-        status: 'active'
-    })
-})
-    .then(response => response.json())
-    .then(data => console.log('Created:', data))
-    .catch(error => console.error('Error:', error));`,
-                        description: 'This sends new contract data to the API!'
-                    }
-                },
-                {
-                    title: 'Try It Yourself!',
-                    content: `<h5>Ready to practice?</h5>
-                    <p>Visit the <strong>API Explorer</strong> to test all CRUD operations:</p>
-                    <button class="btn btn-success btn-lg" onclick="window.location.href='/api-explorer.html'">
-                        <i class="fas fa-rocket me-2"></i>Open API Explorer
-                    </button>`,
-                    example: null
-                }
-            ]
-        },
-        'websockets': {
-            title: 'WebSockets & Real-time Updates',
-            steps: [
-                {
-                    title: 'What are WebSockets?',
-                    content: `<h5>Real-time Communication</h5>
-                    <p><strong>Regular HTTP:</strong> You ask a question, get an answer, then the connection closes. Like sending letters back and forth. 📬</p>
-                    <p><strong>WebSockets:</strong> You open a phone line that stays open. Both sides can talk anytime! 📞</p>
-                    <p class="text-success">Perfect for: Chat apps, live notifications, real-time dashboards, multiplayer games!</p>`,
-                    example: null
-                },
-                {
-                    title: 'Connecting to WebSocket',
-                    content: `<h5>Let's establish a WebSocket connection:</h5>`,
-                    example: {
-                        code: `// Connect to our WebSocket server
-var wsProtocol = (window.location.protocol === 'https:') ? 'wss' : 'ws';
-var ws = new WebSocket(wsProtocol + '://' + window.location.host);
-
-// When connection opens
-ws.onopen = () => {
-    console.log('✅ Connected to WebSocket!');
-    ws.send('Hello from client!');
+let userTheme = {
+    primaryColor: '#667eea',
+    secondaryColor: '#764ba2'
 };
 
-// When we receive a message
-ws.onmessage = (event) => {
-    console.log('📨 Received:', event.data);
-};
-
-// When connection closes
-ws.onclose = () => {
-    console.log('👋 Disconnected');
-};`,
-                        description: 'This creates a live connection to the server!'
-                    }
-                },
-                {
-                    title: 'Live Updates in Action',
-                    content: `<h5>See it working on this site!</h5>
-                    <p>Look at the top-right of the page - you'll see:</p>
-                    <ul>
-                        <li>🟢 <strong>Live visitor count</strong> updating in real-time</li>
-                        <li>📊 <strong>Real-time analytics</strong> showing activity</li>
-                        <li>🔔 <strong>Instant notifications</strong> as things happen</li>
-                    </ul>
-                    <p>All powered by WebSockets! 🚀</p>`,
-                    example: null
-                }
-            ]
-        },
-        'javascript-basics': {
-            title: 'JavaScript Basics',
-            steps: [
-                {
-                    title: 'Variables & Data Types',
-                    content: `<h5>Understanding JavaScript Variables</h5>
-                    <p>Variables are containers for storing data. In JavaScript, you can declare variables using <code>let</code>, <code>const</code>, or <code>var</code>.</p>
-                    <ul>
-                        <li><strong>let</strong> - For values that can change</li>
-                        <li><strong>const</strong> - For values that stay the same</li>
-                        <li><strong>var</strong> - Older way (avoid using)</li>
-                    </ul>`,
-                    example: {
-                        code: `// Declaring variables
-let name = "JBaroda";
-const age = 27;
-let isLearning = true;
-
-// Data types
-let number = 42;           // Number
-let text = "Hello World";  // String
-let isTrue = false;        // Boolean
-let nothing = null;        // Null
-let notDefined;            // Undefined`,
-                        description: 'Different ways to store data in JavaScript'
-                    }
-                },
-                {
-                    title: 'Functions',
-                    content: `<h5>Creating Reusable Code with Functions</h5>
-                    <p>Functions are blocks of code that perform specific tasks. You can call them whenever you need!</p>`,
-                    example: {
-                        code: `// Function declaration
-function greet(name) {
-    return "Hello, " + name + "!";
+function applyUserTheme() {
+    // Apply user-selected theme colors
+    document.documentElement.style.setProperty('--primary-color', userTheme.primaryColor);
+    document.documentElement.style.setProperty('--secondary-color', userTheme.secondaryColor);
+    
+    // Save to localStorage
+    localStorage.setItem('barodaTekTheme', JSON.stringify(userTheme));
 }
 
-// Arrow function (modern way)
-const add = (a, b) => a + b;
-
-// Using functions
-console.log(greet("JBaroda")); // "Hello, JBaroda!"
-console.log(add(5, 3));        // 8`,
-                        description: 'Functions make your code organized and reusable'
-                    }
-                }
-            ]
-        },
-        'python-basics': {
-            title: 'Python for Beginners',
-            steps: [
-                {
-                    title: 'Python Syntax & Variables',
-                    content: `<h5>Welcome to Python!</h5>
-                    <p>Python is known for being beginner-friendly with clean, readable syntax.</p>`,
-                    example: {
-                        code: `# Variables in Python
-name = "JBaroda"
-age = 27
-is_learning = True
-
-# Print to console
-print(f"Hi, I'm {name} and I'm {age} years old!")
-
-# Lists (like arrays)
-skills = ["JavaScript", "Python", "APIs"]
-print(skills[0])  # "JavaScript"`,
-                        description: 'Python basics - simple and powerful!'
-                    }
-                }
-            ]
-        },
-        'react-basics': {
-            title: 'React Fundamentals',
-            steps: [
-                {
-                    title: 'Components & JSX',
-                    content: `<h5>Building UIs with React</h5>
-                    <p>React lets you build user interfaces using components - reusable pieces of UI.</p>`,
-                    example: {
-                        code: `// React Component
-function Welcome(props) {
-    return <h1>Hello, {props.name}!</h1>;
-}
-
-// Using the component
-<Welcome name="JBaroda" />`,
-                        description: 'Components are the building blocks of React apps'
-                    }
-                }
-            ]
-        },
-        'nodejs-basics': {
-            title: 'Node.js Backend Development',
-            steps: [
-                {
-                    title: 'Creating an Express Server',
-                    content: `<h5>Build Backend APIs with Node.js</h5>
-                    <p>Node.js lets you run JavaScript on the server!</p>`,
-                    example: {
-                        code: `const express = require('express');
-const app = express();
-
-app.get('/api/hello', (req, res) => {
-    res.json({ message: "Hello from BarodaTek!" });
-});
-
-app.listen(8080, () => {
-    console.log('Server running on port 8080');
-});`,
-                        description: 'Create your own API server in minutes!'
-                    }
-                }
-            ]
-        },
-        'git-basics': {
-            title: 'Git & GitHub Essentials',
-            steps: [
-                {
-                    title: 'Version Control Basics',
-                    content: `<h5>Track Your Code Changes</h5>
-                    <p>Git helps you save versions of your code and collaborate with others.</p>`,
-                    example: {
-                        code: `# Initialize a Git repository
-git init
-
-# Add files to staging
-git add .
-
-# Commit changes
-git commit -m "Initial commit"
-
-# Push to GitHub
-git remote add origin YOUR_REPO_URL
-git push -u origin main`,
-                        description: 'Essential Git commands every developer needs'
-                    }
-                }
-            ]
-        },
-        'sql-basics': {
-            title: 'SQL Database Fundamentals',
-            steps: [
-                {
-                    title: 'Database Queries',
-                    content: `<h5>Work with Data in Databases</h5>
-                    <p>SQL (Structured Query Language) lets you manage data in databases.</p>`,
-                    example: {
-                        code: `-- Select data
-SELECT * FROM users WHERE age > 25;
-
--- Insert data
-INSERT INTO users (name, email) 
-VALUES ('JBaroda', 'barodatek.services@gmail.com');
-
--- Update data
-UPDATE users SET age = 27 WHERE name = 'JBaroda';
-
--- Delete data
-DELETE FROM users WHERE id = 1;`,
-                        description: 'CRUD operations in SQL databases'
-                    }
-                }
-            ]
-        },
-        'css-basics': {
-            title: 'CSS & Responsive Design',
-            steps: [
-                {
-                    title: 'Styling Web Pages',
-                    content: `<h5>Make Your Websites Beautiful</h5>
-                    <p>CSS (Cascading Style Sheets) controls how your HTML looks.</p>`,
-                    example: {
-                        code: `/* Basic Styling */
-.card {
-    background: #667eea;
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-/* Flexbox Layout */
-.container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .card {
-        width: 100%;
-    }
-}`,
-                        description: 'Create responsive, beautiful layouts'
-                    }
-                }
-            ]
-        },
-        'debugging': {
-            title: 'Debugging Like a Pro',
-            steps: [
-                {
-                    title: 'Finding and Fixing Bugs',
-                    content: `<h5>Every Developer's Essential Skill</h5>
-                    <p>Debugging is the process of finding and fixing errors in your code.</p>
-                    <ul>
-                        <li>Use <code>console.log()</code> to inspect values</li>
-                        <li>Use browser DevTools (F12)</li>
-                        <li>Read error messages carefully</li>
-                        <li>Google the error message</li>
-                        <li>Check Stack Overflow</li>
-                    </ul>`,
-                    example: {
-                        code: `// Add console.log to see what's happening
-function calculateTotal(items) {
-    console.log('Items:', items); // Debug point
-    let total = 0;
-    for (let item of items) {
-        console.log('Adding:', item.price); // Debug point
-        total += item.price;
-    }
-    console.log('Final total:', total); // Debug point
-    return total;
-}`,
-                        description: 'Strategic console.log placement helps find bugs'
-                    }
-                }
-            ]
-        }
-    };
-    
-    const tutorial = tutorials[tutorialId];
-    if (!tutorial) {
-        alert('Tutorial not found!');
-        return;
-    }
-    
-    // Create tutorial modal
-    let currentStep = 0;
-    
-    const modalHtml = `
-        <div class="modal fade" id="tutorialModal" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title"><i class="fas fa-graduation-cap me-2"></i>${tutorial.title}</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body" id="tutorialBody">
-                        <!-- Step content goes here -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="prevStepBtn" disabled>
-                            <i class="fas fa-arrow-left me-2"></i>Previous
-                        </button>
-                        <span class="mx-3" id="stepIndicator">Step 1 of ${tutorial.steps.length}</span>
-                        <button type="button" class="btn btn-primary" id="nextStepBtn">
-                            Next<i class="fas fa-arrow-right ms-2"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Remove existing modal if any
-    const existingModal = document.getElementById('tutorialModal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-    
-    document.body.insertAdjacentHTML('beforeend', modalHtml);
-    
-    const modal = new bootstrap.Modal(document.getElementById('tutorialModal'));
-    const bodyEl = document.getElementById('tutorialBody');
-    const prevBtn = document.getElementById('prevStepBtn');
-    const nextBtn = document.getElementById('nextStepBtn');
-    const stepIndicator = document.getElementById('stepIndicator');
-    
-    function renderStep(stepIndex) {
-        const step = tutorial.steps[stepIndex];
-        let html = `<h4>${step.title}</h4>${step.content}`;
-        
-        if (step.example) {
-            html += `
-                <div class="mt-3">
-                    <h6>Example Code:</h6>
-                    <pre class="bg-dark text-light p-3 rounded"><code>${escapeHtml(step.example.code)}</code></pre>
-                    <p class="text-muted">${step.example.description}</p>
-                </div>
-            `;
-        }
-        
-        // Add external learning resources
-        const externalResources = getExternalResources(tutorialId);
-        if (externalResources) {
-            html += `
-                <div class="mt-4 p-3" style="background: rgba(102, 126, 234, 0.1); border-left: 4px solid #667eea;">
-                    <h6><i class="fas fa-external-link-alt me-2"></i>Learn More:</h6>
-                    <div class="d-flex flex-wrap gap-2">
-                        ${externalResources.map(res => 
-                            `<a href="${res.url}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                <i class="${res.icon} me-1"></i>${res.name}
-                            </a>`
-                        ).join('')}
-                    </div>
-                </div>
-            `;
-        }
-        
-        bodyEl.innerHTML = html;
-        stepIndicator.textContent = `Step ${stepIndex + 1} of ${tutorial.steps.length}`;
-        
-        // Update button states
-        prevBtn.disabled = stepIndex === 0;
-        nextBtn.textContent = stepIndex === tutorial.steps.length - 1 ? 'Finish' : 'Next';
-        nextBtn.innerHTML = stepIndex === tutorial.steps.length - 1 
-            ? '<i class="fas fa-check me-2"></i>Finish' 
-            : 'Next<i class="fas fa-arrow-right ms-2"></i>';
-    }
-    
-    prevBtn.addEventListener('click', () => {
-        if (currentStep > 0) {
-            currentStep--;
-            renderStep(currentStep);
-        }
-    });
-    
-    nextBtn.addEventListener('click', () => {
-        if (currentStep < tutorial.steps.length - 1) {
-            currentStep++;
-            renderStep(currentStep);
-        } else {
-            modal.hide();
-            alert('🎉 Tutorial completed! Great job! You can now try these concepts in the API Explorer.');
-        }
-    });
-    
-    renderStep(0);
-    modal.show();
-}
-
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-// 📊 REAL-TIME STATS DASHBOARD
-
-let statsData = {
-    visitors: 0,
-    totalViews: 0,
-    viewsToday: 0,
-    apiRequests: 0,
-    requestsPerMin: 0
-};
-
-const isLocalHost = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
-let statsAPIAvailable = isLocalHost;
-let statsAvailabilityNotified = false;
-
-function initializeRealTimeStats() {
-    // REAL-TIME TRACKING - Connected to actual WebSocket data
-    // Start with 1 visitor (current user)
-    statsData.visitors = 1;
-    statsData.totalViews = 0;
-    statsData.viewsToday = 0;
-    statsData.apiRequests = 0;
-    statsData.requestsPerMin = 0;
-    
-    // Track THIS session's page view
-    if (statsAPIAvailable) {
-        incrementPageView();
-    }
-    
-    // Listen to WebSocket for REAL visitor updates
-    if (window.websocket && window.websocket.readyState === WebSocket.OPEN) {
-        window.websocket.addEventListener('message', (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                if (data.type === 'visitor_update') {
-                    statsData.visitors = data.activeVisitors || 1;
-                    updateStatsDisplay();
-                }
-                if (data.type === 'stats_update') {
-                    statsData.totalViews = data.totalViews || statsData.totalViews;
-                    statsData.apiRequests = data.apiRequests || statsData.apiRequests;
-                    updateStatsDisplay();
-                }
-            } catch (e) {
-                // Ignore parse errors
-            }
-        });
-    }
-    
-    // Fetch real stats from server
-    if (statsAPIAvailable) {
-        fetchRealStats();
-    } else {
-        notifyStatsUnavailable();
-    }
-    
-    updateStatsDisplay();
-    
-    // Refresh real stats every 10 seconds
-    setInterval(fetchRealStats, 10000);
-    
-    // Update requests per minute every second
-    setInterval(updateRequestsPerMin, 1000);
-}
-
-function fetchRealStats() {
-    if (!statsAPIAvailable) {
-        return;
-    }
-
-    fetch('/api/stats')
-        .then(res => {
-            if (!res.ok) {
-                if (res.status === 404) {
-                    statsAPIAvailable = false;
-                    notifyStatsUnavailable();
-                }
-                throw new Error(`Stats endpoint responded with ${res.status}`);
-            }
-            return res.json();
-        })
-        .then(data => {
-            if (data && data.success) {
-                statsData.totalViews = data.totalViews || statsData.totalViews;
-                statsData.viewsToday = data.viewsToday || statsData.viewsToday;
-                statsData.apiRequests = data.apiRequests || statsData.apiRequests;
-                statsData.visitors = data.activeVisitors || statsData.visitors;
-                updateStatsDisplay();
-            }
-        })
-        .catch(() => {
-            // Keep current values when offline/unavailable
-        });
-}
-
-function incrementPageView() {
-    if (!statsAPIAvailable) {
-        return;
-    }
-
-    fetch('/api/stats/pageview', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            page: window.location.pathname,
-            timestamp: new Date().toISOString()
-        })
-    }).then(res => {
-        if (res.status === 404) {
-            statsAPIAvailable = false;
-            notifyStatsUnavailable();
-        }
-    }).catch(() => {
-        // Silently fail if offline
-    });
-}
-
-function updateRealTimeStats() {
-    // NO MORE FAKE DATA - Only update from real server data
-    // This function kept for compatibility but does nothing
-    // All updates now come from fetchRealStats() and WebSocket
-}
-
-function updateRequestsPerMin() {
-    // Fluctuate requests per minute
-    const change = Math.floor(Math.random() * 5) - 2;
-    statsData.requestsPerMin = Math.max(0, Math.min(50, statsData.requestsPerMin + change));
-    
-    const rpmEl = document.getElementById('requestsPerMin');
-    if (rpmEl) {
-        rpmEl.textContent = statsData.requestsPerMin;
+function loadUserTheme() {
+    const savedTheme = localStorage.getItem('barodaTekTheme');
+    if (savedTheme) {
+        userTheme = JSON.parse(savedTheme);
+        applyUserTheme();
     }
 }
 
-function notifyStatsUnavailable() {
-    if (statsAvailabilityNotified) {
-        return;
-    }
-    statsAvailabilityNotified = true;
-    console.warn('Live stats API not available. Realtime dashboard switched to offline mode.');
-    showNotification('ℹ️ Live stats are unavailable in this environment. Dashboard running in offline mode.', 'warning');
-}
-
-function updateStatsDisplay() {
-    // Update Live Visitors with animation
-    const visitorsEl = document.getElementById('liveVisitors');
-    if (visitorsEl) {
-        animateCounter(visitorsEl, parseInt(visitorsEl.textContent) || 0, statsData.visitors);
-    }
-    
-    // Update Total Views
-    const viewsEl = document.getElementById('totalViews');
-    if (viewsEl) {
-        animateCounter(viewsEl, parseInt(viewsEl.textContent.replace(/,/g, '')) || 0, statsData.totalViews, true);
-    }
-    
-    // Update Today's Views
-    const viewsTodayEl = document.getElementById('viewsToday');
-    if (viewsTodayEl) {
-        viewsTodayEl.textContent = statsData.viewsToday;
-    }
-    
-    // Update API Requests
-    const requestsEl = document.getElementById('apiRequests');
-    if (requestsEl) {
-        animateCounter(requestsEl, parseInt(requestsEl.textContent.replace(/,/g, '')) || 0, statsData.apiRequests, true);
-    }
-    
-    // Update Requests Per Min
-    const rpmEl = document.getElementById('requestsPerMin');
-    if (rpmEl) {
-        rpmEl.textContent = statsData.requestsPerMin;
-    }
-}
-
-function animateCounter(element, start, end, useCommas = false) {
-    const duration = 1000; // 1 second
-    const steps = 30;
-    const stepValue = (end - start) / steps;
-    const stepDuration = duration / steps;
-    let current = start;
-    let step = 0;
-    
-    const timer = setInterval(() => {
-        step++;
-        current += stepValue;
-        
-        if (step >= steps) {
-            current = end;
-            clearInterval(timer);
-        }
-        
-        const displayValue = Math.floor(current);
-        element.textContent = useCommas ? displayValue.toLocaleString() : displayValue;
-    }, stepDuration);
-}
-
-function refreshStats() {
-    // Manual refresh - fetch latest from server
-    alert('📊 Refreshing live statistics...');
-    
-    // Simulate API call delay
-    setTimeout(() => {
-        statsData.visitors = Math.floor(Math.random() * 20) + 10;
-        statsData.totalViews += Math.floor(Math.random() * 100);
-        statsData.viewsToday += Math.floor(Math.random() * 50);
-        statsData.apiRequests += Math.floor(Math.random() * 200);
-        updateStatsDisplay();
-        
-        alert('✅ Statistics updated successfully!');
-    }, 500);
-}
-
-// Business Features - Lead Capture
-
-async function subscribeNewsletter() {
-    const email = document.getElementById('subscribeEmail')?.value;
-    const name = document.getElementById('subscribeName')?.value;
-    const agree = document.getElementById('subscribeAgree')?.checked;
-    
-    if (!email) {
-        showNotification('⚠️ Please enter your email address', 'warning');
-        return;
-    }
-    
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        showNotification('⚠️ Please enter a valid email address', 'warning');
-        return;
-    }
-    
-    if (!agree) {
-        showNotification('⚠️ Please agree to receive updates', 'warning');
-        return;
-    }
-    
-    try {
-        // Send subscription to server (which will email you)
-        const response = await fetch('/api/newsletter/subscribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                email, 
-                name: name || 'Anonymous',
-                subscribedAt: new Date().toISOString(),
-                source: 'website'
-            })
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            showNotification(`✅ Welcome aboard, ${name || 'developer'}! 🎉 Check your email at ${email} for confirmation.`, 'success');
-            
-            // Clear form
-            if (document.getElementById('subscribeEmail')) document.getElementById('subscribeEmail').value = '';
-            if (document.getElementById('subscribeName')) document.getElementById('subscribeName').value = '';
-            
-            console.log('📧 Newsletter subscription successful:', { email, name });
-        } else {
-            throw new Error(result.error || 'Subscription failed');
-        }
-    } catch (error) {
-        console.error('Subscription error:', error);
-        showNotification('❌ Subscription failed. Please try again or email us directly at barodatek.services@gmail.com', 'danger');
-    }
-}
-
-// Submit Review with Google Business Integration
-async function submitReview() {
-    // Create modal for review submission
-    const modalHTML = `
-        <div class="modal fade" id="reviewModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content bg-dark text-white">
-                    <div class="modal-header border-secondary">
-                        <h5 class="modal-title">
-                            <i class="fas fa-star text-warning me-2"></i>Write a Review
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="reviewForm">
-                            <div class="mb-3">
-                                <label class="form-label">Your Name *</label>
-                                <input type="text" class="form-control" id="reviewName" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Email (optional)</label>
-                                <input type="email" class="form-control" id="reviewEmail">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Rating *</label>
-                                <div class="btn-group w-100" role="group">
-                                    <input type="radio" class="btn-check" name="rating" id="rating5" value="5" required>
-                                    <label class="btn btn-outline-warning" for="rating5">⭐⭐⭐⭐⭐ (5)</label>
-                                    
-                                    <input type="radio" class="btn-check" name="rating" id="rating4" value="4">
-                                    <label class="btn btn-outline-warning" for="rating4">⭐⭐⭐⭐ (4)</label>
-                                    
-                                    <input type="radio" class="btn-check" name="rating" id="rating3" value="3">
-                                    <label class="btn btn-outline-warning" for="rating3">⭐⭐⭐ (3)</label>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Your Review *</label>
-                                <textarea class="form-control" id="reviewComment" rows="4" required placeholder="Share your experience with BarodaTek..."></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Service Used (optional)</label>
-                                <select class="form-control" id="reviewService">
-                                    <option value="">Select a service</option>
-                                    <option value="API Development">API Development</option>
-                                    <option value="Web Development">Web Development</option>
-                                    <option value="Consulting">Consulting</option>
-                                    <option value="Training">Training</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer border-secondary">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" onclick="submitReviewForm()">
-                            <i class="fas fa-paper-plane me-2"></i>Submit Review
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Remove existing modal if present
-    const existingModal = document.getElementById('reviewModal');
-    if (existingModal) existingModal.remove();
-    
-    // Add modal to page
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
-    // Show modal
-    const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
-    modal.show();
-}
-
-// Submit the review form
-window.submitReviewForm = async function() {
-    const name = document.getElementById('reviewName')?.value;
-    const email = document.getElementById('reviewEmail')?.value;
-    const rating = document.querySelector('input[name="rating"]:checked')?.value;
-    const comment = document.getElementById('reviewComment')?.value;
-    const service = document.getElementById('reviewService')?.value;
-    
-    if (!name || !rating || !comment) {
-        showNotification('⚠️ Please fill in all required fields', 'warning');
-        return;
-    }
-    
-    try {
-        // Submit review to server
-        const response = await fetch('/api/reviews/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                name,
-                email: email || '',
-                rating: parseInt(rating),
-                comment,
-                service: service || 'General',
-                submittedAt: new Date().toISOString(),
-                source: 'website'
-            })
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            // Close modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
-            modal.hide();
-            
-            // Show success message
-            showNotification(`✅ Thank you for your ${rating}-star review, ${name}! 🌟 We appreciate your feedback!`, 'success');
-            
-            console.log('✅ Review submitted successfully');
-        } else {
-            throw new Error(result.error || 'Review submission failed');
-        }
-    } catch (error) {
-        console.error('Review submission error:', error);
-        showNotification('❌ Failed to submit review. Please try again or email us at barodatek.services@gmail.com', 'danger');
-    }
-};
-
-function startFreeTier() {
-    alert(`🚀 Starting Free Developer Plan!
-
-✅ You're all set to start using BarodaTek API Hub!
-
-What you get:
-• 1,000 API calls per day
-• Full API documentation
-• Community support
-• Sample contracts & templates
-• Basic analytics dashboard
-
-No credit card required. Start building now! 🎉`);
-}
-
-// 📧 GMAIL CONTACT PRICING FUNCTION (REPLACES CASH APP)
-function contactPricing(planType = 'professional') {
-    const email = 'barodatek.services@gmail.com';
-    
-    const planInfo = {
-        'professional': { title: 'Professional Plan', price: '$49/month', features: 'Unlimited API calls, Priority support, Advanced analytics' },
-        'enterprise': { title: 'Enterprise Solution', price: 'Custom pricing', features: 'Unlimited everything, Dedicated support, Custom deployment' },
-        'api-monitor': { title: 'API Health Monitor', price: '$29/month', features: '24/7 monitoring, Instant alerts, Performance analytics' },
-        'collaboration': { title: 'Team Collaboration Hub', price: '$49/month', features: 'Real-time code sharing, Video calls, Unlimited projects' },
-        'deployment': { title: 'Auto Deploy Pro', price: '$39/month', features: 'One-click deployments, CI/CD pipelines, Auto-scaling' },
-        'analytics': { title: 'Analytics Pro Dashboard', price: '$35/month', features: 'Custom dashboards, Export reports, Trend analysis' },
-        'security': { title: 'Security Guardian', price: '$59/month', features: 'Daily security scans, Threat detection, Compliance reports' },
-        'database': { title: 'Database Manager Pro', price: '$44/month', features: 'Visual query builder, Automated backups, Performance tuning' },
-        'bundle': { title: 'Bundle Package', price: '20% discount on 3+ services', features: 'Combined billing, Priority support' }
-    };
-    
-    const plan = planInfo[planType] || planInfo['professional'];
-    const subject = encodeURIComponent(`Pricing Inquiry: ${plan.title}`);
-    const body = encodeURIComponent(`Hello BarodaTek Team,
-
-I'm interested in the ${plan.title}.
-
-Plan: ${plan.price}
-Features: ${plan.features}
-
-Please send me:
-- Detailed pricing
-- Setup requirements
-- Payment options
-- Getting started guide
-
-My Info:
-Name: 
-Company: 
-Use Case: 
-
-Best time to call: 
-
-Thank you!`);
-    
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-    
-    setTimeout(() => {
-        alert(`📧 Email Inquiry Opened!
-
-We'll respond within 24 hours with:
-✅ Detailed pricing
-✅ Setup instructions
-✅ Payment options
-✅ Direct phone number (if needed)
-
-Thank you for your interest!`);
-    }, 500);
-}
-
-function upgradeToPro() {
-    contactPricing('professional');
-}
-
-function contactEnterprise() {
-    contactPricing('enterprise');
-}
-
-// DEPRECATED - kept for reference
-function upgradeToPro_OLD() {
-    const cashAppTag = '$JBaroda'; // Replace with your actual Cash App tag
-    const amount = 49;
-    
-    const proceed = confirm(`💎 Upgrade to Professional Plan - $${amount}/month
-
-🚀 Ready to scale your API integration?
-
-Professional Features:
-• Unlimited API calls
-• Priority support (24/7)
-• Advanced real-time analytics
-• Custom webhooks & integrations
-• 99.9% uptime SLA
-• White-label options
-
-💵 PAY NOW VIA CASH APP
-Send $${amount} to: ${cashAppTag}
-
-Click OK to open Cash App payment link, or Cancel to contact us.`);
-    
-    if (proceed) {
-        // Open Cash App payment link
-        window.open(`https://cash.app/${cashAppTag}/${amount}`, '_blank');
-        
-        setTimeout(() => {
-            alert(`✅ Payment Instructions:
-
-1. Send $${amount} to Cash App: ${cashAppTag}
-2. Include your email in the note
-3. We'll activate your account within 24 hours!
-
-Questions? Email: support@barodatek.com`);
-        }, 1000);
-    }
-}
-
-function contactEnterprise() {
-    const cashAppTag = '$JBaroda'; // Replace with your actual Cash App tag
-    
-    alert(`🏢 Enterprise Solutions
-
-Let's discuss your custom API integration needs!
-
-Enterprise includes:
-• Unlimited everything
-• Dedicated account manager
-• On-premise deployment options
-• Custom SLA agreements
-• Training & onboarding
-• 24/7/365 dedicated support
-
-� PAYMENT OPTIONS:
-• Cash App: ${cashAppTag}
-• Wire Transfer
-• Invoice (NET 30)
-
-�📧 Email: enterprise@barodatek.com
-📞 Phone: +1 (555) 123-4567
-💵 Cash App: ${cashAppTag}
-
-Or fill out the contact form and we'll reach out within 24 hours!`);
-}
-
-// 🛠️ DEVELOPER TOOLS LAUNCHER
-
-function openDeveloperTool(toolName) {
-    const tools = {
-        'json': {
-            name: 'JSON Formatter & Validator',
-            url: 'https://jsonformatter.org/',
-            description: 'Format, validate, and beautify JSON data'
-        },
-        'base64': {
-            name: 'Base64 Encoder/Decoder',
-            url: 'https://www.base64encode.org/',
-            description: 'Encode and decode Base64 strings'
-        },
-        'regex': {
-            name: 'Regex Tester',
-            url: 'https://regex101.com/',
-            description: 'Test and debug regular expressions'
-        },
-        'color': {
-            name: 'Color Picker',
-            url: 'https://htmlcolorcodes.com/color-picker/',
-            description: 'Pick colors and convert between formats'
-        },
-        'hash': {
-            name: 'Hash Generator',
-            url: 'https://emn178.github.io/online-tools/sha256.html',
-            description: 'Generate MD5, SHA-1, SHA-256 hashes'
-        },
-        'timestamp': {
-            name: 'Timestamp Converter',
-            url: 'https://www.epochconverter.com/',
-            description: 'Convert Unix timestamps to readable dates'
-        },
-        'url': {
-            name: 'URL Encoder/Decoder',
-            url: 'https://www.urlencoder.org/',
-            description: 'Encode and decode URL parameters'
-        },
-        'jwt': {
-            name: 'JWT Decoder',
-            url: 'https://jwt.io/',
-            description: 'Decode and verify JWT tokens'
-        },
-        'minify': {
-            name: 'CSS/JS Minifier',
-            url: 'https://www.minifier.org/',
-            description: 'Minify CSS and JavaScript code'
-        }
-    };
-    
-    const tool = tools[toolName];
-    if (!tool) {
-        alert('Tool not found!');
-        return;
-    }
-    
-    const proceed = confirm(`🛠️ ${tool.name}
-
-${tool.description}
-
-This will open an external tool in a new tab.
-
-Click OK to continue.`);
-    
-    if (proceed) {
-        window.open(tool.url, '_blank');
-    }
-}
-
-// 🎉 INITIALIZATION AND DOM READY FUNCTIONS
-
-document.addEventListener('DOMContentLoaded', function() {
+// INITIALIZATION
+document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 BarodaTek API Hub Initialized!');
     console.log('✨ All interactive features are now WORKING!');
+    
+    // Load user theme
+    loadUserTheme();
     
     // Initialize performance tracking
     performanceData.startTime = Date.now();
@@ -4623,18 +2922,45 @@ document.addEventListener('DOMContentLoaded', function() {
     // }, 1000);
     
     // Delegated click handler for data-action
+    // NOTE: Only intercept a curated set of app-level actions. If the clicked element's
+    // data-action is not part of this set, do not preventDefault or handle it here so
+    // other widgets (for example the chatbot) can attach their own handlers without
+    // being interfered with by the global app handler.
     document.addEventListener('click', function(e) {
         const actionEl = e.target.closest('[data-action]');
         if (!actionEl) return;
-        e.preventDefault();
         const action = actionEl.getAttribute('data-action');
+        if (!action) return;
+
+        // Known app-level actions handled by this file
+        const appActions = new Set([
+            'loadContracts','showCreateForm','testAPI','loadSampleContracts','startGameSafe','startGame',
+            'downloadCompleteProject','downloadPostmanCollection','generateOpenAPISpec','downloadCurlExamples',
+            'exportAllData','triggerImport','clearAllData','downloadTemplate','showCustomizer','generateBoilerplate',
+            'copyCode','createContract','quickAPITest','generateCustomCode','generateCode','copyGeneratedCode',
+            'downloadGeneratedCode','viewContract','downloadContract','applyTheme','downloadTheme','resetTheme',
+            'runPerformanceTest','generateDocs','executeCommand','setCommand','openGitHub','forkProject',
+            'downloadCompleteSourceCode','showContributionGuide','startTutorial','openApiExplorer','refreshStats',
+            'subscribeNewsletter','submitReview','startFreeTier','upgradeToPro','contactEnterprise','contactPricing',
+            'openTool','reloadPage'
+        ]);
+
+        if (!appActions.has(action)) {
+            // Not our action — allow other libraries/widgets to handle it
+            return;
+        }
+
+        // We are handling this action at the app level
+        e.preventDefault();
         const arg = actionEl.getAttribute('data-arg');
+
         switch (action) {
             case 'loadContracts': return loadContracts();
             case 'showCreateForm': return showCreateForm();
             case 'testAPI': return testAPI();
             case 'loadSampleContracts': return loadSampleContracts();
-            case 'startGameSafe': return startGame();
+            case 'startGameSafe': return (typeof startGame === 'function') ? (arg ? startGameSelector(arg) : startGame()) : alert('Game not loaded. Please hard reload.');
+            case 'startGame': return startGameSelector(arg);
             case 'downloadCompleteProject': return downloadCompleteProject();
             case 'downloadPostmanCollection': return downloadPostmanCollection();
             case 'generateOpenAPISpec': return generateOpenAPISpec();
@@ -4676,10 +3002,9 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'contactEnterprise': return contactEnterprise();
             case 'contactPricing': return contactPricing(arg);
             case 'openTool': return openDeveloperTool(arg);
-            case 'startGame': return startGame(arg);
             case 'reloadPage': return location.reload();
             default:
-                console.warn('Unknown action:', action);
+                console.warn('Unknown app-level action:', action);
         }
     });
 
@@ -4774,9 +3099,9 @@ function runPerformanceTest() {
     
     // Simulate multiple API calls
     Promise.all([
-        fetch('/api/health'),
-        fetch('/api/contracts'),
-        fetch('/api/stats')
+        apiCall('health'),
+        apiCall('contracts',
+        apiCall('stats')
     ]).then(responses => {
         const endTime = performance.now();
         const duration = (endTime - startTime).toFixed(2);
@@ -4916,7 +3241,7 @@ function setCommand(cmd) {
     input.focus();
 }
 
-// 🔧 Export functions to global scope for onclick handlers (legacy support)
+// Export functions to global scope for onclick handlers (legacy support)
 window.loadContracts = loadContracts;
 window.testAPI = testAPI;
 window.loadSampleContracts = loadSampleContracts;

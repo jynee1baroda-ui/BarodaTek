@@ -402,12 +402,66 @@
             transform: scale(1.1);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
+        
+        /* --- Graphic Design Software Section Fix --- */
+        .row.g-4 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .row.g-4 > [class^='col-'] {
+            flex: 1 1 260px;
+            max-width: 320px;
+            min-width: 260px;
+            margin-bottom: 0;
+        }
+        .card {
+            background: #18181b;
+            border: 1px solid #ff1a40;
+            border-radius: 16px;
+            box-shadow: 0 0 24px rgba(255,26,64,0.08);
+            color: #fff;
+            padding: 1.5rem 1rem;
+        }
+        .card-title {
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-shadow: 0 0 8px #ff1a40, 0 0 2px #fff;
+            margin-bottom: 0.5rem;
+        }
+        .card-text {
+            color: #ccc !important;
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+        }
+        .btn-primary {
+            background: #ff1a40;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 0 8px #ff1a40;
+        }
+        .btn-outline-danger {
+            border: 1px solid #ff1a40;
+            color: #ff1a40;
+            background: transparent;
+            font-weight: 600;
+            box-shadow: 0 0 8px #ff1a40;
+        }
+        .btn-outline-danger:hover {
+            background: #ff1a40;
+            color: #fff;
+        }
+        /* --- End Section Fix --- */
     </style>
     -->
     <!-- Arena Theme CSS - Must load last to override all other styles -->
     <link rel="stylesheet" href="public/css/arena-theme.css">
 </head>
 <body>
+    <div id="galaxy-bubbles"></div>
     <!-- 🔧 MAINTENANCE MODE CHECK - Runs before anything else -->
     <script>
         (async function checkMaintenance() {
@@ -1083,61 +1137,7 @@ docker-compose up -d</code>
                                 <a href="https://www.gimp.org/downloads/" target="_blank" class="btn btn-primary btn-sm">
                                     <i class="fas fa-download me-2"></i>Download
                                 </a>
-                                <a href="https://www.youtube.com/results?search_query=gimp+tutorial+beginner" target="_blank" class="btn btn-outline-danger btn-sm">
-                                    <i class="fab fa-youtube me-2"></i>Tutorials
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Krita -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="card h-100 shadow-sm hover-shadow">
-                        <div class="card-body text-center">
-                            <div class="mb-3">
-                                <i class="fas fa-paint-brush fa-3x" style="color: #3BABFF;"></i>
-                            </div>
-                            <h5 class="card-title">Krita</h5>
-                            <p class="card-text text-muted small">Professional digital painting. Concept art, texture & matte painters, illustrations.</p>
-                            <div class="d-grid gap-2">
-                                <a href="https://krita.org/en/download/" target="_blank" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-download me-2"></i>Download
-                                </a>
-                                <a href="https://www.youtube.com/results?search_query=krita+tutorial+digital+painting" target="_blank" class="btn btn-outline-danger btn-sm">
-                                    <i class="fab fa-youtube me-2"></i>Tutorials
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Inkscape -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="card h-100 shadow-sm hover-shadow">
-                        <div class="card-body text-center">
-                            <div class="mb-3">
-                                <i class="fas fa-vector-square fa-3x" style="color: #000000;"></i>
-                            </div>
-                            <h5 class="card-title">Inkscape</h5>
-                            <p class="card-text text-muted small">Free Illustrator alternative. Vector graphics, logos, icons, diagrams.</p>
-                            <div class="d-grid gap-2">
-                                <a href="https://inkscape.org/release/" target="_blank" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-download me-2"></i>Download
-                                </a>
-                                <a href="https://www.youtube.com/results?search_query=inkscape+tutorial+logo+design" target="_blank" class="btn btn-outline-danger btn-sm">
-                                    <i class="fab fa-youtube me-2"></i>Tutorials
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Blender -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="card h-100 shadow-sm hover-shadow">
-                        <div class="card-body text-center">
-                            <div class="mb-3">
+                                <a href="https
                                 <i class="fas fa-cube fa-3x" style="color: #EA7600;"></i>
                             </div>
                             <h5 class="card-title">Blender</h5>

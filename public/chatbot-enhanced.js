@@ -53,8 +53,30 @@ class BarodaTekChatbot {
 
         console.log('✅ Chatbot elements found');
 
-        // Setup event listeners
-        this.setupEventListeners();
+    // Setup event listeners
+    this.setupEventListeners();
+
+    // Populate additional quick-response templates (non-visual change to layout)
+    // This will append more quick-action buttons if the .quick-actions container exists
+    this.populateQuickResponses();
+
+    // Diagnostic: report quick-action wiring and install a fallback delegated handler
+    try {
+        const askButtons = document.querySelectorAll('[data-action="askQuestion"]');
+        const clearButtons = document.querySelectorAll('[data-action="clearChat"]');
+        const helpButtons = document.querySelectorAll('[data-action="showHelp"]');
+        const featureCards = document.querySelectorAll('[data-action="exploreFeature"]');
+        console.log('Chatbot diagnostic: found askQuestion=', askButtons.length,
+            'clearChat=', clearButtons.length,
+            'showHelp=', helpButtons.length,
+            'exploreFeature=', featureCards.length);
+    } catch (e) {
+        console.error('Chatbot diagnostic error', e);
+    }
+
+    // Install a lightweight fallback delegated handler so quick-action buttons work
+    // even if per-element listeners weren't attached yet (covers dynamic DOM timing).
+    this.attachFallbackDelegation();
 
         // Load chat history from localStorage
         this.loadChatHistory();
@@ -110,11 +132,28 @@ class BarodaTekChatbot {
             });
         }
 
-        // Quick action buttons
+        // Quick action buttons: populate input but do NOT auto-send so users can edit before sending
         document.querySelectorAll('[data-action="askQuestion"]').forEach(button => {
             button.addEventListener('click', (e) => {
                 const question = button.getAttribute('data-arg');
-                this.askQuestion(question);
+                this.askQuestion(question, false);
+            });
+        });
+
+        // Clear / Trash button(s)
+        document.querySelectorAll('[data-action="clearChat"]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Optional: confirm clear to avoid accidental deletion
+                const doClear = confirm('Clear conversation? This will remove chat history from this browser.');
+                if (doClear) this.clearChat();
+            });
+        });
+
+        // Help button(s)
+        document.querySelectorAll('[data-action="showHelp"]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Show help message using existing responder for consistency
+                this.showHelp();
             });
         });
 
@@ -175,14 +214,14 @@ class BarodaTekChatbot {
      */
     async getAIResponse(message) {
         const msg = message.toLowerCase();
-        
-        // Check for web search FIRST (before AI Assistant Pro)
+
+        // Check for web search FIRST (before calling remote LLM)
         if (msg.includes('search web') || msg.includes('look up') || msg.includes('find information about')) {
             return await this.searchWeb(message);
         }
-        
-        // Try AI Assistant Pro for code generation, debugging, etc.
-        if (this.aiAssistant) {
+
+        // If a local aiAssistant integration exists (custom provider), try it first
+        if (this.aiAssistant && typeof this.aiAssistant.processMessage === 'function') {
             try {
                 const response = await this.aiAssistant.processMessage(message);
                 return this.formatMarkdown(response);
@@ -191,8 +230,34 @@ class BarodaTekChatbot {
             }
         }
 
-        // Fallback: Use enhanced local responses
-        return await this.getEnhancedResponse(message);
+        // Otherwise call server-side LLM proxy (OpenAI)
+        try {
+            const responseText = await this.requestAIResponse([{ role: 'user', content: message }]);
+            return responseText || await this.getEnhancedResponse(message);
+        } catch (err) {
+            console.error('Error fetching AI response from server:', err);
+            return await this.getEnhancedResponse(message);
+        }
+    }
+
+    /**
+     * Send conversation to server AI proxy and return the assistant text
+     */
+    async requestAIResponse(messages) {
+        const payload = { messages };
+        const resp = await fetch('/api/ai-chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!resp.ok) {
+            const text = await resp.text();
+            throw new Error(`AI proxy failed: ${resp.status} ${text}`);
+        }
+
+        const data = await resp.json();
+        return data.text || '';
     }
 
     /**
@@ -336,12 +401,94 @@ class BarodaTekChatbot {
     /**
      * Ask predefined question
      */
-    askQuestion(question) {
+    askQuestion(question, autoSend = true) {
         if (!this.elements.messageInput) return;
-        
+
         const sanitizedQuestion = this.sanitizer.sanitize(question);
         this.elements.messageInput.value = sanitizedQuestion;
-        this.sendMessage();
+        // If caller wants to auto-send (feature cards), send; otherwise let user edit and press Enter/send
+        if (autoSend) this.sendMessage();
+    }
+
+    /**
+     * Fallback delegated handler: ensures buttons with data-action are handled
+     * even if individual listeners were not present (helps race conditions).
+     */
+    attachFallbackDelegation() {
+        // Avoid installing multiple times
+        if (this._fallbackDelegationInstalled) return;
+        this._fallbackDelegationInstalled = true;
+
+        document.addEventListener('click', (e) => {
+            const el = e.target.closest('[data-action]');
+            if (!el) return;
+            const action = el.getAttribute('data-action');
+            const arg = el.getAttribute('data-arg');
+
+            switch (action) {
+                case 'askQuestion':
+                    e.stopPropagation();
+                    e.preventDefault();
+                    this.askQuestion(arg || el.textContent || '', false);
+                    break;
+                case 'clearChat':
+                    e.stopPropagation();
+                    e.preventDefault();
+                    this.clearChat();
+                    break;
+                case 'showHelp':
+                    e.stopPropagation();
+                    e.preventDefault();
+                    this.showHelp();
+                    break;
+                case 'exploreFeature':
+                    e.stopPropagation();
+                    e.preventDefault();
+                    this.exploreFeature(arg);
+                    break;
+                default:
+                    // not a chatbot action
+            }
+        });
+    }
+
+    /**
+     * Populate additional quick-response templates dynamically
+     * Adds a few more non-invasive quick buttons for user convenience
+     */
+    populateQuickResponses() {
+        try {
+            const container = document.querySelector('.quick-actions');
+            if (!container) return;
+
+            const templates = [
+                { label: 'Site Updates', arg: 'What changed on the site recently?' },
+                { label: 'Tech News', arg: 'Summarize recent tech news' },
+                { label: 'Deployment', arg: 'How do I deploy to Vercel?' },
+                { label: 'Websearch', arg: 'search web for Node.js best practices' },
+                { label: 'API Contract', arg: 'Explain API contract patterns' }
+            ];
+
+            templates.forEach(t => {
+                const btn = document.createElement('button');
+                btn.className = 'quick-action-btn';
+                btn.setAttribute('data-action', 'askQuestion');
+                btn.setAttribute('data-arg', t.arg);
+                btn.textContent = '🔎 ' + t.label;
+                btn.addEventListener('click', () => this.askQuestion(t.arg, false));
+                container.appendChild(btn);
+            });
+        } catch (e) {
+            console.error('populateQuickResponses error', e);
+        }
+    }
+
+    /**
+     * Show help message (invoked by Help button)
+     */
+    showHelp() {
+        const helpText = `🆘 **Quick Help**\n\nYou can ask me to:\n• Generate code: "generate Express POST endpoint"\n• Debug code: "debug this error: [paste code]"\n• Search the web: "search web for [topic]"\n• Ask about site features: "what services do you offer?"\n\nClick any Quick Action button to auto-fill and send a question.`;
+        this.addMessage(helpText, 'bot');
     }
 
     /**
@@ -377,8 +524,21 @@ class BarodaTekChatbot {
         const content = document.createElement('div');
         content.className = 'message-content';
         
-        // Sanitize and render markdown-style text
-        content.innerHTML = this.formatMarkdown(text);
+        // If the incoming text looks like HTML, render it as sanitized HTML.
+        const looksLikeHtml = /<[^>]+>/.test(String(text || ''));
+        if (looksLikeHtml) {
+            // Prefer the project's global sanitizer if available (DOM-safe)
+            if (typeof window !== 'undefined' && typeof window.sanitizeHTML === 'function') {
+                content.innerHTML = window.sanitizeHTML(text);
+            } else {
+                // Fallback: the local sanitizer escapes HTML (safer) and then we apply markdown formatting
+                // This avoids injecting raw HTML when a robust sanitizer isn't present.
+                content.innerHTML = this.formatMarkdown(text);
+            }
+        } else {
+            // Sanitize and render markdown-style text
+            content.innerHTML = this.formatMarkdown(text);
+        }
 
         messageDiv.appendChild(avatar);
         messageDiv.appendChild(content);

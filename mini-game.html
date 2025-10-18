@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Contract Mini Game - BarodaTek.com</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/fontawesome.min.css" rel="stylesheet">
+    <link href="/css/site-theme.css" rel="stylesheet">
+    <link href="/fonts/montserrat.css" rel="stylesheet">
+    <link href="/fonts/poppins.css" rel="stylesheet">
+    <link href="/fonts/roboto.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #000000 0%, #740101 100%);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
@@ -30,7 +34,7 @@
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(223, 1, 1, 0.1);
             margin-bottom: 20px;
         }
         
@@ -148,6 +152,8 @@
             background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
             transition: width 0.3s ease;
         }
+
+        /* Quick fixed-position controls so users can always escape or refresh */
         
         .game-controls {
             text-align: center;
@@ -283,12 +289,24 @@
     </style>
 </head>
 <body>
+    <!-- Debug icon (bottom left, opens debug modal) -->
+    <button id="debug-icon" title="Show Debug Info" style="position:fixed;left:12px;bottom:12px;z-index:2147483647;background:#222;color:#fff;border:none;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 2px 8px rgba(0,0,0,0.3);cursor:pointer;">
+        <i class="fas fa-bug"></i>
+    </button>
+    <!-- Debug modal (hidden by default) -->
+    <div id="debug-modal" style="display:none;position:fixed;left:24px;bottom:64px;z-index:2147483648;background:rgba(30,30,30,0.98);color:#fff;padding:18px 22px;border-radius:12px;font-family:monospace;font-size:14px;max-width:420px;max-height:320px;overflow:auto;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-weight:bold;font-size:16px;"><i class="fas fa-bug"></i> Debug Info</span>
+            <button id="debug-close" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;">&times;</button>
+        </div>
+        <div id="game-debug-content">Debug:</div>
+    </div>
     <div class="game-container">
         <div class="game-header">
             <h1><i class="fas fa-gamepad"></i> API Contract Challenge</h1>
             <p class="lead">Master the art of API contract management with BarodaTek.com</p>
             <div class="d-flex justify-content-center align-items-center gap-3">
-                <span class="badge bg-light text-dark">Powered by BarodaTek.com</span>
+                <span class="badge bg-white text-dark">Powered by BarodaTek.com</span>
                 <span id="live-players" class="badge bg-success">Players Online: 1</span>
             </div>
         </div>
@@ -330,23 +348,22 @@
             <div class="power-ups">
                 <button class="power-up" id="skipPowerUp" data-action="usePowerUp" data-arg="skip" disabled>
                     <i class="fas fa-forward"></i> Skip (3)
-                </button>
-                <button class="power-up" id="hintPowerUp" data-action="usePowerUp" data-arg="hint" disabled>
-                    <i class="fas fa-lightbulb"></i> Hint (2)
-                </button>
-                <button class="power-up" id="timePowerUp" data-action="usePowerUp" data-arg="time" disabled>
-                    <i class="fas fa-clock"></i> +Time (1)
-                </button>
-            </div>
-        </div>
-        
         <div class="game-board">
             <div class="row" id="contractOptions">
                 <!-- Contract cards will be generated here -->
             </div>
         </div>
+    </div>
+    <!-- Removed fixed-position quick controls (top right) -->
         
         <div class="game-controls">
+            <!-- Functional fix: Only one set of Home/Refresh buttons, event listeners handled in JS -->
+            <button class="btn btn-dark btn-lg d-flex align-items-center" id="homeBtn">
+                <span class="me-2"><i class="fas fa-gamepad"></i></span> Home
+            </button>
+            <button class="btn btn-secondary btn-lg d-flex align-items-center" id="refreshBtn">
+                <span class="me-2"><i class="fas fa-sync-alt"></i></span> Refresh
+            </button>
             <button class="btn btn-success btn-lg" id="startBtn" data-action="startGame">
                 <i class="fas fa-play"></i> Start Game
             </button>
@@ -390,67 +407,45 @@
                 this.questionsAnswered = 0;
                 this.correctAnswers = 0;
                 this.maxStreak = 0;
+                // mark which copy is running (helps debug which file the browser loaded)
+                this.miniGameSource = 'root';
                 
                 this.questions = {
                     easy: [
-                        {
-                            question: "Which HTTP method is used to create a new contract?",
-                            correct: "POST",
-                            options: ["GET", "POST", "PUT", "DELETE"],
-                            explanation: "POST is used to create new resources in RESTful APIs."
-                        },
-                        {
-                            question: "What HTTP status code indicates successful creation?",
-                            correct: "201",
-                            options: ["200", "201", "400", "500"],
-                            explanation: "201 Created indicates that a new resource has been successfully created."
-                        },
-                        {
-                            question: "Which field is required for all contracts?",
-                            correct: "title",
-                            options: ["description", "title", "notes", "tags"],
-                            explanation: "Title is a mandatory field for contract identification."
-                        }
+                        { question: "Which HTTP method is used to create a new contract?", correct: "POST", options: ["GET", "POST", "PUT", "DELETE"], explanation: "POST is used to create new resources in RESTful APIs." },
+                        { question: "What HTTP status code indicates successful creation?", correct: "201", options: ["200", "201", "400", "500"], explanation: "201 Created indicates that a new resource has been successfully created." },
+                        { question: "Which field is commonly required for contracts?", correct: "title", options: ["description", "title", "notes", "tags"], explanation: "Title is commonly used to identify contracts." },
+                        { question: "Which content type is used for JSON APIs?", correct: "application/json", options: ["text/html", "application/json", "multipart/form-data", "text/plain"], explanation: "JSON APIs use application/json Content-Type." },
+                        { question: "Which HTTP method retrieves data?", correct: "GET", options: ["POST", "PUT", "GET", "DELETE"], explanation: "GET is used to retrieve resources without side effects." },
+                        { question: "Which status code means 'Not Found'?", correct: "404", options: ["200", "301", "404", "500"], explanation: "404 indicates the resource couldn't be found." },
+                        { question: "Which protocol is secure?", correct: "HTTPS", options: ["HTTP", "FTP", "HTTPS", "SMTP"], explanation: "HTTPS is HTTP over TLS/SSL and is secure." },
+                        { question: "What does JSON stand for?", correct: "JavaScript Object Notation", options: ["JavaScript Object Notation", "Java Source Output Name", "Just Simple Object Naming", "Junction Service Oriented Network"], explanation: "JSON is JavaScript Object Notation." },
+                        { question: "Which header is used to indicate allowed origins for CORS?", correct: "Access-Control-Allow-Origin", options: ["CORS-Allowed", "Access-Control-Allow-Origin", "Allow-Origin", "CORS-Origin"], explanation: "Access-Control-Allow-Origin tells browsers which origins may access the resource." },
+                        { question: "Which HTTP method is used to delete a resource?", correct: "DELETE", options: ["GET", "POST", "PUT", "DELETE"], explanation: "DELETE removes resources on the server." }
                     ],
                     medium: [
-                        {
-                            question: "What's the best practice for API versioning?",
-                            correct: "/api/v1/contracts",
-                            options: ["/api/contracts", "/api/v1/contracts", "/contracts/api", "/v1/api/contracts"],
-                            explanation: "Including version in the URL path is a common best practice."
-                        },
-                        {
-                            question: "Which validation library is commonly used with Node.js?",
-                            correct: "Joi",
-                            options: ["Joi", "Yup", "Zod", "Ajv"],
-                            explanation: "Joi is a popular schema validation library for Node.js."
-                        },
-                        {
-                            question: "What's the purpose of middleware in Express?",
-                            correct: "Process requests between client and server",
-                            options: ["Store data", "Process requests between client and server", "Create HTML", "Manage databases"],
-                            explanation: "Middleware functions execute during the request-response cycle."
-                        }
+                        { question: "What's the best practice for API versioning?", correct: "/api/v1/contracts", options: ["/api/contracts", "/api/v1/contracts", "/contracts/api", "/v1/api/contracts"], explanation: "Including version in the URL path is a common best practice." },
+                        { question: "Which validation library is commonly used with Node.js?", correct: "Joi", options: ["Joi", "Yup", "Zod", "Ajv"], explanation: "Joi is a popular schema validation library for Node.js." },
+                        { question: "What's the purpose of middleware in Express?", correct: "Process requests between client and server", options: ["Store data", "Process requests between client and server", "Create HTML", "Manage databases"], explanation: "Middleware functions execute during the request-response cycle." },
+                        { question: "What does idempotent mean for HTTP methods?", correct: "Multiple identical requests have same effect", options: ["Always returns same body", "Multiple identical requests have same effect", "Never changes server", "Is cached automatically"], explanation: "Idempotent means repeated requests produce the same effect on the server." },
+                        { question: "Which header is used to send JSON content length?", correct: "Content-Length", options: ["Content-Type", "Content-Length", "Content-Size", "X-Content-Length"], explanation: "Content-Length indicates the size of the body in bytes." },
+                        { question: "Which status code indicates 'Too Many Requests'?", correct: "429", options: ["429", "403", "500", "301"], explanation: "429 indicates rate limiting / too many requests." },
+                        { question: "What is a webhook?", correct: "An HTTP callback triggered by events", options: ["A database stored procedure", "An HTTP callback triggered by events", "A cron job", "A static file"], explanation: "Webhooks POST data to a URL when events occur." },
+                        { question: "Which authentication scheme uses tokens starting with 'Bearer'?", correct: "OAuth/JWT Bearer tokens", options: ["Basic", "API-Key", "OAuth/JWT Bearer tokens", "Digest"], explanation: "Bearer tokens (JWT/OAuth) are passed in Authorization header." },
+                        { question: "Which response header is used for caching validation?", correct: "ETag", options: ["Expires", "ETag", "Cache-Status", "Last-Modified"], explanation: "ETag helps clients validate cached resources." },
+                        { question: "Which practice helps APIs be discoverable (HATEOAS)?", correct: "Include links in responses", options: ["Use HTML only", "Include links in responses", "Hide endpoints", "Use only GET"], explanation: "HATEOAS uses links to related resources in responses." }
                     ],
                     hard: [
-                        {
-                            question: "How should you handle concurrent contract updates?",
-                            correct: "Optimistic locking with version numbers",
-                            options: ["First come first served", "Optimistic locking with version numbers", "Reject all updates", "Allow all updates"],
-                            explanation: "Optimistic locking prevents data conflicts in concurrent scenarios."
-                        },
-                        {
-                            question: "What's the best caching strategy for dynamic contract data?",
-                            correct: "Cache-Control with ETag validation",
-                            options: ["No caching", "Cache-Control with ETag validation", "Permanent caching", "Random caching"],
-                            explanation: "ETag validation ensures data consistency while improving performance."
-                        },
-                        {
-                            question: "How should API rate limiting be implemented?",
-                            correct: "Token bucket algorithm with Redis",
-                            options: ["No rate limiting", "Token bucket algorithm with Redis", "Simple counters", "Time-based blocking"],
-                            explanation: "Token bucket with Redis provides scalable rate limiting."
-                        }
+                        { question: "How should you handle concurrent contract updates?", correct: "Optimistic locking with version numbers", options: ["First come first served", "Optimistic locking with version numbers", "Reject all updates", "Allow all updates"], explanation: "Optimistic locking prevents data conflicts in concurrent scenarios." },
+                        { question: "What's the best caching strategy for dynamic contract data?", correct: "Cache-Control with ETag validation", options: ["No caching", "Cache-Control with ETag validation", "Permanent caching", "Random caching"], explanation: "ETag validation ensures data consistency while improving performance." },
+                        { question: "How should API rate limiting be implemented?", correct: "Token bucket algorithm with Redis", options: ["No rate limiting", "Token bucket algorithm with Redis", "Simple counters", "Time-based blocking"], explanation: "Token bucket with Redis provides scalable rate limiting." },
+                        { question: "What is circuit breaker pattern used for?", correct: "Prevent cascading failures by stopping calls", options: ["Backup database", "Prevent cascading failures by stopping calls", "Speed up requests", "Encrypt traffic"], explanation: "Circuit breakers stop calling a failing service to prevent cascading problems." },
+                        { question: "What does eventual consistency mean?", correct: "Data becomes consistent over time", options: ["Immediate consistency always", "Data becomes consistent over time", "Data is always inconsistent", "Only caches change"], explanation: "Eventual consistency allows temporary divergence with later convergence." },
+                        { question: "Which header helps with concurrency using ETags?", correct: "If-Match", options: ["If-Modified-Since", "If-None-Match", "If-Match", "If-Unmodified"], explanation: "If-Match with ETag prevents overwriting changed resources." },
+                        { question: "Which algorithm gives smooth rate limiting with bursts?", correct: "Token Bucket", options: ["Leaky Bucket", "Token Bucket", "Round Robin", "First-Come"], explanation: "Token Bucket allows bursts while enforcing overall rate." },
+                        { question: "What is the preferred response for a failed authentication?", correct: "401 Unauthorized", options: ["403 Forbidden", "401 Unauthorized", "404 Not Found", "400 Bad Request"], explanation: "401 indicates the client must authenticate." },
+                        { question: "Which TLS version is recommended for secure APIs?", correct: "TLS 1.2+", options: ["SSLv3", "TLS 1.0", "TLS 1.2+", "TLS 1.1"], explanation: "Use TLS 1.2 or higher for modern security." },
+                        { question: "Which pattern helps scale read-heavy contract data?", correct: "CQRS (separate read/write)", options: ["Monolith", "CQRS (separate read/write)", "Single-threaded", "Synchronous only"], explanation: "CQRS separates read and write models to scale reads." }
                     ]
                 };
                 
@@ -484,6 +479,21 @@
             }
             
             startGame() {
+                // Prepare a shuffled question list for this session to avoid repeats
+                this.shuffledQuestions = this.shuffleArray((this.questions[this.difficulty] || []).slice());
+                this.debugLog(`startGame [${this.miniGameSource}]: difficulty=${this.difficulty} shuffledQuestions.length=${(this.shuffledQuestions && this.shuffledQuestions.length) || 0}`);
+
+                // Fallback: if the selected difficulty has too few questions, merge pools and ensure a reasonable minimum
+                if (!this.shuffledQuestions || this.shuffledQuestions.length < 5) {
+                    let merged = [].concat(this.questions.easy || [], this.questions.medium || [], this.questions.hard || []);
+                    merged = merged.filter(Boolean);
+                    while (merged.length < 10) merged = merged.concat(merged.slice());
+                    merged = merged.slice(0, Math.max(10, merged.length));
+                    this.shuffledQuestions = this.shuffleArray(merged.slice());
+                    this.debugLog(`startGame [${this.miniGameSource}]: used merged pool length=${this.shuffledQuestions.length}`);
+                }
+
+                this.currentQuestionIndex = 0;
                 this.isPlaying = true;
                 this.isPaused = false;
                 this.score = 0;
@@ -510,6 +520,21 @@
                 }
                 
                 this.showFloatingText('Game Started!', '#28a745');
+            }
+
+            // Helper to write to debug modal content
+            debugLog(msg) {
+                try {
+                    const content = document.getElementById('game-debug-content');
+                    if (content) {
+                        const p = document.createElement('div');
+                        p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+                        content.appendChild(p);
+                        content.scrollTop = content.scrollHeight;
+                    } else {
+                        console.log('debug:', msg);
+                    }
+                } catch (e) { console.warn('debugLog error', e); }
             }
             
             pauseGame() {
@@ -570,9 +595,19 @@
             
             nextQuestion() {
                 if (!this.isPlaying) return;
-                
-                const questions = this.questions[this.difficulty];
-                this.currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+
+                if (!this.shuffledQuestions) {
+                    console.warn('nextQuestion: shuffledQuestions missing, building from difficulty');
+                    this.shuffledQuestions = this.shuffleArray(this.questions[this.difficulty].slice());
+                }
+
+                if (this.currentQuestionIndex >= this.shuffledQuestions.length) {
+                    this.debugLog('nextQuestion: reached end of questions => stopGame');
+                    this.stopGame();
+                    return;
+                }
+
+                this.currentQuestion = this.shuffledQuestions[this.currentQuestionIndex];
                 
                 document.getElementById('questionText').textContent = this.currentQuestion.question;
                 this.generateContractOptions();
@@ -581,6 +616,14 @@
                 document.querySelectorAll('.contract-card').forEach(card => {
                     card.classList.remove('correct', 'incorrect', 'selected');
                 });
+            }
+
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
             }
             
             generateContractOptions() {
@@ -682,6 +725,7 @@
                 this.updateDisplay();
                 
                 setTimeout(() => {
+                    this.currentQuestionIndex++;
                     this.nextQuestion();
                 }, 2000);
             }
@@ -714,12 +758,11 @@
             
             usePowerUp(type) {
                 if (this.powerUps[type] <= 0 || !this.isPlaying) return;
-                
                 this.powerUps[type]--;
                 this.updatePowerUpDisplay();
-                
                 switch (type) {
                     case 'skip':
+                        this.currentQuestionIndex++;
                         this.nextQuestion();
                         this.showFloatingText('Question Skipped!', '#17a2b8');
                         break;
@@ -731,7 +774,6 @@
                         this.showFloatingText('+30 Seconds!', '#28a745');
                         break;
                 }
-                
                 if (window.barodaTekAnalytics) {
                     window.barodaTekAnalytics.trackCustomEvent('power_up_used', {
                         type: type,
@@ -788,27 +830,10 @@
                         <small>${achievement.description}</small>
                     </div>
                 `;
-                
                 container.appendChild(achievementElement);
-                
                 setTimeout(() => {
                     achievementElement.remove();
                 }, 5000);
-            }
-            
-            showFloatingScore(points, element) {
-                const rect = element.getBoundingClientRect();
-                const floatingScore = document.createElement('div');
-                floatingScore.className = 'floating-score';
-                floatingScore.textContent = `+${points}`;
-                floatingScore.style.left = `${rect.left + rect.width/2}px`;
-                floatingScore.style.top = `${rect.top}px`;
-                
-                document.body.appendChild(floatingScore);
-                
-                setTimeout(() => {
-                    floatingScore.remove();
-                }, 1000);
             }
             
             createParticles(element) {
@@ -928,7 +953,7 @@
                 }
                 
                 content.innerHTML = leaderboard.map((entry, index) => `
-                    <div class="d-flex justify-content-between align-items-center mb-2 p-2 ${index < 3 ? 'bg-light' : ''} rounded">
+                    <div class="d-flex justify-content-between align-items-center mb-2 p-2 ${index < 3 ? 'bg-white' : ''} rounded">
                         <div>
                             <strong>${index + 1}. ${entry.name}</strong>
                             <small class="text-muted d-block">${new Date(entry.date).toLocaleDateString()} • ${entry.difficulty}</small>
@@ -982,6 +1007,7 @@
                     const j = Math.floor(Math.random() * (i + 1));
                     [array[i], array[j]] = [array[j], array[i]];
                 }
+                return array;
             }
         }
         
@@ -1060,5 +1086,27 @@
             });
         });
     </script>
+    <script>
+    // Debug icon/modal logic only
+    document.addEventListener('DOMContentLoaded', function() {
+        var debugIcon = document.getElementById('debug-icon');
+        var debugModal = document.getElementById('debug-modal');
+        var debugClose = document.getElementById('debug-close');
+        if (debugIcon && debugModal && debugClose) {
+            debugIcon.addEventListener('click', function() {
+                debugModal.style.display = 'block';
+            });
+            debugClose.addEventListener('click', function() {
+                debugModal.style.display = 'none';
+            });
+        }
+    });
+    // Bottom controls JS
+    function goHome() {
+        window.location.href = 'index.html';
+    }
+    function refreshGame() {
+        location.reload();
+    }
+    </script>
 </body>
-</html>

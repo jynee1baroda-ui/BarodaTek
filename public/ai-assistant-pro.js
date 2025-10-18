@@ -656,7 +656,40 @@ class ${model}(Base):
      */
     explainConcept(message, entities) {
         const msg = message.toLowerCase();
-        
+
+        // If user asked in the form "explain X" try to extract the concept and answer directly
+        // Capture until punctuation or end of string to allow more flexible concepts
+        const explainMatch = message.match(/(?:explain|what is|how does|tell me about)\s+(.+?)(?:\?|\.|$)/i);
+        if (explainMatch && explainMatch[1]) {
+            let concept = explainMatch[1].toLowerCase().trim();
+            // normalize common slash usage (e.g., async/await) and punctuation
+            let conceptNorm = concept.replace(/[\/]/g, ' ').replace(/[.,!?]$/g, '').trim();
+
+            // Map several common synonyms to targeted explanations
+            if (conceptNorm.includes('async') || conceptNorm.includes('await') || conceptNorm.includes('async await')) {
+                return `📚 **Async/Await Explained**\n\n**What it does:**\nMakes asynchronous code look synchronous!\n\n**Before (Callbacks):**\n\n\`\`\`javascript\nfetchData(function(result) {\n    processData(result, function(processed) {\n        saveData(processed, function(saved) {\n            // Callback hell!\n        });\n    });\n});\n\`\`\`\n\n**After (Async/Await):**\n\n\`\`\`javascript\nasync function handleData() {\n    const result = await fetchData();\n    const processed = await processData(result);\n    const saved = await saveData(processed);\n    return saved;\n}\n\`\`\`\n\n**Rules:**\n1. Mark function as \`async\`\n2. Use \`await\` before promises\n3. Always add try-catch for errors\n\n**Error Handling:**\n\`\`\`javascript\ntry {\n    const data = await fetchData();\n} catch (error) {\n    console.error('Failed:', error);\n}\n\`\`\`\n\nNeed examples? Just ask! 🚀`;
+            }
+            if (conceptNorm.includes('rest') || conceptNorm.includes('api')) {
+                return `📚 **REST API Explained**\n\n**REST** = Representational State Transfer\n\n**Key Concepts:**\n\n1️⃣ **Resources** - Everything is a resource (users, posts, etc.)\n   URL: /api/users/123\n\n2️⃣ **HTTP Methods:**\n   • GET - Retrieve data\n   • POST - Create new resource\n   • PUT - Update entire resource\n   • PATCH - Update part of resource\n   • DELETE - Remove resource\n\n3️⃣ **Status Codes:**\n   • 200 OK - Success\n   • 201 Created - New resource created\n   • 400 Bad Request - Invalid input\n   • 404 Not Found - Resource doesn't exist\n   • 500 Server Error - Something went wrong\n\n4️⃣ **Stateless** - Each request is independent\n\n**Example:**\n\`\`\`javascript\nGET /api/users/123\nResponse: { id: 123, name: "BarodaTek" }\n\`\`\`\n\nWant to build a REST API? Just ask! 🚀`;
+            }
+            if (conceptNorm.includes('jwt') || conceptNorm.includes('token') || conceptNorm.includes('authentication')) {
+                return `📚 **JWT Authentication Explained**\n\n**JWT** = JSON Web Token\n\n**How it works:**\n\n1️⃣ **User logs in**\n   → Server verifies credentials\n   → Server creates JWT token\n   → Returns token to client\n\n2️⃣ **Client stores token**\n   → Usually in localStorage or cookie\n\n3️⃣ **Client makes requests**\n   → Sends token in Authorization header:\n   \`Authorization: Bearer <token>\`\n\n4️⃣ **Server verifies token**\n   → Checks signature\n   → Extracts user info\n   → Processes request\n\n**JWT Structure:**\n\`\`\`\nheader.payload.signature\n\`\`\`\n\n**Example:**\n\`\`\`javascript\nconst jwt = require('jsonwebtoken');\n\n// Create token\nconst token = jwt.sign(\n    { userId: 123, email: 'user@example.com' },\n    'secret_key',\n    { expiresIn: '24h' }\n);\n\n// Verify token\ntry {\n    const decoded = jwt.verify(token, 'secret_key');\n    console.log(decoded.userId); // 123\n} catch (error) {\n    console.error('Invalid token');\n}\n\`\`\`\n\nWant to implement JWT auth? Ask me! 🚀`;
+            }
+            if (conceptNorm.includes('graphql')) {
+                return `📚 **GraphQL Explained**\n\n**What it is:**\nGraphQL is a query language for APIs and a runtime for executing those queries.\n\n**Key Concepts:**\n• Schema - Defines types and queries\n• Queries - Fetch data\n• Mutations - Modify data\n• Resolvers - Functions that return data for fields\n\n**Example Query:**\n\`\`\`graphql\nquery {\n  user(id: "123") {\n    id\n    name\n    posts {\n      id\n      title\n    }\n  }\n}\n\`\`\`\n\nWant an example resolver or schema? Ask! 🚀`;
+            }
+            if (conceptNorm.includes('websocket') || conceptNorm.includes('web sockets') || conceptNorm.includes('ws')) {
+                return `📡 **WebSockets Explained**\n\nWebSockets provide full-duplex communication channels over a single TCP connection.\n\n**Use cases:** Real-time chat, live updates, streaming.\n\n**Basic server (Node + ws):**\n\`\`\`javascript\nconst WebSocket = require('ws');\nconst wss = new WebSocket.Server({ port: 8080 });\n\nwss.on('connection', function connection(ws) {\n  ws.on('message', function incoming(message) {\n    console.log('received: %s', message);\n  });\n  ws.send('something');\n});\n\`\`\`\n\nWant help building a WebSocket server? Ask! 🚀`;
+            }
+            if (conceptNorm.includes('promise') || conceptNorm.includes('promises')) {
+                return `📚 **JavaScript Promises Explained**\n\n**What they are:**\nPromises represent eventual completion (or failure) of an async operation.\n\n**States:**\n• pending\n• fulfilled\n• rejected\n\n**Example:**\n\`\`\`javascript\nconst p = new Promise((resolve, reject) => {\n  setTimeout(() => resolve('done'), 1000);\n});\n\np.then(value => console.log(value)).catch(err => console.error(err));\n\`\`\`\n\nUse async/await to simplify promise handling. Need examples? Ask! 🚀`;
+            }
+            if (conceptNorm.includes('closure') || conceptNorm.includes('closures')) {
+                return `📚 **JavaScript Closures Explained**\n\nA closure is a function that retains access to its lexical scope even when executed outside that scope.\n\n**Example:**\n\`\`\`javascript\nfunction makeCounter() {\n  let count = 0;\n  return function() {\n    count += 1;\n    return count;\n  };\n}\n\nconst counter = makeCounter();\nconsole.log(counter()); // 1\nconsole.log(counter()); // 2\n\`\`\`\n\nClosures are useful for data privacy and factory functions. Ask for more patterns! 🚀`;
+            }
+            // If the concept matched none of the quick mappings, fall through to regular checks below
+        }
+
         // API concepts
         if (msg.includes('rest') || msg.includes('api')) {
             return `📚 **REST API Explained**\n\n**REST** = Representational State Transfer\n\n**Key Concepts:**\n\n1️⃣ **Resources** - Everything is a resource (users, posts, etc.)\n   URL: /api/users/123\n\n2️⃣ **HTTP Methods:**\n   • GET - Retrieve data\n   • POST - Create new resource\n   • PUT - Update entire resource\n   • PATCH - Update part of resource\n   • DELETE - Remove resource\n\n3️⃣ **Status Codes:**\n   • 200 OK - Success\n   • 201 Created - New resource created\n   • 400 Bad Request - Invalid input\n   • 404 Not Found - Resource doesn't exist\n   • 500 Server Error - Something went wrong\n\n4️⃣ **Stateless** - Each request is independent\n\n**Example:**\n\`\`\`javascript\nGET /api/users/123\nResponse: { id: 123, name: "BarodaTek" }\n\`\`\`\n\nWant to build a REST API? Just ask! 🚀`;

@@ -1,6 +1,54 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Minimal client-side HTML sanitizer for chatbot messages.
+// Keeps a small, conservative whitelist to avoid XSS when
+// using dangerouslySetInnerHTML. This mirrors the project's
+// public/dom-utils.js approach but kept local to this component
+// to avoid build/import complications.
+function sanitizeHTML(html) {
+  if (!html) return '';
+  const allowedTags = [
+    'div','span','p','a','strong','em','b','i','u','br','hr',
+    'h1','h2','h3','h4','h5','h6','ul','ol','li','pre','code'
+  ];
+  const allowedAttrs = ['class', 'id', 'href', 'title', 'alt', 'src', 'rel', 'target'];
+
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+
+  // Remove dangerous elements
+  const blocked = temp.querySelectorAll('script, style, iframe, object, embed');
+  blocked.forEach(el => el.remove());
+
+  const all = temp.querySelectorAll('*');
+  all.forEach(el => {
+    const tag = el.tagName.toLowerCase();
+    if (!allowedTags.includes(tag)) {
+      // Replace element with its children (strip the tag)
+      while (el.firstChild) el.parentNode.insertBefore(el.firstChild, el);
+      el.parentNode.removeChild(el);
+      return;
+    }
+
+    // Remove unsafe attributes
+    Array.from(el.attributes).forEach(attr => {
+      const name = attr.name.toLowerCase();
+      const value = attr.value || '';
+      if (!allowedAttrs.includes(name) && !name.startsWith('data-')) {
+        el.removeAttribute(attr.name);
+        return;
+      }
+      // strip javascript: and data:text/html URIs
+      if (typeof value === 'string' && (value.toLowerCase().includes('javascript:') || value.toLowerCase().includes('data:text/html'))) {
+        el.removeAttribute(attr.name);
+      }
+    });
+  });
+
+  return temp.innerHTML;
+}
+
 export default function ArenaChatbot({ isDisabled = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -167,7 +215,7 @@ export default function ArenaChatbot({ isDisabled = false }) {
                         ? 'bg-arena-red text-white'
                         : 'bg-gray-800 text-gray-100'
                     }`}
-                    dangerouslySetInnerHTML={{ __html: msg.text }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHTML(msg.text) }}
                   />
                 </motion.div>
               ))}

@@ -237,12 +237,12 @@ console.log('Total:', calculateTotal(cart));
 
         function populateChat() {
             const chatBox = document.getElementById('chatBox');
-            chatBox.innerHTML = messages.map(msg => `
-                <div class="chat-message">
-                    <strong>${msg.user}</strong> <small class="text-muted float-end">${msg.time}</small>
-                    <p class="mb-0">${msg.text}</p>
-                </div>
-            `).join('');
+                chatBox.innerHTML = (window.sanitizeHTML || sanitizeHTML)(messages.map(msg => `
+                    <div class="chat-message">
+                        <strong>${(window.escapeHtml||escapeHtml)?(window.escapeHtml||escapeHtml)(msg.user):msg.user}</strong> <small class="text-muted float-end">${(window.escapeHtml||escapeHtml)?(window.escapeHtml||escapeHtml)(msg.time):msg.time}</small>
+                        <p class="mb-0">${(window.escapeHtml||escapeHtml)?(window.escapeHtml||escapeHtml)(msg.text):msg.text}</p>
+                    </div>
+                `).join(''));
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
@@ -264,16 +264,16 @@ console.log('Total:', calculateTotal(cart));
 
         function populateProjects() {
             const projectsList = document.getElementById('projectsList');
-            projectsList.innerHTML = projects.map(proj => `
-                <div class="project-card" onclick="openProject('${proj.name}')">
-                    <h5>${proj.name}</h5>
+            projectsList.innerHTML = (window.sanitizeHTML || sanitizeHTML)(projects.map(proj => `
+                <div class="project-card" data-name="${(window.escapeHtml||escapeHtml)?(window.escapeHtml||escapeHtml)(proj.name):proj.name}">
+                    <h5>${(window.escapeHtml||escapeHtml)?(window.escapeHtml||escapeHtml)(proj.name):proj.name}</h5>
                     <div class="d-flex justify-content-between">
                         <span><i class="fas fa-users me-1"></i>${proj.members} members</span>
                         <span><i class="fas fa-file-code me-1"></i>${proj.files} files</span>
                     </div>
-                    <span class="badge bg-light text-dark mt-2">${proj.status}</span>
+                    <span class="badge bg-light text-dark mt-2">${(window.escapeHtml||escapeHtml)?(window.escapeHtml||escapeHtml)(proj.status):proj.status}</span>
                 </div>
-            `).join('');
+            `).join(''));
         }
 
         function createProject() {
@@ -324,6 +324,14 @@ console.log('Total:', calculateTotal(cart));
         document.addEventListener('DOMContentLoaded', function() {
             populateChat();
             populateProjects();
+            // Delegate clicks for project cards (avoids inline onclick)
+            document.getElementById('projectsList').addEventListener('click', function(e){
+                const card = e.target.closest('.project-card');
+                if (card) {
+                    const name = card.getAttribute('data-name');
+                    if (name) openProject(name);
+                }
+            });
         });
     </script>
 </body>

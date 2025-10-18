@@ -290,7 +290,17 @@ class RealtimeService {
                 icon = '❓';
         }
 
-        statusElement.innerHTML = `<span class="${statusClass}">${icon} ${statusText}</span>`;
+        // Use shared sanitizer if available, otherwise fall back to safe text insertion
+        const statusHtml = `<span class="${statusClass}">${icon} ${statusText}</span>`;
+        if (window && typeof window.sanitizeHTML === 'function') {
+            statusElement.innerHTML = window.sanitizeHTML(statusHtml);
+        } else if (window && typeof window.escapeHtml === 'function') {
+            // fallback: escape and set as innerHTML to preserve simple tags
+            statusElement.innerHTML = window.escapeHtml(statusHtml);
+        } else {
+            // Last resort: set as textContent to avoid any HTML injection
+            statusElement.textContent = `${icon} ${statusText}`;
+        }
     }
 
     showNotification(type, message, options = {}) {
@@ -308,32 +318,51 @@ class RealtimeService {
             border-radius: 8px;
         `;
 
-        let actionButton = '';
+        // Build notification content safely
+        const titleHtml = `<div class="fw-bold">${this.getNotificationTitle(type)}</div>`;
+        const messageHtml = `<div>${message}</div>`;
+
+        const contentWrapper = document.createElement('div');
+        contentWrapper.className = 'd-flex justify-content-between align-items-start';
+
+        const left = document.createElement('div');
+        left.className = 'flex-grow-1';
+        // Use sanitizer for title and message
+        if (window && typeof window.sanitizeHTML === 'function') {
+            left.innerHTML = window.sanitizeHTML(titleHtml + messageHtml);
+        } else {
+            left.textContent = `${this.getNotificationTitle(type)} ${message}`;
+        }
+
+        const right = document.createElement('div');
+        right.className = 'd-flex align-items-center';
+
+        // Add action button wired via event listener to avoid inline onclick
         if (options.action && options.callback) {
-            actionButton = `
-                <button type="button" class="btn btn-sm btn-outline-primary ms-2" onclick="this.closest('.notification-item').callback()">
-                    ${options.action}
-                </button>
-            `;
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn btn-sm btn-outline-primary ms-2';
+            btn.textContent = options.action;
+            btn.addEventListener('click', (e) => {
+                try {
+                    options.callback(e);
+                } catch (err) {
+                    console.error('Error in notification callback:', err);
+                }
+            });
+            right.appendChild(btn);
         }
 
-        notification.innerHTML = `
-            <div class="d-flex justify-content-between align-items-start">
-                <div class="flex-grow-1">
-                    <div class="fw-bold">${this.getNotificationTitle(type)}</div>
-                    <div>${message}</div>
-                </div>
-                <div class="d-flex align-items-center">
-                    ${actionButton}
-                    <button type="button" class="btn-close ms-2" data-bs-dismiss="alert"></button>
-                </div>
-            </div>
-        `;
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'btn-close ms-2';
+        closeBtn.setAttribute('data-bs-dismiss', 'alert');
+        right.appendChild(closeBtn);
 
-        // Add callback if provided
-        if (options.callback) {
-            notification.callback = options.callback;
-        }
+        contentWrapper.appendChild(left);
+        contentWrapper.appendChild(right);
+
+        notification.appendChild(contentWrapper);
 
         // Add to page
         document.body.appendChild(notification);
@@ -342,8 +371,8 @@ class RealtimeService {
         if (!options.persistent) {
             setTimeout(() => {
                 if (notification.parentNode) {
-                    notification.remove();
-                }
+                            notification.remove();
+                        }
             }, options.duration || 5000);
         }
 
@@ -388,8 +417,15 @@ class RealtimeService {
         // Update active users indicator
         const activeUsersElement = document.getElementById('active-users');
         if (activeUsersElement) {
-            // This would be populated from server data
-            activeUsersElement.innerHTML = '👥 Online users: Loading...';
+            // This would be populated from server data. Use sanitizer if available.
+            const elHtml = '👥 Online users: Loading...';
+            if (window && typeof window.sanitizeHTML === 'function') {
+                activeUsersElement.innerHTML = window.sanitizeHTML(elHtml);
+            } else if (window && typeof window.escapeHtml === 'function') {
+                activeUsersElement.innerHTML = window.escapeHtml(elHtml);
+            } else {
+                activeUsersElement.textContent = '👥 Online users: Loading...';
+            }
         }
     }
 
@@ -482,11 +518,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (navbar) {
         const statusItem = document.createElement('li');
         statusItem.className = 'nav-item';
-        statusItem.innerHTML = `
-            <span class="nav-link" id="ws-status">
-                <span class="text-muted">🔄 Connecting...</span>
-            </span>
-        `;
+        const span = document.createElement('span');
+        span.className = 'nav-link';
+        span.id = 'ws-status';
+        // Set initial content safely
+        if (window && typeof window.sanitizeHTML === 'function') {
+            span.innerHTML = window.sanitizeHTML('<span class="text-muted">🔄 Connecting...</span>');
+        } else if (window && typeof window.escapeHtml === 'function') {
+            span.innerHTML = window.escapeHtml('<span class="text-muted">🔄 Connecting...</span>');
+        } else {
+            span.textContent = '🔄 Connecting...';
+        }
+        statusItem.appendChild(span);
         navbar.appendChild(statusItem);
     }
     

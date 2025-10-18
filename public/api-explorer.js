@@ -56,7 +56,7 @@ async function testEndpoint(endpoint, method) {
     const responseElement = document.getElementById(`${endpoint}-response`);
     
     if (button) showLoading(endpoint, button);
-    responseElement.innerHTML = '<div class="text-info">Making request...</div>';
+    responseElement.innerHTML = sanitizeHTML('<div class="text-info">Making request...</div>');
     
     try {
         const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
@@ -75,7 +75,7 @@ async function testEndpoint(endpoint, method) {
             data: data
         };
         
-        responseElement.innerHTML = `<pre>${formatJSON(formattedResponse)}</pre>`;
+    responseElement.innerHTML = sanitizeHTML(`<pre>${formatJSON(formattedResponse)}</pre>`);
         
         if (response.ok) {
             showNotification(`${method} /${endpoint} - Success!`, 'success');
@@ -84,7 +84,7 @@ async function testEndpoint(endpoint, method) {
         }
         
     } catch (error) {
-        responseElement.innerHTML = `<div class="text-danger">Error: ${error.message}</div>`;
+    responseElement.innerHTML = sanitizeHTML(`<div class="text-danger">Error: ${escapeHtml ? escapeHtml(error.message) : error.message}</div>`);
         showNotification(`Network error: ${error.message}`, 'danger');
     } finally {
         hideLoading(endpoint, button);

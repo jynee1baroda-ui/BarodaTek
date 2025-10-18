@@ -95,6 +95,63 @@ const featureFlags = {
 // Port configuration
 const PORT = process.env.PORT || 8080;
 
+// AI chat endpoint: proxies conversation to OpenAI (server-side key required)
+const aiLimiter = rateLimit({ windowMs: 60 * 1000, max: 20 }); // 20 requests per minute per IP
+
+app.post('/api/ai-chat', aiLimiter, async (req, res) => {
+    const apiKey = process.env.OPENAI_API_KEY;
+    // If mocking is enabled, return a canned response so we can test locally without an API key
+    if (!apiKey && process.env.OPENAI_MOCK === 'true') {
+        return res.json({ text: 'Hello! This is a mock BarodaTek AI reply used for local testing. Replace OPENAI_MOCK with a real OPENAI_API_KEY to use the live model.' });
+    }
+    if (!apiKey) return res.status(500).json({ error: 'OpenAI API key not configured on server.' });
+
+    const { messages } = req.body || {};
+    if (!Array.isArray(messages) || messages.length === 0) {
+        return res.status(400).json({ error: 'Invalid request: messages array is required.' });
+    }
+
+    // Limit conversation size
+    const recent = messages.slice(-20);
+
+    // System prompt to steer assistant style
+    const systemPrompt = {
+        role: 'system',
+        content: 'You are BarodaTek AI assistant. Be friendly, concise, and helpful. Provide examples when relevant and avoid providing unsafe instructions. Keep answers clear and formatted for a developer audience.'
+    };
+
+    const payload = {
+        model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
+        messages: [systemPrompt, ...recent],
+        temperature: 0.4,
+        max_tokens: 800
+    };
+
+    try {
+        const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!resp.ok) {
+            const errText = await resp.text();
+            console.error('OpenAI error', resp.status, errText);
+            return res.status(resp.status).json({ error: errText });
+        }
+
+        const data = await resp.json();
+        const text = data?.choices?.[0]?.message?.content || '';
+        return res.json({ text });
+    } catch (err) {
+        console.error('AI proxy error:', err);
+        return res.status(500).json({ error: err.message || 'Unknown error' });
+    }
+});
+
 // Global analytics storage
 let analytics = {
     pageViews: 0,
