@@ -99,12 +99,10 @@ const PORT = process.env.PORT || 8080;
 const aiLimiter = rateLimit({ windowMs: 60 * 1000, max: 20 }); // 20 requests per minute per IP
 
 app.post('/api/ai-chat', aiLimiter, async (req, res) => {
-    const apiKey = process.env.OPENAI_API_KEY;
-    // If mocking is enabled, return a canned response so we can test locally without an API key
-    if (!apiKey && process.env.OPENAI_MOCK === 'true') {
-        return res.json({ text: 'Hello! This is a mock BarodaTek AI reply used for local testing. Replace OPENAI_MOCK with a real OPENAI_API_KEY to use the live model.' });
-    }
-    if (!apiKey) return res.status(500).json({ error: 'OpenAI API key not configured on server.' });
+        const apiKey = process.env.OPENAI_API_KEY;
+        // If no API key is provided, optionally allow a local mock mode for testing.
+        const allowMock = process.env.ALLOW_LOCAL_AI_MOCK === 'true';
+        if (!apiKey && !allowMock) return res.status(500).json({ error: 'OpenAI API key not configured on server.' });
 
     const { messages } = req.body || {};
     if (!Array.isArray(messages) || messages.length === 0) {
@@ -128,24 +126,60 @@ app.post('/api/ai-chat', aiLimiter, async (req, res) => {
     };
 
     try {
-        const resp = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify(payload)
-        });
+        let data;
 
-        if (!resp.ok) {
-            const errText = await resp.text();
-            console.error('OpenAI error', resp.status, errText);
-            return res.status(resp.status).json({ error: errText });
+        if (!apiKey && allowMock) {
+            // Local mock assistant: echo the last user message with a prefixed friendly reply.
+            const lastMsg = recent.length ? recent[recent.length - 1].content : 'Hello';
+            data = {
+                id: 'local-mock-1',
+                object: 'chat.completion',
+                choices: [
+                    {
+                        index: 0,
+                        message: {
+                            role: 'assistant',
+                            content: `Mock assistant reply: I received your message: "${lastMsg}"\n\n(Testing mode - no OpenAI key configured.)`
+                        }
+                    }
+                ]
+            };
+        } else {
+            const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!resp.ok) {
+                const errText = await resp.text();
+                console.error('OpenAI error', resp.status, errText);
+                return res.status(resp.status).json({ error: errText });
+            }
+
+            data = await resp.json();
         }
 
-        const data = await resp.json();
-        const text = data?.choices?.[0]?.message?.content || '';
-        return res.json({ text });
+        // Safely coerce assistant content to string to avoid [object Object] or unexpected shapes.
+        const rawContent = data?.choices?.[0]?.message?.content;
+        let text = '';
+        if (typeof rawContent === 'string') {
+            text = rawContent;
+        } else if (rawContent === undefined || rawContent === null) {
+            text = '';
+        } else {
+            try {
+                text = JSON.stringify(rawContent, null, 2);
+            } catch (e) {
+                text = String(rawContent);
+            }
+        }
+
+        // Return both a friendly `text` and the raw `openai` payload for diagnostics.
+        return res.json({ text, openai: data });
     } catch (err) {
         console.error('AI proxy error:', err);
         return res.status(500).json({ error: err.message || 'Unknown error' });
@@ -882,6 +916,59 @@ function broadcastAnalyticsUpdate() {
             client.send(JSON.stringify(updateData));
         }
     });
+}
+
+// Realtime (matchmaking) WebSocket control messages handler
+function handleRealtimeMessage(data, ws) {
+    if (!data || typeof data !== 'object') return;
+    const type = data.type || data.event || '';
+
+    switch (type) {
+        case 'join-matchmaking': {
+            const playerId = (data.playerId || (data.payload && data.payload.playerId) || '').trim();
+            if (!playerId) {
+                try { ws.send(JSON.stringify({ type: 'error', reason: 'playerId required for join-matchmaking' })); } catch {}
+                return;
+            }
+            ws.playerId = playerId;
+            ws.gameMode = data.gameMode || (data.payload && data.payload.gameMode) || null;
+            ws.region = data.region || (data.payload && data.payload.region) || null;
+            try {
+                ws.send(JSON.stringify({
+                    type: 'matchmaking-joined',
+                    playerId,
+                    gameMode: ws.gameMode,
+                    region: ws.region,
+                    timestamp: Date.now()
+                }));
+            } catch {}
+            break;
+        }
+        case 'leave-matchmaking': {
+            const pid = ws.playerId;
+            ws.playerId = undefined;
+            ws.gameMode = undefined;
+            ws.region = undefined;
+            try {
+                ws.send(JSON.stringify({ type: 'matchmaking-left', playerId: pid || null, timestamp: Date.now() }));
+            } catch {}
+            break;
+        }
+        case 'subscribe-lobby': {
+            const lobbyId = data.lobbyId || (data.payload && data.payload.lobbyId);
+            ws.lobbyId = lobbyId || null;
+            try { ws.send(JSON.stringify({ type: 'lobby-subscribed', lobbyId, timestamp: Date.now() })); } catch {}
+            break;
+        }
+        case 'unsubscribe-lobby': {
+            ws.lobbyId = undefined;
+            try { ws.send(JSON.stringify({ type: 'lobby-unsubscribed', timestamp: Date.now() })); } catch {}
+            break;
+        }
+        default:
+            // ignore unknown realtime messages
+            break;
+    }
 }
 
 // Routes
