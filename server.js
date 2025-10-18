@@ -771,9 +771,22 @@ wss.on('connection', (ws, req) => {
         try {
             const data = JSON.parse(message);
             // Analytics channel (existing behavior)
-            handleAnalyticsEvent(data, ws);
-            // Realtime matchmaking control
-            handleRealtimeMessage(data, ws);
+            try {
+                handleAnalyticsEvent(data, ws);
+            } catch (e) {
+                console.error('❌ Error in handleAnalyticsEvent:', e);
+            }
+
+            // Realtime matchmaking control (guarded)
+            try {
+                if (typeof handleRealtimeMessage === 'function') {
+                    handleRealtimeMessage(data, ws);
+                } else {
+                    console.warn('⚠️ handleRealtimeMessage is not defined. Ignoring realtime message.');
+                }
+            } catch (e) {
+                console.error('❌ Error in handleRealtimeMessage:', e);
+            }
         } catch (error) {
             console.error('❌ Error parsing WebSocket message:', error);
         }
@@ -916,59 +929,6 @@ function broadcastAnalyticsUpdate() {
             client.send(JSON.stringify(updateData));
         }
     });
-}
-
-// Realtime (matchmaking) WebSocket control messages handler
-function handleRealtimeMessage(data, ws) {
-    if (!data || typeof data !== 'object') return;
-    const type = data.type || data.event || '';
-
-    switch (type) {
-        case 'join-matchmaking': {
-            const playerId = (data.playerId || (data.payload && data.payload.playerId) || '').trim();
-            if (!playerId) {
-                try { ws.send(JSON.stringify({ type: 'error', reason: 'playerId required for join-matchmaking' })); } catch {}
-                return;
-            }
-            ws.playerId = playerId;
-            ws.gameMode = data.gameMode || (data.payload && data.payload.gameMode) || null;
-            ws.region = data.region || (data.payload && data.payload.region) || null;
-            try {
-                ws.send(JSON.stringify({
-                    type: 'matchmaking-joined',
-                    playerId,
-                    gameMode: ws.gameMode,
-                    region: ws.region,
-                    timestamp: Date.now()
-                }));
-            } catch {}
-            break;
-        }
-        case 'leave-matchmaking': {
-            const pid = ws.playerId;
-            ws.playerId = undefined;
-            ws.gameMode = undefined;
-            ws.region = undefined;
-            try {
-                ws.send(JSON.stringify({ type: 'matchmaking-left', playerId: pid || null, timestamp: Date.now() }));
-            } catch {}
-            break;
-        }
-        case 'subscribe-lobby': {
-            const lobbyId = data.lobbyId || (data.payload && data.payload.lobbyId);
-            ws.lobbyId = lobbyId || null;
-            try { ws.send(JSON.stringify({ type: 'lobby-subscribed', lobbyId, timestamp: Date.now() })); } catch {}
-            break;
-        }
-        case 'unsubscribe-lobby': {
-            ws.lobbyId = undefined;
-            try { ws.send(JSON.stringify({ type: 'lobby-unsubscribed', timestamp: Date.now() })); } catch {}
-            break;
-        }
-        default:
-            // ignore unknown realtime messages
-            break;
-    }
 }
 
 // Routes
