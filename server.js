@@ -20,6 +20,10 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+// Early body parsing so routes defined above middleware can access req.body
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+
 // Initialize database on startup
 db.initDatabase().then(() => {
     console.log('✅ Database ready for real-time data persistence');
@@ -105,6 +109,19 @@ app.post('/api/ai-chat', aiLimiter, async (req, res) => {
         if (!apiKey && !allowMock) return res.status(500).json({ error: 'OpenAI API key not configured on server.' });
 
     const { messages } = req.body || {};
+    // Optional debug logging to help diagnose malformed requests
+    if (process.env.DEBUG_AI_PROXY === 'true') {
+        try {
+            console.log('--- AI PROXY DEBUG ---');
+            console.log('Headers:', JSON.stringify(req.headers, null, 2));
+            // Attempt to log raw body; note bodyParser populates req.body
+            console.log('Body (parsed):', JSON.stringify(req.body, null, 2));
+            console.log('Raw body fallback (req.rawBody):', req.rawBody ? String(req.rawBody).slice(0, 2000) : '<no rawBody>');
+            console.log('----------------------');
+        } catch (e) {
+            console.error('Failed to dump AI proxy debug info', e);
+        }
+    }
     if (!Array.isArray(messages) || messages.length === 0) {
         return res.status(400).json({ error: 'Invalid request: messages array is required.' });
     }
