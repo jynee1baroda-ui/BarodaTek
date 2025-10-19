@@ -118,7 +118,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'testAPI': return testAPI();
                 case 'loadSampleContracts': return loadSampleContracts();
                 case 'startGameSafe': return (typeof startGame === 'function') ? (arg ? startGameSelector(arg) : startGame()) : alert('Game not loaded. Please hard reload.');
-                case 'startGame': return startGameSelector(arg);
+                case 'startGame':
+                    // If an enhanced game module is loaded, prefer it (it handles dynamic buttons and prevents bubbling).
+                    try {
+                        if (typeof window.startEnhancedGame === 'function') {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            return window.startEnhancedGame(arg);
+                        }
+                    } catch (ee) {
+                        console.warn('Enhanced game handler failed, falling back to default startGameSelector', ee);
+                    }
+                    return startGameSelector(arg);
                 case 'downloadCompleteProject': return downloadCompleteProject();
                 case 'downloadPostmanCollection': return downloadPostmanCollection();
                 case 'generateOpenAPISpec': return generateOpenAPISpec();
