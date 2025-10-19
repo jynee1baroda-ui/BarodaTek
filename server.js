@@ -20,10 +20,6 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-// Early body parsing so routes defined above middleware can access req.body
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
-
 // Initialize database on startup
 db.initDatabase().then(() => {
     console.log('✅ Database ready for real-time data persistence');
@@ -102,7 +98,9 @@ const PORT = process.env.PORT || 8080;
 // AI chat endpoint: proxies conversation to OpenAI (server-side key required)
 const aiLimiter = rateLimit({ windowMs: 60 * 1000, max: 20 }); // 20 requests per minute per IP
 
-app.post('/api/ai-chat', aiLimiter, async (req, res) => {
+// NOTE: This route requires JSON body parsing. Use per-route parser to avoid
+// issues when middleware order places global parsers after route definitions.
+app.post('/api/ai-chat', aiLimiter, express.json({ limit: '10mb' }), async (req, res) => {
         const apiKey = process.env.OPENAI_API_KEY;
         // If no API key is provided, optionally allow a local mock mode for testing.
         const allowMock = process.env.ALLOW_LOCAL_AI_MOCK === 'true';
