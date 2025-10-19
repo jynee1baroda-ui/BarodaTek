@@ -1,57 +1,56 @@
 /**
  * 🎮 BarodaTek Games Pro - All Games 100% Functional
- * Complete implementation with Game Engine Pro integration
+ * Cleaned implementation for client-side game starters
  * Version: 2.0.0
  */
 
-// Update existing game buttons to use enhanced versions
+// Initialize game buttons and wire enhanced starters
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🎮 Games Pro: Initializing...');
-    
-    // Replace old game handlers with enhanced versions
-    const gameButtons = document.querySelectorAll('[data-action="startGame"]');
-    gameButtons.forEach(button => {
-        const gameType = button.getAttribute('data-arg');
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            startEnhancedGame(gameType);
-        });
+  console.log('🎮 Games Pro: Initializing...');
+
+  const gameButtons = document.querySelectorAll('[data-action="startGame"]');
+  gameButtons.forEach(button => {
+    const gameType = button.getAttribute('data-arg');
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      startEnhancedGame(gameType);
     });
-    
-    console.log('🎮 Games Pro: Ready!');
+  });
+
+  console.log('🎮 Games Pro: Ready!');
 });
 
 /**
  * Start enhanced game based on type
  */
 function startEnhancedGame(gameType) {
-    // Ensure any existing game UI is closed (prevents API Galaxy remaining underneath)
-    try { if (typeof window.closeActiveGames === 'function') window.closeActiveGames(); } catch (e) { console.warn('closeActiveGames error', e); }
+  try { if (typeof window.closeActiveGames === 'function') window.closeActiveGames(); } catch (e) { console.warn('closeActiveGames error', e); }
 
-    switch(gameType) {
-        case 'api-quiz':
-        case 'API Galaxy':
-            startEnhancedAPIQuiz();
-            break;
-        case 'debug-detective':
-        case 'Debug Detective':
-            startEnhancedDebugDetective();
-            break;
-        case 'syntax-speed':
-        case 'Syntax Speed':
-            startEnhancedSyntaxSpeed();
-            break;
-        case 'algorithm-puzzle':
-        case 'Algorithm Puzzle':
-            startEnhancedAlgorithmPuzzle();
-            break;
-        default:
-            alert('Game not found: ' + gameType);
-    }
+  const mapping = {
+    'api-quiz': 'startEnhancedAPIQuiz',
+    'API Galaxy': 'startEnhancedAPIQuiz',
+    'debug-detective': 'startEnhancedDebugDetective',
+    'Debug Detective': 'startEnhancedDebugDetective',
+    'syntax-speed': 'startEnhancedSyntaxSpeed',
+    'Syntax Speed': 'startEnhancedSyntaxSpeed',
+    'algorithm-puzzle': 'startEnhancedAlgorithmPuzzle',
+    'Algorithm Puzzle': 'startEnhancedAlgorithmPuzzle'
+  };
+
+  const fnName = mapping[gameType];
+  if (!fnName) return alert('Game not found: ' + gameType);
+
+  const fn = window[fnName];
+  if (typeof fn === 'function') {
+    try { fn(); } catch (err) { console.error(fnName + ' threw:', err); }
+  } else {
+    console.warn(fnName + ' not defined');
+  }
 }
 
-// Make globally accessible
+// Expose globally
 window.startEnhancedGame = startEnhancedGame;
 
 console.log('✅ Games Pro module loaded');
+          console.warn(fnName + ' not defined');

@@ -1,10 +1,49 @@
 const puppeteer = require('puppeteer');
+const http = require('http');
+
+async function waitForUrl(url, timeout = 15000) {
+  const start = Date.now();
+  while (Date.now() - start < timeout) {
+    try {
+      await new Promise((res, rej) => {
+        const req = http.request(url, { method: 'HEAD', timeout: 2000 }, (r) => { res(); });
+        req.on('error', () => rej());
+        req.on('timeout', () => { req.destroy(); rej(); });
+        req.end();
+      });
+      return true;
+    } catch (e) {
+      await new Promise(r => setTimeout(r, 400));
+    }
+  }
+  return false;
+}
 
 (async () => {
   const url = process.env.TEST_URL || 'http://localhost:9000';
-  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox','--disable-setuid-sandbox'] });
+
+  console.log('Waiting for server to be ready at', url);
+  const ready = await waitForUrl(url);
+  if (!ready) {
+    console.error('Server did not become ready in time:', url);
+    process.exit(2);
+  }
+
+  const browser = await puppeteer.launch({
+    headless: 'new',
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+  });
   const page = await browser.newPage();
   page.setDefaultTimeout(30000);
+
+  // Block analytics, fonts and large assets to speed up tests
+  await page.setRequestInterception(true);
+  page.on('request', (req) => {
+    const url = req.url();
+    const blocked = ['analytics', 'google-analytics', 'gtag', 'fonts.googleapis', '.woff', '.woff2', '.png', '.jpg', '.gif', 'doubleclick.net', 'hotjar'];
+    if (blocked.some(b => url.includes(b))) return req.abort();
+    req.continue();
+  });
 
   console.log('Opening', url);
   await page.goto(url, { waitUntil: 'networkidle2' });
@@ -20,47 +59,53 @@ const puppeteer = require('puppeteer');
     }, el);
   }
 
-  // Ensure game buttons are present
-  const buttons = await page.$$('[data-action="startGame"], [data-action="startGameSafe"]');
-  if (!buttons || buttons.length === 0) {
+  // Collect game types robustly inside the page to avoid stale ElementHandles
+  const pageGameList = await page.evaluate(() => {
+    return Array.from(document.querySelectorAll('[data-action="startGame"], [data-action="startGameSafe"]'))
+      .map(el => ({ arg: el.getAttribute('data-arg'), action: el.getAttribute('data-action') }));
+  });
+
+  if (!pageGameList || pageGameList.length === 0) {
     console.error('No game buttons found on page.');
     await browser.close();
     process.exit(2);
   }
 
-  // Collect unique game types
-  const gameTypes = new Map();
-  for (const b of buttons) {
-    const arg = await (await b.getProperty('dataset')).jsonValue().then(ds => ds.arg).catch(() => null);
-    const dataArg = await page.evaluate(el => el.getAttribute('data-arg'), b);
-    const type = dataArg || arg || await page.evaluate(el => el.getAttribute('data-action'), b);
-    if (type) gameTypes.set(type, b);
-  }
-
-  console.log('Found game types:', Array.from(gameTypes.keys()).join(', '));
+  const gameTypes = Array.from(new Set(pageGameList.map(g => g.arg || g.action).filter(Boolean)));
+  console.log('Found game types:', gameTypes.join(', '));
 
   const results = [];
 
   // For each game type, click its button and check api-galaxy visibility
-  for (const [type] of gameTypes) {
+  for (const type of gameTypes) {
     console.log('\n--- Testing game:', type, '---');
-    // click the button (find it again to avoid stale element handles)
-    const btn = await page.$(`[data-arg="${type}"]`) || await page.$(`[data-action="startGame"][data-arg="${type}"]`) || await page.$(`[data-action="startGameSafe"][data-arg="${type}"]`);
-    if (!btn) {
-      console.warn('Button for', type, 'not found at click time; skipping');
-      results.push({ type, status: 'skipped', reason: 'not-found' });
-      continue;
-    }
+  try {
+      // click the button (find it each time to avoid stale element handles)
+      const selectorCandidates = [
+        `[data-action="startGame"][data-arg="${type}"]`,
+        `[data-action="startGameSafe"][data-arg="${type}"]`,
+        `[data-arg="${type}"]`
+      ];
+      let btn = null;
+      for (const s of selectorCandidates) {
+        btn = await page.$(s);
+        if (btn) break;
+      }
+      if (!btn) {
+        console.warn('Button for', type, 'not found at click time; skipping');
+        results.push({ type, status: 'skipped', reason: 'not-found' });
+        continue;
+      }
 
-    // Before click: check if api-galaxy visible
-    const beforeVisible = await isVisible('#api-galaxy') || await isVisible('[data-game="api-galaxy"]');
-    console.log('api-galaxy visible before click?', beforeVisible);
+      // Before click: check if api-galaxy visible
+      const beforeVisible = await isVisible('#api-galaxy') || await isVisible('[data-game="api-galaxy"]');
+      console.log('api-galaxy visible before click?', beforeVisible);
 
-    await btn.evaluate(b => { b.scrollIntoView({behavior: 'auto', block: 'center'}); });
-    await btn.click();
+      await btn.evaluate(b => { b.scrollIntoView({behavior: 'auto', block: 'center'}); });
+      await btn.click();
 
-    // Wait a bit for UI to settle and modals to show/hide
-    await page.waitForTimeout(1000);
+  // Wait a bit for UI to settle and modals to show/hide
+  await new Promise(r => setTimeout(r, 1000));
 
     // Try to close any modal that might block subsequent clicks
     try {
@@ -68,15 +113,21 @@ const puppeteer = require('puppeteer');
       if (closeBtn) await closeBtn.click();
     } catch (e) {}
 
-    // After click: check api-galaxy visibility
-    const afterVisible = await isVisible('#api-galaxy') || await isVisible('[data-game="api-galaxy"]');
-    console.log('api-galaxy visible after click?', afterVisible);
+      // After click: check api-galaxy visibility
+      const afterVisible = await isVisible('#api-galaxy') || await isVisible('[data-game="api-galaxy"]');
+      console.log('api-galaxy visible after click?', afterVisible);
 
     // If clicked game is 'api-quiz' or 'api-galaxy' we expect api-galaxy to be visible; otherwise we expect it to be hidden
     const isGalaxy = ['api-quiz', 'api-galaxy', 'API Galaxy'].includes(type);
     const passed = isGalaxy ? afterVisible : !afterVisible;
 
-    results.push({ type, passed, beforeVisible, afterVisible });
+      results.push({ type, passed, beforeVisible, afterVisible });
+
+    } catch (err) {
+      console.warn('Error testing', type, '-', String(err).slice(0,200));
+      results.push({ type, status: 'error', error: String(err) });
+      // attempt to continue to next game
+    }
 
     // Attempt to close any remaining modal/backdrop so tests can continue
     await page.evaluate(() => {
@@ -86,12 +137,14 @@ const puppeteer = require('puppeteer');
       if (modal) modal.remove();
     });
 
-    await page.waitForTimeout(300);
+  await new Promise(r => setTimeout(r, 300));
   }
 
   console.log('\nTest results:');
   results.forEach(r => {
-    console.log(`${r.type}: ${r.passed ? 'PASS' : 'FAIL'} (before:${r.beforeVisible} after:${r.afterVisible})`);
+    if (r.status === 'skipped') console.log(`${r.type}: SKIPPED (${r.reason})`);
+    else if (r.status === 'error') console.log(`${r.type}: ERROR (${r.error})`);
+    else console.log(`${r.type}: ${r.passed ? 'PASS' : 'FAIL'} (before:${r.beforeVisible} after:${r.afterVisible})`);
   });
 
   const failed = results.filter(r => !r.passed && r.status !== 'skipped');
