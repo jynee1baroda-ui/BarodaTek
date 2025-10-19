@@ -121,6 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'startGame':
                     // If an enhanced game module is loaded, prefer it (it handles dynamic buttons and prevents bubbling).
                     try {
+                        // Close any existing game UI (API Galaxy/modal) before starting a new game
+                        if (typeof window.closeActiveGames === 'function') {
+                            try { window.closeActiveGames(); } catch (ee) { console.warn('closeActiveGames failed', ee); }
+                        }
                         if (typeof window.startEnhancedGame === 'function') {
                             e.stopPropagation();
                             e.preventDefault();
@@ -180,6 +184,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// Utility: close any active game UI elements (modals, api-galaxy container, overlays)
+function closeActiveGames() {
+    try {
+        // Close Bootstrap modal if present
+        const gameModalEl = document.getElementById('gameModal') || document.querySelector('.modal.show');
+        if (gameModalEl) {
+            try {
+                const bs = bootstrap.Modal.getInstance(gameModalEl) || new bootstrap.Modal(gameModalEl);
+                bs.hide();
+            } catch (err) {
+                // fallback removal
+                gameModalEl.remove();
+            }
+        }
+
+        // Hide any dedicated api-galaxy container
+        const galaxy = document.getElementById('api-galaxy') || document.querySelector('[data-game="api-galaxy"]');
+        if (galaxy) {
+            galaxy.style.display = 'none';
+            // remove any overlays/backdrops
+            const backdrops = document.querySelectorAll('.modal-backdrop, .game-overlay');
+            backdrops.forEach(b => b.remove());
+        }
+
+        // Generic fallback: remove visible game-specific containers
+        const visibleGameBoards = document.querySelectorAll('.game-board, .mini-game, #question-container, #game-start');
+        visibleGameBoards.forEach(el => {
+            try { el.style.display = 'none'; } catch (e) {}
+        });
+    } catch (e) {
+        console.warn('closeActiveGames encountered an error', e);
+    }
+}
 
 // 📁 File download utility - ACTUALLY WORKS!
 function downloadFile(content, filename, contentType = 'text/plain') {

@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
  * Start enhanced game based on type
  */
 function startEnhancedGame(gameType) {
+    // Ensure any existing game UI is closed (prevents API Galaxy remaining underneath)
+    try { if (typeof window.closeActiveGames === 'function') window.closeActiveGames(); } catch (e) { console.warn('closeActiveGames error', e); }
+
     switch(gameType) {
         case 'api-quiz':
         case 'API Galaxy':

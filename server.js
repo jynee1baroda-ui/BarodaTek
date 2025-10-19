@@ -20,6 +20,15 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+// Ensure a safe default for realtime handler to avoid repeated "not defined" warnings
+if (typeof handleRealtimeMessage !== 'function') {
+    // define a no-op placeholder that can be overridden later in the file
+    var handleRealtimeMessage = function (data, ws) {
+        // intentionally empty — real implementation may be defined later
+        return;
+    };
+}
+
 // Initialize database on startup
 db.initDatabase().then(() => {
     console.log('✅ Database ready for real-time data persistence');
