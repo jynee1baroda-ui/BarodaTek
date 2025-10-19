@@ -1,3 +1,33 @@
+# BarodaTek — Champions Arena API
+
+This repository contains the BarodaTek Champions Arena API and frontend static site.
+
+Quick start (development):
+
+```powershell
+# install
+npm install
+
+# run the server (defaults to PORT=9000)
+SET PORT=9000; SET ALLOW_LOCAL_AI_MOCK=true; node server.js
+
+# run the Puppeteer diagnostic (optional)
+npm run test:puppeteer
+```
+
+Useful scripts (from `package.json`):
+- `npm start` — run production server
+- `npm run dev` — run server in development
+- `npm run lint` — lint checks (placeholder)
+- `npm run test` — run unit tests
+
+Diagnostics
+- `tools/diagnose_game_buttons.js` — headless Puppeteer script that checks in-game controls and reports console errors.
+
+If you push this repo to GitHub, enable Actions and Secrets if you want CI to run with real credentials.
+
+---
+Created automatically by the local workspace maintainer.
 # 🦙 API Mock Contract MVP
 
 A powerful and beginner-friendly API Mock Contract MVP built with Node.js, Express, and modern web technologies. Perfect for learning API development, frontend-backend integration, and Docker deployment!
