@@ -103,7 +103,7 @@ async function testEndpointWithId(endpoint, method) {
     }
     
     showLoading(`${endpoint}-id`, button);
-    responseElement.innerHTML = '<div class="text-info">Making request...</div>';
+    responseElement.innerHTML = sanitizeHTML('<div class="text-info">Making request...</div>');
     
     try {
         const response = await fetch(`${API_BASE_URL}/${endpoint}/${id}`, {
@@ -121,7 +121,7 @@ async function testEndpointWithId(endpoint, method) {
             data: data
         };
         
-        responseElement.innerHTML = `<pre>${formatJSON(formattedResponse)}</pre>`;
+    responseElement.innerHTML = sanitizeHTML(`<pre>${(typeof escapeHtml === 'function' ? escapeHtml(formatJSON(formattedResponse)) : formatJSON(formattedResponse))}</pre>`);
         
         if (response.ok) {
             showNotification(`${method} /${endpoint}/${id} - Success!`, 'success');
@@ -130,7 +130,7 @@ async function testEndpointWithId(endpoint, method) {
         }
         
     } catch (error) {
-        responseElement.innerHTML = `<div class="text-danger">Error: ${error.message}</div>`;
+        responseElement.innerHTML = sanitizeHTML(`<div class="text-danger">Error: ${(typeof escapeHtml === 'function' ? escapeHtml(String(error.message)) : String(error.message))}</div>`);
         showNotification(`Network error: ${error.message}`, 'danger');
     } finally {
         hideLoading(`${endpoint}-id`, button);
@@ -144,7 +144,7 @@ async function testCreateContract() {
     const responseElement = document.getElementById('create-contract-response');
     
     showLoading('create-contract', button);
-    responseElement.innerHTML = '<div class="text-info">Making request...</div>';
+    responseElement.innerHTML = sanitizeHTML('<div class="text-info">Making request...</div>');
     
     try {
         const requestBody = JSON.parse(bodyText);
@@ -165,7 +165,7 @@ async function testCreateContract() {
             data: data
         };
         
-        responseElement.innerHTML = `<pre>${formatJSON(formattedResponse)}</pre>`;
+    responseElement.innerHTML = sanitizeHTML(`<pre>${(typeof escapeHtml === 'function' ? escapeHtml(formatJSON(formattedResponse)) : formatJSON(formattedResponse))}</pre>`);
         
         if (response.ok) {
             showNotification('Contract created successfully!', 'success');
@@ -175,10 +175,10 @@ async function testCreateContract() {
         
     } catch (error) {
         if (error instanceof SyntaxError) {
-            responseElement.innerHTML = `<div class="text-danger">Invalid JSON: ${error.message}</div>`;
+            responseElement.innerHTML = sanitizeHTML(`<div class="text-danger">Invalid JSON: ${(typeof escapeHtml === 'function' ? escapeHtml(String(error.message)) : String(error.message))}</div>`);
             showNotification('Invalid JSON in request body', 'danger');
         } else {
-            responseElement.innerHTML = `<div class="text-danger">Error: ${error.message}</div>`;
+            responseElement.innerHTML = sanitizeHTML(`<div class="text-danger">Error: ${(typeof escapeHtml === 'function' ? escapeHtml(String(error.message)) : String(error.message))}</div>`);
             showNotification(`Network error: ${error.message}`, 'danger');
         }
     } finally {
@@ -202,7 +202,7 @@ async function testDeleteContract() {
     }
     
     showLoading('delete-contract', button);
-    responseElement.innerHTML = '<div class="text-info">Making request...</div>';
+    responseElement.innerHTML = sanitizeHTML('<div class="text-info">Making request...</div>');
     
     try {
         const response = await fetch(`${API_BASE_URL}/contracts/${id}`, {
@@ -220,7 +220,7 @@ async function testDeleteContract() {
             data: data
         };
         
-        responseElement.innerHTML = `<pre>${formatJSON(formattedResponse)}</pre>`;
+    responseElement.innerHTML = sanitizeHTML(`<pre>${(typeof escapeHtml === 'function' ? escapeHtml(formatJSON(formattedResponse)) : formatJSON(formattedResponse))}</pre>`);
         
         if (response.ok) {
             showNotification(`Contract ${id} deleted successfully!`, 'success');
@@ -229,7 +229,7 @@ async function testDeleteContract() {
         }
         
     } catch (error) {
-        responseElement.innerHTML = `<div class="text-danger">Error: ${error.message}</div>`;
+        responseElement.innerHTML = sanitizeHTML(`<div class="text-danger">Error: ${(typeof escapeHtml === 'function' ? escapeHtml(String(error.message)) : String(error.message))}</div>`);
         showNotification(`Network error: ${error.message}`, 'danger');
     } finally {
         hideLoading('delete-contract', button);

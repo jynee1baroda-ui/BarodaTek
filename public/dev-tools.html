@@ -258,10 +258,10 @@
                                 <textarea class="form-control" id="requestBody" rows="4" placeholder='{"key": "value"}'></textarea>
                             </div>
                             
-                            <button class="btn btn-primary" onclick="runApiTest()">
+                            <button class="btn btn-primary" data-action="runApiTest">
                                 <i class="fas fa-play"></i> Run Test
                             </button>
-                            <button class="btn btn-outline-secondary ms-2" onclick="clearTestResults()">
+                            <button class="btn btn-outline-secondary ms-2" data-action="clearTestResults">
                                 <i class="fas fa-trash"></i> Clear
                             </button>
                             
@@ -293,7 +293,7 @@
                                 </div>
                             </div>
                             
-                            <button class="btn btn-success" onclick="runAdvancedApiTest()">
+                            <button class="btn btn-success" data-action="runAdvancedApiTest">
                                 <i class="fas fa-cogs"></i> Run Advanced Test
                             </button>
                         </div>
@@ -349,10 +349,10 @@
                         <input type="text" class="form-control" id="generateEndpoint" placeholder="/api/contracts" value="/api/contracts">
                     </div>
                     
-                    <button class="btn btn-success" onclick="generateCode()">
+                    <button class="btn btn-success" data-action="generateCode">
                         <i class="fas fa-magic"></i> Generate Code
                     </button>
-                    <button class="btn btn-outline-primary ms-2" onclick="copyGeneratedCode()">
+                    <button class="btn btn-outline-primary ms-2" data-action="copyGeneratedCode">
                         <i class="fas fa-copy"></i> Copy
                     </button>
                     

@@ -172,12 +172,12 @@ function displayContracts(contracts) {
                     ${contract.value ? `<div class="mt-2 fw-bold text-success">${contract.value}</div>` : ''}
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-outline-primary btn-sm" onclick="viewContract(${contract.id})">
-                        <i class="fas fa-eye me-1"></i>View
-                    </button>
-                    <button class="btn btn-outline-secondary btn-sm" onclick="downloadContract(${contract.id})">
-                        <i class="fas fa-download me-1"></i>Download
-                    </button>
+                        <button class="btn btn-outline-primary btn-sm" data-action="viewContract" data-arg="${contract.id}">
+                            <i class="fas fa-eye me-1"></i>View
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm" data-action="downloadContract" data-arg="${contract.id}">
+                            <i class="fas fa-download me-1"></i>Download
+                        </button>
                 </div>
             </div>
         </div>
@@ -227,6 +227,49 @@ async function loadSampleContracts() {
     displayContracts(performanceData.contracts);
     showNotification('📝 Sample contracts loaded!', 'success');
 }
+
+    // Delegated listener for CSP-compliant data-action buttons
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const action = btn.getAttribute('data-action');
+        const arg = btn.getAttribute('data-arg');
+
+        try {
+            switch (action) {
+                case 'viewContract':
+                    viewContract(Number(arg));
+                    break;
+                case 'downloadContract':
+                    downloadContract(Number(arg));
+                    break;
+                case 'startGame':
+                    startGame();
+                    break;
+                case 'answerQuestion': {
+                    const idx = Number(btn.getAttribute('data-arg-index'));
+                    const correct = Number(btn.getAttribute('data-arg-correct'));
+                    const option = btn.getAttribute('data-arg-option');
+                    if (typeof answerQuestion === 'function') answerQuestion(idx, correct, option);
+                    break;
+                }
+                case 'reloadPage':
+                    location.reload();
+                    break;
+                case 'goHome':
+                    window.location.href = 'index.html';
+                    break;
+                default:
+                    // if a function with this name exists globally, try to call it
+                    if (typeof window[action] === 'function') {
+                        const args = arg ? arg.split(',').map(a => a.trim()) : [];
+                        window[action](...args);
+                    }
+            }
+        } catch (err) {
+            console.error('data-action handler error', action, err);
+        }
+    });
 
 // Show create form
 function showCreateForm() {
@@ -649,7 +692,7 @@ function gameModal(questions) {
             <p class="lead">${q.question}</p>
             <div class="d-grid gap-2">
                 ${q.options.map((option, index) => 
-                    `<button class="btn btn-outline-primary" onclick="answerQuestion(${index}, ${q.correct}, this)">${option}</button>`
+                    `<button class="btn btn-outline-primary" data-action="answerQuestion" data-arg-index="${index}" data-arg-correct="${q.correct}" data-arg-option="${escapeHtml(option)}">${option}</button>`
                 ).join('')}
             </div>
             <div class="mt-3">
@@ -687,7 +730,7 @@ function gameModal(questions) {
                             ${performanceData.gameScore === questions.length ? 'Perfect!' : performanceData.gameScore > questions.length / 2 ? 'Good Job!' : 'Keep Learning!'}
                         </div>
                         <div class="mt-3">
-                            <button class="btn btn-primary" onclick="startGame()">Play Again</button>
+                            <button class="btn btn-primary" data-action="startGame">Play Again</button>
                         </div>
                     </div>
                 `;

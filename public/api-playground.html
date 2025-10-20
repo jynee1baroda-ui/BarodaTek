@@ -228,13 +228,13 @@
                 <!-- Example APIs -->
                 <div class="example-apis">
                     <strong><i class="fas fa-star"></i> Quick Examples:</strong>
-                    <div class="example-api" onclick="loadExample('https://jsonplaceholder.typicode.com/posts/1', 'GET')">
+                    <div class="example-api" data-action="loadExample" data-arg="https://jsonplaceholder.typicode.com/posts/1,GET">
                         <strong>GET</strong> JSONPlaceholder - Sample Post
                     </div>
-                    <div class="example-api" onclick="loadExample('https://api.github.com/users/github', 'GET')">
+                    <div class="example-api" data-action="loadExample" data-arg="https://api.github.com/users/github,GET">
                         <strong>GET</strong> GitHub API - User Info
                     </div>
-                    <div class="example-api" onclick="loadExample(window.location.origin + '/api/contracts', 'GET')">
+                    <div class="example-api" data-action="loadExample" data-arg="${window.location.origin}/api/contracts,GET">
                         <strong>GET</strong> BarodaTek API - Contracts
                     </div>
                 </div>
@@ -242,10 +242,10 @@
                 <!-- HTTP Method -->
                 <div class="mb-3">
                     <label class="form-label"><strong>HTTP Method:</strong></label><br>
-                    <span class="method-badge GET selected" onclick="selectMethod('GET')">GET</span>
-                    <span class="method-badge POST" onclick="selectMethod('POST')">POST</span>
-                    <span class="method-badge PUT" onclick="selectMethod('PUT')">PUT</span>
-                    <span class="method-badge DELETE" onclick="selectMethod('DELETE')">DELETE</span>
+                    <span class="method-badge GET selected" data-action="selectMethod" data-arg="GET">GET</span>
+                    <span class="method-badge POST" data-action="selectMethod" data-arg="POST">POST</span>
+                    <span class="method-badge PUT" data-action="selectMethod" data-arg="PUT">PUT</span>
+                    <span class="method-badge DELETE" data-action="selectMethod" data-arg="DELETE">DELETE</span>
                 </div>
                 
                 <!-- URL -->
@@ -258,10 +258,10 @@
                 
                 <!-- Tabs for Headers/Body/Auth -->
                 <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="showTab('headers')">Headers</button>
-                    <button class="tab-btn" onclick="showTab('body')">Body</button>
-                    <button class="tab-btn" onclick="showTab('auth')">Auth</button>
-                    <button class="tab-btn" onclick="showTab('params')">Query Params</button>
+                    <button class="tab-btn active" data-action="showTab" data-arg="headers">Headers</button>
+                    <button class="tab-btn" data-action="showTab" data-arg="body">Body</button>
+                    <button class="tab-btn" data-action="showTab" data-arg="auth">Auth</button>
+                    <button class="tab-btn" data-action="showTab" data-arg="params">Query Params</button>
                 </div>
                 
                 <!-- Headers Tab -->
@@ -271,10 +271,10 @@
                         <div class="header-row">
                             <input type="text" class="form-control" placeholder="Key" value="Content-Type">
                             <input type="text" class="form-control" placeholder="Value" value="application/json">
-                            <button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-danger btn-sm" data-action="removeParent"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
-                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="addHeader()">
+                    <button class="btn btn-sm btn-outline-primary mt-2" data-action="addHeader">
                         <i class="fas fa-plus"></i> Add Header
                     </button>
                 </div>
@@ -305,17 +305,17 @@
                         <div class="header-row">
                             <input type="text" class="form-control" placeholder="Key">
                             <input type="text" class="form-control" placeholder="Value">
-                            <button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-danger btn-sm" data-action="removeParent"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
-                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="addParam()">
+                    <button class="btn btn-sm btn-outline-primary mt-2" data-action="addParam">
                         <i class="fas fa-plus"></i> Add Parameter
                     </button>
                 </div>
                 
                 <!-- Send Button -->
                 <div class="mt-4 text-center">
-                    <button class="send-btn" onclick="sendRequest()">
+                    <button class="send-btn" data-action="sendRequest">
                         <i class="fas fa-rocket"></i> Send Request
                     </button>
                 </div>
@@ -336,36 +336,36 @@
                 <div id="code-examples" style="display:none;">
                     <h5 class="mt-4" style="color: white;">📋 Code Examples:</h5>
                     <div class="tab-buttons">
-                        <button class="tab-btn active" onclick="showCodeTab('curl')">cURL</button>
-                        <button class="tab-btn" onclick="showCodeTab('javascript')">JavaScript</button>
-                        <button class="tab-btn" onclick="showCodeTab('python')">Python</button>
-                        <button class="tab-btn" onclick="showCodeTab('node')">Node.js</button>
+                        <button class="tab-btn active" data-action="showCodeTab" data-arg="curl">cURL</button>
+                        <button class="tab-btn" data-action="showCodeTab" data-arg="javascript">JavaScript</button>
+                        <button class="tab-btn" data-action="showCodeTab" data-arg="python">Python</button>
+                        <button class="tab-btn" data-action="showCodeTab" data-arg="node">Node.js</button>
                     </div>
                     
                     <div id="curl-code" class="code-tab">
                         <div class="code-block">
-                            <button class="copy-btn" onclick="copyCode('curl-code-text')">📋 Copy</button>
+                            <button class="copy-btn" data-action="copyCode" data-arg="curl-code-text">📋 Copy</button>
                             <pre id="curl-code-text"></pre>
                         </div>
                     </div>
                     
                     <div id="javascript-code" class="code-tab" style="display:none;">
                         <div class="code-block">
-                            <button class="copy-btn" onclick="copyCode('js-code-text')">📋 Copy</button>
+                            <button class="copy-btn" data-action="copyCode" data-arg="js-code-text">📋 Copy</button>
                             <pre id="js-code-text"></pre>
                         </div>
                     </div>
                     
                     <div id="python-code" class="code-tab" style="display:none;">
                         <div class="code-block">
-                            <button class="copy-btn" onclick="copyCode('py-code-text')">📋 Copy</button>
+                            <button class="copy-btn" data-action="copyCode" data-arg="py-code-text">📋 Copy</button>
                             <pre id="py-code-text"></pre>
                         </div>
                     </div>
                     
                     <div id="node-code" class="code-tab" style="display:none;">
                         <div class="code-block">
-                            <button class="copy-btn" onclick="copyCode('node-code-text')">📋 Copy</button>
+                            <button class="copy-btn" data-action="copyCode" data-arg="node-code-text">📋 Copy</button>
                             <pre id="node-code-text"></pre>
                         </div>
                     </div>

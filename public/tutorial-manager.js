@@ -632,7 +632,7 @@ class TutorialManager {
         
         modal.innerHTML = `
             <div style="max-width: 800px; margin: 0 auto; background: var(--steel-gray); border-radius: 10px; padding: 40px; position: relative;">
-                <button class="btn-tech" onclick="tutorialManager.closeModal()" style="position: absolute; top: 20px; right: 20px;">
+                <button class="btn-tech" data-action="tutorial-close" style="position: absolute; top: 20px; right: 20px;">
                     <i class="fas fa-times"></i>
                 </button>
                 
@@ -670,12 +670,11 @@ class TutorialManager {
                     <h3 style="color: var(--gold-trim); margin-bottom: 15px;">📚 Learning Resources:</h3>
                     <div style="display: grid; gap: 10px;">
                         ${tutorial.resources.map(resource => `
-                            <a href="${resource.link}" 
+                            <a class="tutorial-resource" href="${resource.link}" 
                                target="${resource.type === 'external' ? '_blank' : '_self'}"
-                               ${resource.prompt ? `onclick="if(this.target === '_self') { setTimeout(() => document.querySelector('#chat-input').value = '${resource.prompt}', 500); }"` : ''}
-                               style="display: flex; align-items: center; padding: 15px; background: var(--electric-black); border: 1px solid var(--border-dark); border-radius: 8px; text-decoration: none; color: var(--neon-cyan); transition: all 0.3s ease;"
-                               onmouseover="this.style.borderColor='var(--neon-cyan)'; this.style.transform='translateX(5px)';"
-                               onmouseout="this.style.borderColor='var(--border-dark)'; this.style.transform='translateX(0)';">
+                               data-prompt="${resource.prompt ? resource.prompt.replace(/"/g, '&quot;') : ''}"
+                               data-type="${resource.type}"
+                               style="display: flex; align-items: center; padding: 15px; background: var(--electric-black); border: 1px solid var(--border-dark); border-radius: 8px; text-decoration: none; color: var(--neon-cyan); transition: all 0.3s ease;">
                                 <i class="fas fa-${resource.icon}" style="font-size: 1.5rem; margin-right: 15px; color: ${resource.type === 'external' ? 'var(--tech-blue)' : 'var(--code-green)'};"></i>
                                 <div style="flex: 1;">
                                     <div style="font-weight: bold; margin-bottom: 3px;">${resource.name}</div>
@@ -701,7 +700,7 @@ class TutorialManager {
                 ` : ''}
                 
                 <div style="text-align: center;">
-                    <button class="btn-champion" onclick="tutorialManager.markComplete('${tutorial.id}')" ${isCompleted ? 'disabled' : ''}>
+                    <button class="btn-champion" data-action="tutorial-complete" data-tutorial-id="${tutorial.id}" ${isCompleted ? 'disabled' : ''}>
                         <i class="fas fa-${isCompleted ? 'check-circle' : 'check'}"></i> 
                         ${isCompleted ? 'Completed' : 'Mark as Complete'}
                     </button>
@@ -710,6 +709,38 @@ class TutorialManager {
         `;
         
         document.body.appendChild(modal);
+
+        // Attach CSP-safe event listeners for modal controls and resources
+        try {
+            const closeBtn = modal.querySelector('[data-action="tutorial-close"]');
+            if (closeBtn) closeBtn.addEventListener('click', () => this.closeModal());
+
+            const completeBtn = modal.querySelector('[data-action="tutorial-complete"]');
+            if (completeBtn) completeBtn.addEventListener('click', (e) => {
+                const id = completeBtn.getAttribute('data-tutorial-id');
+                if (id) this.markComplete(id);
+            });
+
+            modal.querySelectorAll('.tutorial-resource').forEach(el => {
+                // hover effects
+                el.addEventListener('mouseover', () => { el.style.borderColor = 'var(--neon-cyan)'; el.style.transform = 'translateX(5px)'; });
+                el.addEventListener('mouseout', () => { el.style.borderColor = 'var(--border-dark)'; el.style.transform = 'translateX(0)'; });
+
+                // click handling for resources with data-prompt
+                el.addEventListener('click', (ev) => {
+                    const prompt = el.getAttribute('data-prompt');
+                    const target = el.getAttribute('target');
+                    if (target === '_self' && prompt) {
+                        setTimeout(() => {
+                            const chatInput = document.querySelector('#chat-input');
+                            if (chatInput) chatInput.value = prompt;
+                        }, 500);
+                    }
+                });
+            });
+        } catch (e) {
+            console.debug('tutorial-manager: failed attaching modal listeners', e);
+        }
     }
     
     closeModal() {

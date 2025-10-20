@@ -112,7 +112,53 @@ document.addEventListener('DOMContentLoaded', () => {
         const action = btn.getAttribute('data-action');
         const arg = btn.getAttribute('data-arg');
         try {
-            switch (action) {
+                    switch (action) {
+                // game-specific quick handlers
+                case 'checkDebugAnswer':
+                    return typeof checkDebugAnswer === 'function' ? checkDebugAnswer(Number(arg)) : console.warn('checkDebugAnswer not available');
+                case 'hintDebug':
+                    return typeof hintDebug === 'function' ? hintDebug(Number(arg)) : console.warn('hintDebug not available');
+                case 'revealDebug':
+                    return typeof revealDebug === 'function' ? revealDebug(Number(arg)) : console.warn('revealDebug not available');
+                case 'checkSyntax':
+                    return typeof checkSyntax === 'function' ? checkSyntax(Number(arg)) : console.warn('checkSyntax not available');
+                case 'hintSyntax':
+                    return typeof hintSyntax === 'function' ? hintSyntax(Number(arg)) : console.warn('hintSyntax not available');
+                case 'revealSyntax':
+                    return typeof revealSyntax === 'function' ? revealSyntax(Number(arg)) : console.warn('revealSyntax not available');
+                case 'checkPuzzle':
+                    // arg expected as 'idx,correct' or two separate data attributes; try parsing
+                    if (typeof checkPuzzle === 'function') {
+                        const parts = (btn.getAttribute('data-arg') || '').split(',');
+                        const i = Number(parts[0]);
+                        const correct = Number(parts[1]);
+                        return checkPuzzle(i, correct);
+                    }
+                    return console.warn('checkPuzzle not available');
+                case 'hintAlgo':
+                    return typeof hintAlgo === 'function' ? hintAlgo(Number(arg)) : console.warn('hintAlgo not available');
+                case 'revealAlgo':
+                    return typeof revealAlgo === 'function' ? revealAlgo(Number(arg)) : console.warn('revealAlgo not available');
+                // playground and utility actions
+                case 'removeParent':
+                    return (btn.parentElement || btn.closest('.header-row') || btn.closest('.param-row'))?.remove();
+                case 'loadExample': {
+                    const raw = btn.getAttribute('data-arg') || '';
+                    const [url, method] = raw.split(',');
+                    return typeof loadExample === 'function' ? loadExample(url, method) : console.warn('loadExample not implemented');
+                }
+                case 'selectMethod':
+                    return typeof selectMethod === 'function' ? selectMethod(arg) : console.warn('selectMethod not available');
+                case 'showTab':
+                    return typeof showTab === 'function' ? showTab(arg) : console.warn('showTab not available');
+                case 'addHeader':
+                    return typeof addHeader === 'function' ? addHeader() : console.warn('addHeader not available');
+                case 'addParam':
+                    return typeof addParam === 'function' ? addParam() : console.warn('addParam not available');
+                case 'sendRequest':
+                    return typeof sendRequest === 'function' ? sendRequest() : console.warn('sendRequest not available');
+                case 'showCodeTab':
+                    return typeof showCodeTab === 'function' ? showCodeTab(arg) : console.warn('showCodeTab not available');
                 case 'loadContracts': return loadContracts();
                 case 'showCreateForm': return showCreateForm();
                 case 'testAPI': return testAPI();
@@ -174,6 +220,84 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Automatic conversion of remaining inline handlers to data-action/data-arg for CSP compliance
+    try {
+        const inlineEls = document.querySelectorAll('[onclick], [onmouseover], [onmouseout]');
+        inlineEls.forEach(el => {
+            // Handle onclick -> data-action
+            const oc = el.getAttribute('onclick');
+            if (oc) {
+                const code = oc.trim();
+                // common patterns
+                if (/location\.reload\(\)/.test(code)) {
+                    el.setAttribute('data-action', 'reloadPage');
+                } else if (/window\.location\.href\s*=\s*'([^']+)'/.test(code)) {
+                    const m = code.match(/window\.location\.href\s*=\s*'([^']+)'/);
+                    if (m) el.setAttribute('data-action', 'goTo'), el.setAttribute('data-arg', m[1]);
+                } else if (/this\.parentElement\.remove\(\)/.test(code)) {
+                    el.setAttribute('data-action', 'removeParent');
+                } else if (/this\.closest\(([^)]+)\)\.remove\(\)/.test(code)) {
+                    const m = code.match(/this\.closest\(['"]([^'"]+)['"]\)\.remove\(\)/);
+                    if (m) el.setAttribute('data-action', 'removeClosest'), el.setAttribute('data-arg', m[1]);
+                } else {
+                    // function call like fn('arg') or fn(arg)
+                    const callMatch = code.match(/^([a-zA-Z0-9_$.]+)\((.*)\);?$/);
+                    if (callMatch) {
+                        const fname = callMatch[1];
+                        let rawArgs = callMatch[2].trim();
+                        // remove trailing semicolon if present
+                        rawArgs = rawArgs.replace(/;$/, '');
+                        // normalize simple single-arg string or numeric
+                        const argVal = rawArgs.replace(/^['"]|['"]$/g, '');
+                        // Map common builtins
+                        if (fname === 'alert') {
+                            el.setAttribute('data-action', 'alert');
+                            el.setAttribute('data-arg', argVal);
+                        } else if (fname === 'location.reload') {
+                            el.setAttribute('data-action', 'reloadPage');
+                        } else if (fname.endsWith('.remove')) {
+                            el.setAttribute('data-action', 'removeParent');
+                        } else {
+                            // strip object prefix if any (e.g., this.doSomething -> doSomething)
+                            const simpleName = fname.split('.').pop();
+                            el.setAttribute('data-action', simpleName);
+                            if (argVal) el.setAttribute('data-arg', argVal);
+                        }
+                    }
+                }
+                // Remove inline onclick to avoid CSP refusal
+                el.removeAttribute('onclick');
+            }
+
+            // Handle simple onmouseover/onmouseout patterns that set style
+            const om = el.getAttribute('onmouseover');
+            const ou = el.getAttribute('onmouseout');
+            if (om || ou) {
+                // If the inline code manipulates style.borderColor and style.transform, attach listeners
+                const hoverBorderMatch = om && om.match(/this\.style\.borderColor\s*=\s*'([^']+)'/);
+                const hoverTransformMatch = om && om.match(/this\.style\.transform\s*=\s*'([^']+)'/);
+                const outBorderMatch = ou && ou.match(/this\.style\.borderColor\s*=\s*'([^']+)'/);
+                const outTransformMatch = ou && ou.match(/this\.style\.transform\s*=\s*'([^']+)'/);
+
+                if (hoverBorderMatch || hoverTransformMatch || outBorderMatch || outTransformMatch) {
+                    el.addEventListener('mouseover', () => {
+                        if (hoverBorderMatch) el.style.borderColor = hoverBorderMatch[1];
+                        if (hoverTransformMatch) el.style.transform = hoverTransformMatch[1];
+                    });
+                    el.addEventListener('mouseout', () => {
+                        if (outBorderMatch) el.style.borderColor = outBorderMatch[1];
+                        if (outTransformMatch) el.style.transform = outTransformMatch[1];
+                    });
+                }
+                // Remove inline attributes
+                if (om) el.removeAttribute('onmouseover');
+                if (ou) el.removeAttribute('onmouseout');
+            }
+        });
+    } catch (e) {
+        console.warn('Inline handler conversion failed', e);
+    }
+
     // Wire import change handler (CSP-safe)
     const importInput = document.getElementById('import-file');
     if (importInput) {
@@ -218,6 +342,52 @@ function closeActiveGames() {
         console.warn('closeActiveGames encountered an error', e);
     }
 }
+
+// Safe fallback for openGitHub if not provided elsewhere
+function openGitHub() {
+    try {
+        const url = 'https://github.com/JBaroda';
+        if (typeof window !== 'undefined' && typeof window.open === 'function') {
+            window.open(url, '_blank');
+        } else {
+            console.log('Would open GitHub:', url);
+        }
+    } catch (e) {
+        console.warn('openGitHub failed', e);
+    }
+}
+window.openGitHub = window.openGitHub || openGitHub;
+
+// Safe fallback for forkProject
+function forkProject() {
+    try {
+        const url = 'https://github.com/JBaroda/BarodaTek';
+        if (typeof window !== 'undefined' && typeof window.open === 'function') {
+            window.open(url, '_blank');
+        } else {
+            console.log('Would fork project at:', url);
+        }
+    } catch (e) {
+        console.warn('forkProject failed', e);
+    }
+}
+window.forkProject = window.forkProject || forkProject;
+
+// Safe stub for showContributionGuide
+function showContributionGuide() {
+    try {
+        const content = `
+            <div style="padding:20px; color: var(--text-white);">
+                <h3>Contribute to BarodaTek</h3>
+                <p>Thanks for wanting to contribute! Visit our GitHub repository to open issues, submit PRs, or contribute documentation.</p>
+                <p><a href="https://github.com/JBaroda/BarodaTek" target="_blank">Open repository on GitHub</a></p>
+            </div>`;
+        showGameModal('Contribute', () => content);
+    } catch (e) {
+        console.warn('showContributionGuide failed', e);
+    }
+}
+window.showContributionGuide = window.showContributionGuide || showContributionGuide;
 
 // 📁 File download utility - ACTUALLY WORKS!
 function downloadFile(content, filename, contentType = 'text/plain') {
@@ -1738,6 +1908,8 @@ function startGame() {
     let currentLevel = 1;
     let currentQuestionIndex = 0;
     let usedHint = false;
+    // Track whether current question has been answered to prevent double-clicks
+    let answered = false;
     
     // API Knowledge Questions
     // --- Add more questions for the mini game ---
@@ -1919,30 +2091,62 @@ function startGame() {
             answersContainer.appendChild(btn);
         });
 
-        // Add hint/reveal/skip controls
+        // Add hint/reveal/skip controls (built via DOM API to avoid direct innerHTML)
         const controls = document.createElement('div');
         controls.className = 'd-flex gap-2 justify-content-center mt-3';
-        controls.innerHTML = `
-            <button class="btn btn-warning" id="api-quiz-hint-btn">💡 Hint</button>
-            <button class="btn btn-info" id="api-quiz-reveal-btn">👁️ Reveal</button>
-            <button class="btn btn-secondary" id="api-quiz-skip-btn">⏭️ Skip</button>
-        `;
+
+        const hintBtn = document.createElement('button');
+        hintBtn.className = 'btn btn-warning';
+        hintBtn.id = 'api-quiz-hint-btn';
+        hintBtn.type = 'button';
+        hintBtn.textContent = '💡 Hint';
+
+        const revealBtn = document.createElement('button');
+        revealBtn.className = 'btn btn-info';
+        revealBtn.id = 'api-quiz-reveal-btn';
+        revealBtn.type = 'button';
+        revealBtn.textContent = '👁️ Reveal';
+
+        const skipBtn = document.createElement('button');
+        skipBtn.className = 'btn btn-secondary';
+        skipBtn.id = 'api-quiz-skip-btn';
+        skipBtn.type = 'button';
+        skipBtn.textContent = '⏭️ Skip';
+
+        controls.appendChild(hintBtn);
+        controls.appendChild(revealBtn);
+        controls.appendChild(skipBtn);
         answersContainer.appendChild(controls);
 
-        // --- Add refresh and home buttons to mini game UI ---
+        // Add refresh and home buttons to mini game UI (create safely)
         const controlRow = document.createElement('div');
         controlRow.className = 'd-flex justify-content-center mt-3';
-        controlRow.innerHTML = `
-            <button id="api-quiz-refresh-btn" class="btn btn-secondary mx-2">🔄 Refresh</button>
-            <button id="api-quiz-home-btn" class="btn btn-danger mx-2">🏠 Home</button>
-        `;
-        document.getElementById('api-quiz-controls').appendChild(controlRow);
-        document.getElementById('api-quiz-refresh-btn').onclick = () => {
-            location.reload();
-        };
-        document.getElementById('api-quiz-home-btn').onclick = () => {
-            window.location.href = '/index.html';
-        };
+
+        const refreshBtn = document.createElement('button');
+        refreshBtn.id = 'api-quiz-refresh-btn';
+        refreshBtn.className = 'btn btn-secondary mx-2';
+        refreshBtn.type = 'button';
+        refreshBtn.textContent = '🔄 Refresh';
+
+        const homeBtn = document.createElement('button');
+        homeBtn.id = 'api-quiz-home-btn';
+        homeBtn.className = 'btn btn-danger mx-2';
+        homeBtn.type = 'button';
+        homeBtn.textContent = '🏠 Home';
+
+        controlRow.appendChild(refreshBtn);
+        controlRow.appendChild(homeBtn);
+
+        const controlsContainer = document.getElementById('api-quiz-controls');
+        if (controlsContainer) {
+            controlsContainer.appendChild(controlRow);
+        } else {
+            // fallback to append inside answersContainer to ensure buttons exist
+            answersContainer.appendChild(controlRow);
+        }
+
+        refreshBtn.addEventListener('click', () => { location.reload(); });
+        homeBtn.addEventListener('click', () => { window.location.href = '/index.html'; });
 
         // Hint box area
         const hintBox = document.createElement('div');
@@ -1950,32 +2154,35 @@ function startGame() {
         hintBox.className = 'mt-2';
         answersContainer.appendChild(hintBox);
 
-        document.getElementById('api-quiz-hint-btn').onclick = () => {
+        // Wire up hint/reveal/skip using safe DOM methods and sanitized content
+        hintBtn.addEventListener('click', () => {
             if (usedHint) return;
             usedHint = true;
             const msg = hints[currentQuestionIndex] || 'Focus on the HTTP method or status semantics.';
-            hintBox.innerHTML = `<div class="alert alert-warning"><strong>Hint:</strong> ${msg}</div>`;
+            // Use sanitizeHTML and escape where available
+            const safeMsg = (typeof escapeHtml === 'function') ? escapeHtml(msg) : msg;
+            hintBox.innerHTML = sanitizeHTML(`<div class="alert alert-warning"><strong>Hint:</strong> ${safeMsg}</div>`);
             performanceData.gameScore = Math.max(0, performanceData.gameScore - 20);
             scoreElement.textContent = performanceData.gameScore;
             setTimeout(nextQuestion, 1500);
-        };
+        });
 
-        document.getElementById('api-quiz-reveal-btn').onclick = () => {
+        revealBtn.addEventListener('click', () => {
             const btns = answersContainer.querySelectorAll('button.btn');
-            btns.forEach((b, i) => {
+            btns.forEach((b) => {
                 b.disabled = true;
                 if (Number(b.getAttribute('data-answer-index')) === q.correct) {
                     b.classList.remove('btn-outline-light');
                     b.classList.add('btn-success');
-                    b.innerHTML = `✅ ${b.textContent}`;
+                    // set textContent safely (preserve emoji)
+                    const original = (b.textContent || '').replace(/^\s*✅\s*/, '');
+                    b.textContent = `✅ ${original}`;
                 }
             });
             setTimeout(nextQuestion, 1500);
-        };
+        });
 
-        document.getElementById('api-quiz-skip-btn').onclick = () => {
-            nextQuestion();
-        };
+        skipBtn.addEventListener('click', () => { nextQuestion(); });
         
         // Improve hint/reveal/skip feedback readability
         hintBox.style.fontSize = '1.15rem';
@@ -2014,6 +2221,31 @@ function startGame() {
             showQuestion();
         }, 2000);
     }
+
+    // Advance to the next question (used by hint/reveal/skip controls)
+    function nextQuestion() {
+        try {
+            // reset answered flag so next question accepts input
+            answered = false;
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= questions.length) {
+                endGame();
+            } else {
+                showQuestion();
+            }
+        } catch (e) {
+            console.warn('nextQuestion error', e);
+        }
+    }
+
+    // Expose small diagnostic helpers so tests and fallback tools can interact with the running quiz
+    try {
+        window.__barodatek_quiz = window.__barodatek_quiz || {};
+        window.__barodatek_quiz.getState = () => ({ currentQuestionIndex, answered, usedHint, score: performanceData.gameScore });
+        window.__barodatek_quiz.nextQuestion = nextQuestion;
+    } catch (e) {
+        // ignore in environments where window isn't writable
+    }
     
     function endGame() {
         const percentage = (performanceData.gameScore / (questions.length * 100)) * 100;
@@ -2038,10 +2270,10 @@ function startGame() {
                 <button class="btn btn-primary btn-lg" data-action="reloadPage">
                     <i class="fas fa-redo me-2"></i>Play Again
                 </button>
-                <button class="btn btn-secondary btn-lg ms-2" onclick="location.reload();">
+                <button class="btn btn-secondary btn-lg ms-2" data-action="reloadPage">
                     <i class="fas fa-sync-alt me-2"></i>Refresh
                 </button>
-                <button class="btn btn-dark btn-lg ms-2" onclick="window.location.href='index.html';">
+                <button class="btn btn-dark btn-lg ms-2" data-action="goHome">
                     <i class="fas fa-home me-2"></i>Home
                 </button>
             </div>
@@ -2370,7 +2602,20 @@ function startAlgorithmPuzzle() {
     });
 }
 
-function showGameModal(title, contentFunc) {
+function showGameModal(title, contentFunc, attachListeners) {
+    // contentFunc is executed by the caller; allow callers to attach scope-bound listeners
+    let rawContent = contentFunc();
+    // Replace a few common inline actions with data-action attributes so we can attach listeners
+    rawContent = rawContent
+        .replace(/onclick="location.reload\(\);"/g, 'data-action="reloadPage"')
+        .replace(/onclick="window.location.href='([^']+)';"/g, (m, p) => `data-action="goTo" data-arg="${p}"`)
+        .replace(/onclick="([a-zA-Z0-9_]+)\(([^)]*)\)"/g, (m, fn, args) => {
+            // map simple function calls like checkDebugAnswer(1) -> data-action and data-arg
+            const name = fn.trim();
+            const arg = args.trim();
+            return `data-action="${name}" data-arg="${arg.replace(/\s+/g,' ')}"`;
+        });
+
     const modalHtml = `
         <div class="modal fade" id="gameModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
@@ -2380,13 +2625,13 @@ function showGameModal(title, contentFunc) {
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body" id="gameModalBody">
-                        ${contentFunc()}
+                        ${rawContent}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="prevStepBtn" disabled>
                             <i class="fas fa-arrow-left me-2"></i>Previous
                         </button>
-                        <span class="mx-3" id="stepIndicator">Step 1 of ${tutorial.steps.length}</span>
+                        <span class="mx-3" id="stepIndicator">Step 1 of ${typeof tutorial !== 'undefined' && tutorial && tutorial.steps ? tutorial.steps.length : 1}</span>
                         <button type="button" class="btn btn-primary" id="nextStepBtn">
                             Next<i class="fas fa-arrow-right ms-2"></i>
                         </button>
@@ -2404,7 +2649,16 @@ function showGameModal(title, contentFunc) {
     
     const modal = new bootstrap.Modal(document.getElementById('gameModal'));
     const bodyEl = document.getElementById('gameModalBody');
-    result.innerHTML = `<div class="alert alert-info">💡 Hint: ${hints[idx] || 'Focus on the exact operator or bounds.'}</div>`;
+    // If the calling game provided a #bugResult element and local hints/idx, show the contextual hint.
+    try {
+        const resultEl = document.getElementById('bugResult');
+        if (resultEl && typeof hints !== 'undefined' && typeof idx !== 'undefined') {
+            resultEl.innerHTML = `<div class="alert alert-info">💡 Hint: ${hints[idx] || 'Focus on the exact operator or bounds.'}</div>`;
+        }
+    } catch (e) {
+        // swallow any errors here to avoid breaking modal creation for other games
+        console.debug('showGameModal: skipped contextual hint due to missing locals', e);
+    }
 }
 
 function revealDebug(idx) {
@@ -2772,99 +3026,53 @@ function generateCustomCode() {
     let generatedCode = '';
     const lowerDesc = description.toLowerCase();
     
-    // 🤖 CHATBOT / BOT DETECTION
-    if (lowerDesc.includes('chatbot') || lowerDesc.includes('bot') || lowerDesc.includes('chat') || lowerDesc.includes('conversation')) {
-        const isJoke = lowerDesc.includes('joke');
-        generatedCode = `// Generated from: "${description}"
-// BarodaTek.com AI Code Generator - Chatbot Edition
-// Created by JBaroda
+    // Simple generator: produce a small ChatBot implementation without server-side template placeholders
+    if (lowerDesc.includes('chatbot') || lowerDesc.includes('bot') || lowerDesc.includes('chat')) {
+        const defaultResponses = {
+            "hello": ["Hi there! 👋", "Hello! How can I help?", "Hey! What's up?"],
+            "help": ["I'm here to chat with you! Ask me anything!", "Need help? Just let me know!"],
+            "bye": ["Goodbye! Come back soon! 👋", "See you later!"],
+            "thanks": ["You're welcome! 😊", "Happy to help!"]
+        };
 
-class ${isJoke ? 'JokeChatBot' : 'ChatBot'} {
-    constructor() {
-        this.responses = ${isJoke ? getJokeResponsesCode() : getChatResponsesCode()};
-        this.conversationHistory = [];
+        generatedCode = '// Generated from: "' + description.replace(/"/g, '\\"') + '\n'
+            + '// Simple ChatBot code generated by BarodaTek\n'
+            + 'class ChatBot {\n'
+            + '  constructor() {\n'
+            + '    this.responses = ' + JSON.stringify(defaultResponses) + ';\n'
+            + '    this.conversationHistory = [];\n'
+            + '  }\n'
+            + '  processMessage(message) {\n'
+            + '    this.conversationHistory.push({ role: "user", message });\n'
+            + '    const reply = this.generateResponse(message.toLowerCase());\n'
+            + '    this.conversationHistory.push({ role: "bot", message: reply });\n'
+            + '    return reply;\n'
+            + '  }\n'
+            + '  generateResponse(message) {\n'
+            + '    for (const key in this.responses) {\n'
+            + '      if (message.includes(key)) {\n'
+            + '        const r = this.responses[key];\n'
+            + '        return Array.isArray(r) ? r[Math.floor(Math.random() * r.length)] : r;\n'
+            + '      }\n'
+            + '    }\n'
+            + '    return "I\'m not sure I understand. Can you rephrase that?";\n'
+            + '  }\n'
+            + '  clearHistory() { this.conversationHistory = []; }\n'
+            + '}\n\n'
+            + 'const bot = new ChatBot();\n'
+            + 'console.log(bot.processMessage("Hello!"));\n';
+    } else {
+        generatedCode = '// Generated from: "' + description.replace(/"/g, '\\"') + '\n'
+            + '// Custom code generator placeholder - no templates detected.\n'
+            + '// Describe what you want (e.g., "chatbot") to generate specialized code.\n';
     }
-    
-    ${isJoke ? `getRandomJoke() {
-        const jokes = [
-            "Why do programmers prefer dark mode? Because light attracts bugs! 🐛",
-            "Why did the developer go broke? Because he used up all his cache! 💸",
-            "What's a programmer's favorite hangout? The Foo Bar! 🍺",
-            "Why do Java developers wear glasses? Because they can't C#! 👓",
-            "How many programmers does it take to change a light bulb? None, that's a hardware problem! 💡",
-            "Why did the programmer quit his job? Because he didn't get arrays! 📊",
-            "What do you call a programmer from Finland? Nerdic! 🇫🇮",
-            "Why do programmers hate nature? It has too many bugs! 🌳🐜",
-            "What's a pirate's favorite programming language? R! 🏴‍☠️",
-            "Why did the database administrator leave his wife? She had one-to-many relationships! 💔"
-        ];
-        return jokes[Math.floor(Math.random() * jokes.length)];
-    }
-    ` : ''}
-    
-    processMessage(userMessage) {
-        this.conversationHistory.push({ role: 'user', message: userMessage });
-        const response = this.generateResponse(userMessage.toLowerCase());
-        this.conversationHistory.push({ role: 'bot', message: response });
-        return response;
-    }
-    
-    generateResponse(message) {
-        ${isjoke ? `// Joke chatbot logic
-        if (message.includes('joke') || message.includes('funny') || message.includes('laugh')) {
-            return this.getRandomJoke();
-        }
-        if (message.includes('another') || message.includes('more')) {
-            return this.getRandomJoke();
-        }
-        if (message.includes('hello') || message.includes('hi')) {
-            return "Hey there! Want to hear a programming joke? Just ask me! 😄";
-        }
-        if (message.includes('bye') || message.includes('goodbye')) {
-            return "Catch you later! Remember: There are 10 types of people - those who understand binary and those who don't! 👋";
-        }
-        return this.getRandomJoke();` : `// General chatbot logic
-        for (const [pattern, response] of Object.entries(this.responses)) {
-            if (message.includes(pattern)) {
-                return Array.isClass(response) 
-                    ? response[Math.floor(Math.random() * response.length)]
-                    : response;
-            }
-        }
-        return "I'm not sure I understand. Can you rephrase that?";`}
-    }
-    
-    clearHistory() {
-        this.conversationHistory = [];
-    }
+
+
+    // Place generated code into the UI (if available)
+    const genEl = document.getElementById('generated-code');
+    if (genEl) genEl.value = generatedCode;
+
 }
-
-// Usage Example:
-const bot = new ${isJoke ? 'JokeChatBot' : 'ChatBot'}();
-console.log(bot.processMessage("${isJoke ? 'Tell me a joke!' : 'Hello!'}"));
-
-// Web Integration Example:
-document.getElementById('send-btn')?.addEventListener('click', () => {
-    const input = document.getElementById('user-input');
-    const message = input.value.trim();
-    if (message) {
-        const response = bot.processMessage(message);
-        displayMessage('User: ' + message);
-        displayMessage('Bot: ' + response);
-        input.value = '';
-    }
-});
-
-function displayMessage(text) {
-    const chatBox = document.getElementById('chat-box');
-    const msgDiv = document.createElement('div');
-    // Use sanitized innerHTML so assistant/markdown HTML renders while preventing XSS
-    msgDiv.innerHTML = sanitizeHTML(text);
-    msgDiv.className = text.startsWith('User:') ? 'user-message' : 'bot-message';
-    chatBox.appendChild(msgDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
 // 🚀 PERFORMANCE TESTING - ACTUAL API RESPONSE TIMES
 
 async function runPerformanceTest() {
@@ -2910,6 +3118,205 @@ function loadUserTheme() {
     if (savedTheme) {
         userTheme = JSON.parse(savedTheme);
         applyUserTheme();
+    }
+}
+
+// Minimal real-time stats initializer (safe fallback)
+function initializeRealTimeStats() {
+    try {
+        // Update any visible counters safely if elements exist
+        const visitorsEls = [
+            document.getElementById('current-visitors'),
+            document.getElementById('visitors-count'),
+            document.getElementById('current-port')
+        ];
+        for (const el of visitorsEls) {
+            if (!el) continue;
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.value = el.value || '1';
+            else el.textContent = el.textContent || '1';
+        }
+
+        // No-op heartbeat: keep an interval that updates a small data attribute (doesn't leak heavy timers)
+        if (!window.__barodatek_rt_interval) {
+            window.__barodatek_rt_interval = setInterval(() => {
+                const d = document.getElementById('real-time-tick');
+                if (d) d.dataset.t = String(Date.now());
+            }, 60000);
+        }
+    } catch (err) {
+        console.error('initializeRealTimeStats fallback error', err);
+    }
+}
+
+// Download generated code helper (used by UI). Small safe implementation.
+function downloadGeneratedCode() {
+    try {
+        const el = document.getElementById('generated-code');
+        const code = el ? (el.value || el.textContent || '') : '';
+        if (!code) {
+            showNotification('⚠️ No generated code to download.', 'warning');
+            return;
+        }
+        // Infer filename from language hint or default to txt
+        let filename = 'generated-code.txt';
+        const match = (code.match(/\/\*\s*filename:\s*([\w-.]+)\s*\*\//i) || []);
+        if (match[1]) filename = match[1];
+
+        // Use existing download helper if available
+        if (typeof downloadFile === 'function') {
+            downloadFile(code, filename, 'text/plain');
+            showNotification('✅ Generated code download started.', 'success');
+            return;
+        }
+
+        // Fallback: create anchor and trigger
+        const blob = new Blob([code], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showNotification('✅ Generated code downloaded (fallback).', 'success');
+    } catch (err) {
+        console.error('downloadGeneratedCode error', err);
+        showNotification('❌ Failed to download generated code.', 'danger');
+    }
+}
+
+// Safe fallback for viewing a contract when the full viewer isn't loaded
+function viewContract(id) {
+    try {
+        if (!id) {
+            showNotification('⚠️ No contract id provided', 'warning');
+            return;
+        }
+        const contracts = (window.contracts || []);
+        const c = contracts.find(x => Number(x.id) === Number(id));
+        if (!c) {
+            showNotification('⚠️ Contract not found', 'warning');
+            return;
+        }
+        // Show a minimal modal-like view using DOM-safe methods
+        let modal = document.getElementById('contract-viewer');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'contract-viewer';
+            modal.style.position = 'fixed';
+            modal.style.right = '20px';
+            modal.style.top = '20px';
+            modal.style.background = '#111';
+            modal.style.color = '#fff';
+            modal.style.padding = '12px';
+            modal.style.zIndex = 99999;
+            document.body.appendChild(modal);
+        }
+        modal.innerHTML = '';
+        const title = document.createElement('div');
+        title.style.fontWeight = '700';
+        title.textContent = c.title || `Contract #${c.id}`;
+        const body = document.createElement('pre');
+        body.textContent = JSON.stringify(c, null, 2);
+        modal.appendChild(title);
+        modal.appendChild(body);
+        showNotification('📄 Contract loaded (preview).', 'info');
+    } catch (err) {
+        console.error('viewContract fallback error', err);
+        showNotification('❌ Failed to show contract preview.', 'danger');
+    }
+}
+
+// Safe fallback for downloading a contract export
+function downloadContract(id) {
+    try {
+        if (!id) {
+            showNotification('⚠️ No contract id provided for download.', 'warning');
+            return;
+        }
+        const contracts = (window.contracts || []);
+        const c = contracts.find(x => Number(x.id) === Number(id));
+        if (!c) {
+            showNotification('⚠️ Contract not found', 'warning');
+            return;
+        }
+        const filename = `contract-${c.id}.json`;
+        const content = JSON.stringify(c, null, 2);
+        if (typeof downloadFile === 'function') {
+            downloadFile(content, filename, 'application/json');
+            showNotification('✅ Contract download started.', 'success');
+            return;
+        }
+        const blob = new Blob([content], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        showNotification('✅ Contract downloaded (fallback).', 'success');
+    } catch (err) {
+        console.error('downloadContract fallback error', err);
+        showNotification('❌ Failed to download contract.', 'danger');
+    }
+}
+
+// Minimal showCustomizer fallback (opens the theme/customization panel if available)
+function showCustomizer() {
+    try {
+        const panel = document.getElementById('customizer-panel') || document.getElementById('customizer');
+        if (panel) {
+            panel.style.display = 'block';
+            panel.scrollIntoView({ behavior: 'smooth' });
+            showNotification('🎨 Customizer opened.', 'info');
+            return;
+        }
+        // If no panel exists, open a lightweight theme editor modal
+        let modal = document.getElementById('simple-customizer');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'simple-customizer';
+            modal.style.position = 'fixed';
+            modal.style.left = '20px';
+            modal.style.bottom = '20px';
+            modal.style.background = '#0b1220';
+            modal.style.color = '#fff';
+            modal.style.padding = '12px';
+            modal.style.zIndex = 99999;
+            modal.innerHTML = '<div style="font-weight:700;margin-bottom:8px">Customizer</div>';
+            const p = document.createElement('div');
+            p.innerHTML = '<label>Primary: <input id="simple-primary" type="color" value="#667eea"></label> <label style="margin-left:8px">Secondary: <input id="simple-secondary" type="color" value="#764ba2"></label>';
+            modal.appendChild(p);
+            const btn = document.createElement('button');
+            btn.textContent = 'Apply';
+            btn.className = 'btn btn-sm btn-primary mt-2';
+            btn.addEventListener('click', () => {
+                const pr = document.getElementById('simple-primary').value;
+                const sc = document.getElementById('simple-secondary').value;
+                userTheme.primaryColor = pr; userTheme.secondaryColor = sc; applyUserTheme(); showNotification('🎨 Theme applied', 'success');
+            });
+            modal.appendChild(btn);
+            document.body.appendChild(modal);
+        }
+        modal.style.display = 'block';
+    } catch (err) {
+        console.error('showCustomizer fallback error', err);
+    }
+}
+
+// Minimal generateBoilerplate fallback
+function generateBoilerplate() {
+    try {
+        const snippet = '// Boilerplate package\nconsole.log("BarodaTek boilerplate");\n';
+        if (typeof downloadFile === 'function') {
+            downloadFile(snippet, 'boilerplate.js', 'text/javascript');
+            showNotification('✅ Boilerplate downloaded.', 'success');
+            return;
+        }
+        const blob = new Blob([snippet], { type: 'text/javascript' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'boilerplate.js'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        showNotification('✅ Boilerplate downloaded (fallback).', 'success');
+    } catch (err) {
+        console.error('generateBoilerplate fallback error', err);
     }
 }
 
@@ -3149,7 +3556,7 @@ function runPerformanceTest() {
     // Simulate multiple API calls
     Promise.all([
         apiCall('health'),
-        apiCall('contracts',
+        apiCall('contracts'),
         apiCall('stats')
     ]).then(responses => {
         const endTime = performance.now();
@@ -3330,11 +3737,5 @@ window.resetTheme = resetTheme;
 window.runPerformanceTest = runPerformanceTest;
 window.generateDocs = generateDocs;
 
-// 🌟 Platform ready notification
-console.log(`
-🚀 BarodaTek.com Platform Loaded Successfully!
-✨ Created by JBaroda - 27-year-old from California
-🎯 From dev meeting listener to platform creator!
-
-All buttons and downloads are now FULLY FUNCTIONAL! 🎉
-`);
+// 🌟 Platform ready notification (short footer)
+console.log('BarodaTek.com Platform Loaded Successfully.');
