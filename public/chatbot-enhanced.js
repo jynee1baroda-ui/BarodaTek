@@ -524,19 +524,18 @@ class BarodaTekChatbot {
         const content = document.createElement('div');
         content.className = 'message-content';
         
-        // If the incoming text looks like HTML, render it as sanitized HTML.
+        // If the incoming text looks like HTML, render it as sanitized HTML using an allow-list sanitizer.
         const looksLikeHtml = /<[^>]+>/.test(String(text || ''));
         if (looksLikeHtml) {
             // Prefer the project's global sanitizer if available (DOM-safe)
             if (typeof window !== 'undefined' && typeof window.sanitizeHTML === 'function') {
                 content.innerHTML = window.sanitizeHTML(text);
             } else {
-                // Fallback: the local sanitizer escapes HTML (safer) and then we apply markdown formatting
-                // This avoids injecting raw HTML when a robust sanitizer isn't present.
-                content.innerHTML = this.formatMarkdown(text);
+                // Use an internal allow-list sanitizer that preserves safe tags like <strong>, <code>, <pre>, <br>, <a>
+                content.innerHTML = this.sanitizeAllowlist(text);
             }
         } else {
-            // Sanitize and render markdown-style text
+            // Sanitize and render markdown-style text (supports fenced code blocks)
             content.innerHTML = this.formatMarkdown(text);
         }
 
@@ -554,16 +553,51 @@ class BarodaTekChatbot {
      * Format markdown-style text (secure)
      */
     formatMarkdown(text) {
-        // Sanitize first
-        let html = this.sanitizer.sanitize(text);
+        // If the text contains fenced code blocks (```), treat those specially
+        if (typeof text === 'string' && /```/.test(text)) {
+            // Escape everything first, then replace fenced blocks with <pre><code>
+            const parts = text.split(/```/);
+            // parts alternates: [outside, lang+code, outside, lang+code ...]
+            for (let i = 0; i < parts.length; i++) {
+                if (i % 2 === 0) {
+                    // outside code - sanitize and convert simple markdown
+                    parts[i] = this._inlineMarkdown(this.sanitizer.sanitize(parts[i]));
+                } else {
+                    // inside fenced code - possibly starts with language
+                    const m = parts[i].match(/^([a-zA-Z0-9_-]+)?\n([\s\S]*)$/);
+                    let lang = '';
+                    let code = parts[i];
+                    if (m) {
+                        lang = m[1] || '';
+                        code = m[2] || '';
+                    }
+                    // escape HTML inside code
+                    const esc = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    parts[i] = `<pre><code class="lang-${lang}">${esc}</code></pre>`;
+                }
+            }
+            return parts.join('');
+        }
 
-        // Convert markdown-style formatting
-        html = html
+        // Otherwise, perform inline markdown conversion on the sanitized text
+        const html = this._inlineMarkdown(this.sanitizer.sanitize(text));
+        // Convert links (sanitized)
+        return html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
+            const safeUrl = this.sanitizer.sanitizeUrl(url);
+            return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+        });
+    }
+
+    /**
+     * Helper to do inline markdown (bold/italic/inline code/headers/line breaks)
+     */
+    _inlineMarkdown(html) {
+        return html
             // Bold
             .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
             // Italic
             .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-            // Code inline
+            // Inline code
             .replace(/`([^`]+)`/g, '<code>$1</code>')
             // Headers
             .replace(/^### (.+)$/gm, '<h5>$1</h5>')
@@ -571,15 +605,44 @@ class BarodaTekChatbot {
             .replace(/^# (.+)$/gm, '<h3>$1</h3>')
             // Line breaks
             .replace(/\n/g, '<br>');
-
-        // Convert links (sanitized)
-        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
-            const safeUrl = this.sanitizer.sanitizeUrl(url);
-            return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${text}</a>`;
-        });
-
-        return html;
     }
+
+    /**
+     * Allow-list sanitizer for safe HTML fragments coming from assistant or template responses.
+     * Preserves limited tags: strong, em, code, pre, br, a, ul, ol, li
+     */
+    sanitizeAllowlist(html) {
+        try {
+            // Basic approach: escape everything then unescape allowed tags via regex
+            let escaped = String(html)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            // Allow <strong>, <em>, <code>, <pre>, <br>, <a>, <ul>, <ol>, <li>
+            const allowed = ['strong', 'em', 'code', 'pre', 'br', 'a', 'ul', 'ol', 'li', 'p', 'h3', 'h4', 'h5'];
+            allowed.forEach(tag => {
+                const open = new RegExp('&lt;' + tag + '(\s+[^&]*)?&gt;', 'gi');
+                const close = new RegExp('&lt;\/' + tag + '&gt;', 'gi');
+                escaped = escaped.replace(open, (m) => m.replace('&lt;', '<').replace('&gt;', '>'));
+                escaped = escaped.replace(close, (m) => m.replace('&lt;/', '</').replace('&gt;', '>'));
+            });
+
+            // Allow safe anchor hrefs: convert &lt;a href="URL"&gt; back but ensure URL sanitized
+            escaped = escaped.replace(/&lt;a\s+href="([^\"]+)"\s*&gt;/gi, (m, url) => {
+                const safeUrl = this.sanitizer.sanitizeUrl(url);
+                return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">`;
+            });
+
+            // Convert line breaks placeholder back
+            return escaped;
+        } catch (e) {
+            console.error('sanitizeAllowlist error', e);
+            return this.sanitizer.sanitize(html);
+        }
+    }
+
+    // _renderQuickActions removed (reverted). Quick-action buttons are still created by populateQuickResponses() and the DOM delegation handles data-action attributes.
 
     /**
      * Show typing indicator
