@@ -309,6 +309,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Safe stub for quickAPITest to prevent ReferenceError when not implemented elsewhere
+function quickAPITest() {
+    try {
+        // Minimal no-op that returns a resolved promise and logs for diagnostics
+        console.log('quickAPITest invoked (stub)');
+        return Promise.resolve({ ok: true, message: 'quickAPITest stubbed' });
+    } catch (e) {
+        return Promise.resolve({ ok: false, error: String(e) });
+    }
+}
+window.quickAPITest = window.quickAPITest || quickAPITest;
+
 // Utility: close any active game UI elements (modals, api-galaxy container, overlays)
 function closeActiveGames() {
     try {
