@@ -111,34 +111,58 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!btn) return;
         const action = btn.getAttribute('data-action');
         const arg = btn.getAttribute('data-arg');
+        // Support invoke:prefix used in modal markup. If action starts with "invoke:",
+        // call the named function via the registry to avoid ReferenceErrors from inline handlers.
+        if (action && action.startsWith && action.startsWith('invoke:')) {
+            const name = (action.split(':')[1] || '').trim();
+            try {
+                // Parse comma-separated args into array of numbers/strings so invoked functions
+                // receive (selected, correct) instead of a single "0,1" string.
+                let parsedArg = arg;
+                if (typeof arg === 'string' && arg.indexOf(',') !== -1) {
+                    parsedArg = arg.split(',').map(s => {
+                        const raw = s.trim();
+                        const n = Number(raw);
+                        return (raw === '' || isNaN(n)) ? raw : n;
+                    });
+                } else if (typeof arg === 'string' && arg.trim() !== '' && !isNaN(Number(arg.trim()))) {
+                    // single numeric arg -> convert to Number
+                    parsedArg = Number(arg.trim());
+                }
+
+                if (typeof invokeNamedAction === 'function') return invokeNamedAction(name, parsedArg);
+                // If registry isn't ready yet, schedule a short retry so dynamic modules can register.
+                setTimeout(() => { try { if (typeof invokeNamedAction === 'function') invokeNamedAction(name, parsedArg); } catch(e) { console.warn('invokeNamedAction delayed call failed', e); } }, 50);
+                return;
+            } catch (e) {
+                console.warn('invoke action failed', action, e);
+            }
+        }
         try {
                     switch (action) {
                 // game-specific quick handlers
                 case 'checkDebugAnswer':
-                    return typeof checkDebugAnswer === 'function' ? checkDebugAnswer(Number(arg)) : console.warn('checkDebugAnswer not available');
+                    return invokeNamedAction('checkDebugAnswer', Number(arg));
                 case 'hintDebug':
-                    return typeof hintDebug === 'function' ? hintDebug(Number(arg)) : console.warn('hintDebug not available');
+                    return invokeNamedAction('hintDebug', Number(arg));
                 case 'revealDebug':
-                    return typeof revealDebug === 'function' ? revealDebug(Number(arg)) : console.warn('revealDebug not available');
+                    return invokeNamedAction('revealDebug', Number(arg));
                 case 'checkSyntax':
-                    return typeof checkSyntax === 'function' ? checkSyntax(Number(arg)) : console.warn('checkSyntax not available');
+                    return invokeNamedAction('checkSyntax', Number(arg));
                 case 'hintSyntax':
-                    return typeof hintSyntax === 'function' ? hintSyntax(Number(arg)) : console.warn('hintSyntax not available');
+                    return invokeNamedAction('hintSyntax', Number(arg));
                 case 'revealSyntax':
-                    return typeof revealSyntax === 'function' ? revealSyntax(Number(arg)) : console.warn('revealSyntax not available');
+                    return invokeNamedAction('revealSyntax', Number(arg));
                 case 'checkPuzzle':
                     // arg expected as 'idx,correct' or two separate data attributes; try parsing
-                    if (typeof checkPuzzle === 'function') {
-                        const parts = (btn.getAttribute('data-arg') || '').split(',');
-                        const i = Number(parts[0]);
-                        const correct = Number(parts[1]);
-                        return checkPuzzle(i, correct);
-                    }
-                    return console.warn('checkPuzzle not available');
+                    const parts = (btn.getAttribute('data-arg') || '').split(',');
+                    const i = Number(parts[0]);
+                    const correct = Number(parts[1]);
+                    return invokeNamedAction('checkPuzzle', [i, correct]);
                 case 'hintAlgo':
-                    return typeof hintAlgo === 'function' ? hintAlgo(Number(arg)) : console.warn('hintAlgo not available');
+                    return invokeNamedAction('hintAlgo', Number(arg));
                 case 'revealAlgo':
-                    return typeof revealAlgo === 'function' ? revealAlgo(Number(arg)) : console.warn('revealAlgo not available');
+                    return invokeNamedAction('revealAlgo', Number(arg));
                 // playground and utility actions
                 case 'removeParent':
                     return (btn.parentElement || btn.closest('.header-row') || btn.closest('.param-row'))?.remove();
@@ -308,6 +332,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// Safe stub for quickAPITest to prevent ReferenceError when not implemented elsewhere
+function quickAPITest() {
+    try {
+        // Minimal no-op that returns a resolved promise and logs for diagnostics
+        console.log('quickAPITest invoked (stub)');
+        return Promise.resolve({ ok: true, message: 'quickAPITest stubbed' });
+    } catch (e) {
+        return Promise.resolve({ ok: false, error: String(e) });
+    }
+}
+window.quickAPITest = window.quickAPITest || quickAPITest;
 
 // Utility: close any active game UI elements (modals, api-galaxy container, overlays)
 function closeActiveGames() {
@@ -2349,9 +2385,9 @@ function gameModal(questions) {
                 <p><strong>What's wrong with this code?</strong></p>
                 <textarea class="form-control mb-3" id="bugAnswer" placeholder="Describe the bug..."></textarea>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-primary" onclick="checkDebugAnswer(${currentQuestion})">Submit Answer</button>
-                    <button class="btn btn-warning" onclick="hintDebug(${currentQuestion})">Hint</button>
-                    <button class="btn btn-secondary" onclick="revealDebug(${currentQuestion})">Reveal</button>
+                    <button class="btn btn-primary" data-action="invoke:checkDebugAnswer" data-arg="${currentQuestion}">Submit Answer</button>
+                    <button class="btn btn-warning" data-action="invoke:hintDebug" data-arg="${currentQuestion}">Hint</button>
+                    <button class="btn btn-secondary" data-action="invoke:revealDebug" data-arg="${currentQuestion}">Reveal</button>
                 </div>
             </div>
             <div id="bugResult" class="mt-3"></div>
@@ -2479,15 +2515,18 @@ for (let i = 0; i < arr.length; i++) {
     ];
     let hintsUsed = 0;
     
-    showGameModal('Debug Detective', () => {
+    // Create a named renderer so handlers can re-render after state changes
+    function renderDebug() {
         if (currentBug >= buggyCode.length) {
+            // cleanup handlers
+            try { if (window.__gameFns) window.__gameFns.checkDebugAnswer = function(){ console.warn('debug game finished'); }; } catch(e){}
             return `<div class="text-center">
                 <h4>🎉 All Bugs Fixed!</h4>
                 <p>Score: ${score}/${buggyCode.length}</p>
                 <button class="btn btn-primary" data-action="startGame" data-arg="debug-detective">Play Again</button>
             </div>`;
         }
-        
+
         const bug = buggyCode[currentBug];
         return `<div>
             <h5>Find and Fix the Bug:</h5>
@@ -2496,14 +2535,62 @@ for (let i = 0; i < arr.length; i++) {
                 <p><strong>What's wrong with this code?</strong></p>
                 <textarea class="form-control mb-3" id="bugAnswer" placeholder="Describe the bug..."></textarea>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-primary" onclick="checkDebugAnswer(${currentBug})">Submit Answer</button>
-                    <button class="btn btn-warning" onclick="hintDebug(${currentBug})">Hint</button>
-                    <button class="btn btn-secondary" onclick="revealDebug(${currentBug})">Reveal</button>
+                    <button class="btn btn-primary" data-action="invoke:checkDebugAnswer" data-arg="${currentBug}">Submit Answer</button>
+                    <button class="btn btn-warning" data-action="invoke:hintDebug" data-arg="${currentBug}">Hint</button>
+                    <button class="btn btn-secondary" data-action="invoke:revealDebug" data-arg="${currentBug}">Reveal</button>
                 </div>
             </div>
             <div id="bugResult" class="mt-3"></div>
         </div>`;
-    });
+    }
+
+    // register handlers that close over currentBug/score and use similarity matching
+    try {
+        window.__gameFns = window.__gameFns || {};
+        window.__gameFns.checkDebugAnswer = function(selected) {
+            const idx = Array.isArray(selected) ? Number(selected[0]) : Number(selected);
+            const userAnswer = (document.getElementById('bugAnswer')?.value || '').trim();
+            const target = (buggyCode[idx] && (buggyCode[idx].bug || buggyCode[idx].explanation || buggyCode[idx].fixed)) || '';
+            const sim = similarityScore(userAnswer, target);
+            const out = document.getElementById('bugResult');
+            if (sim >= 0.5) {
+                out.innerHTML = '<div class="alert alert-success">Correct! ✅</div>';
+                score++;
+            } else {
+                out.innerHTML = `<div class="alert alert-danger">Not quite. ${buggyCode[idx] && buggyCode[idx].bug ? buggyCode[idx].bug : 'Try looking for punctuation or assignment vs comparison.'}</div>`;
+            }
+            setTimeout(() => {
+                currentBug++;
+                renderInlineGame('Debug Detective', renderDebug);
+            }, 900);
+        };
+
+        window.__gameFns.hintDebug = function(idxArg) {
+            const idx = Array.isArray(idxArg) ? Number(idxArg[0]) : Number(idxArg);
+            const h = hints[idx] || '';
+            // generalized hint: extract short keywords from bug text
+            let extra = '';
+            try {
+                const words = (buggyCode[idx] && buggyCode[idx].bug) ? buggyCode[idx].bug.split(/[^a-zA-Z0-9]+/).filter(Boolean) : [];
+                if (words.length) extra = ' Look for: ' + words.slice(0,3).join(', ')+'.';
+            } catch(e){}
+            const out = document.getElementById('bugResult');
+            if (out) out.innerHTML = `<div class="alert alert-info">💡 Hint: ${h}${extra}</div>`;
+        };
+
+        window.__gameFns.revealDebug = function(idxArg) {
+            const idx = Array.isArray(idxArg) ? Number(idxArg[0]) : Number(idxArg);
+            const fixes = [
+                'Add the missing quote and a semicolon.',
+                'Use a comparison operator: if (x === 5) { ... }',
+                'Use i < arr.length or ensure index exists.'
+            ];
+            const out = document.getElementById('bugResult');
+            if (out) out.innerHTML = `<div class="alert alert-secondary">👁️ Reveal: ${fixes[idx] || 'Check operators and bounds precisely.'}</div>`;
+        };
+    } catch (e) { console.warn('Failed to register debug handlers', e); }
+
+    renderInlineGame('Debug Detective', renderDebug);
 }
 
 function startSyntaxSpeed() {
@@ -2521,8 +2608,9 @@ function startSyntaxSpeed() {
         'Objects use { key: value } pairs.'
     ];
     
-    showGameModal('Syntax Speed Run', () => {
+    function renderSyntax() {
         if (currentChallenge >= challenges.length) {
+            try { if (window.__gameFns) window.__gameFns.checkSyntax = function(){ console.warn('syntax finished'); }; } catch(e){}
             const totalTime = ((Date.now() - startTime) / 1000).toFixed(2);
             return `<div class="text-center">
                 <h4>⚡ Challenge Complete!</h4>
@@ -2530,19 +2618,60 @@ function startSyntaxSpeed() {
                 <button class="btn btn-primary" data-action="startGame" data-arg="syntax-speed">Play Again</button>
             </div>`;
         }
-        
+
         return `<div>
             <h5>Challenge ${currentChallenge + 1}:</h5>
             <p class="lead">${challenges[currentChallenge].task}</p>
             <input type="text" class="form-control mb-3" id="syntaxInput" placeholder="Type your code here...">
-            <div class="d-flex gap-2">
-                <button class="btn btn-primary" onclick="checkSyntax(${currentChallenge})">Submit</button>
-                <button class="btn btn-warning" onclick="hintSyntax(${currentChallenge})">Hint</button>
-                <button class="btn btn-secondary" onclick="revealSyntax(${currentChallenge})">Reveal</button>
+                <div class="d-flex gap-2">
+                <button class="btn btn-primary" data-action="invoke:checkSyntax" data-arg="${currentChallenge}">Submit</button>
+                <button class="btn btn-warning" data-action="invoke:hintSyntax" data-arg="${currentChallenge}">Hint</button>
+                <button class="btn btn-secondary" data-action="invoke:revealSyntax" data-arg="${currentChallenge}">Reveal</button>
             </div>
             <div id="syntaxResult" class="mt-3"></div>
         </div>`;
-    });
+    }
+
+    try {
+        window.__gameFns = window.__gameFns || {};
+        window.__gameFns.checkSyntax = function(arg) {
+            const idx = Array.isArray(arg) ? Number(arg[0]) : Number(arg);
+            const input = (document.getElementById('syntaxInput')?.value || '').trim();
+            const target = challenges[idx] && challenges[idx].answer ? challenges[idx].answer : '';
+            const sim = similarityScore(input, target);
+            const out = document.getElementById('syntaxResult');
+            if (sim >= 0.5) {
+                out.innerHTML = '<div class="alert alert-success">Correct! ⚡</div>';
+                setTimeout(() => { currentChallenge++; renderInlineGame('Syntax Speed Run', renderSyntax); }, 700);
+            } else {
+                out.innerHTML = '<div class="alert alert-warning">Not quite. Mind the exact brackets, quotes, and keywords. 💡</div>';
+            }
+        };
+
+        window.__gameFns.hintSyntax = function(arg) {
+            const idx = Array.isArray(arg) ? Number(arg[0]) : Number(arg);
+            const tips = [
+                'Arrays: [1,2,3] with commas and square brackets.',
+                'Function: function name() { return "value" }',
+                'Object: { key: "value" } using colon and quotes.'
+            ];
+            const out = document.getElementById('syntaxResult');
+            if (out) out.innerHTML = `<div class="alert alert-info">💡 Hint: ${tips[idx] || ''}</div>`;
+        };
+
+        window.__gameFns.revealSyntax = function(arg) {
+            const idx = Array.isArray(arg) ? Number(arg[0]) : Number(arg);
+            const ans = [
+                '[1,2,3]',
+                'function hello(){ return "world" }',
+                '{ name: "BarodaTek" }'
+            ];
+            const out = document.getElementById('syntaxResult');
+            if (out) out.innerHTML = `<div class="alert alert-secondary">👁️ Reveal: ${ans[idx] || ''}</div>`;
+        };
+    } catch (e) { console.warn('Failed to register syntax handlers', e); }
+
+    renderInlineGame('Syntax Speed Run', renderSyntax);
 }
 
 function startAlgorithmPuzzle() {
@@ -2575,31 +2704,218 @@ function startAlgorithmPuzzle() {
         'Spread the array into Math.max.'
     ];
     
-    showGameModal('Algorithm Puzzle', () => {
+    function renderPuzzle() {
         if (currentPuzzle >= puzzles.length) {
+            try { if (window.__gameFns) window.__gameFns.checkPuzzle = function(){ console.warn('puzzle finished'); }; } catch(e){}
             return `<div class="text-center">
                 <h4>🧩 Puzzles Solved!</h4>
                 <p>Score: ${score}/${puzzles.length}</p>
                 <button class="btn btn-primary" data-action="startGame" data-arg="algorithm-puzzle">Play Again</button>
             </div>`;
         }
-        
+
         const puzzle = puzzles[currentPuzzle];
         return `<div>
             <h5>Puzzle ${currentPuzzle + 1}:</h5>
             <p class="lead">${puzzle.question}</p>
             <div class="d-grid gap-2">
                 ${puzzle.options.map((opt, idx) => 
-                    `<button class="btn btn-outline-primary" onclick="checkPuzzle(${idx}, ${puzzle.correct})">${opt}</button>`
+                    `<button class="btn btn-outline-primary" data-action="invoke:checkPuzzle" data-arg="${idx},${puzzle.correct}">${opt}</button>`
                 ).join('')}
             </div>
-            <div class="mt-3 d-flex gap-2">
-                <button class="btn btn-warning" onclick="hintAlgo(${currentPuzzle})">Hint</button>
-                <button class="btn btn-secondary" onclick="revealAlgo(${currentPuzzle})">Reveal</button>
+                <div class="mt-3 d-flex gap-2">
+                <button class="btn btn-warning" data-action="invoke:hintAlgo" data-arg="${currentPuzzle}">Hint</button>
+                <button class="btn btn-secondary" data-action="invoke:revealAlgo" data-arg="${currentPuzzle}">Reveal</button>
             </div>
             <div id="puzzleResult" class="mt-3"></div>
         </div>`;
-    });
+    }
+
+    try {
+        window.__gameFns = window.__gameFns || {};
+        window.__gameFns.checkPuzzle = function(arg) {
+            // handle either array [selected, correct] or two-arg invocation
+            let selected, correct;
+            if (Array.isArray(arg)) { selected = Number(arg[0]); correct = Number(arg[1]); }
+            else if (typeof arg === 'object' && arg !== null && arg.length >= 2) { selected = Number(arg[0]); correct = Number(arg[1]); }
+            else if (typeof arg === 'number') { selected = Number(arg); }
+            try {
+                if (typeof correct === 'undefined') {
+                    const btn = document.querySelector('#answers-container button[data-arg]');
+                    if (btn) {
+                        const parts = (btn.getAttribute('data-arg')||'').split(',');
+                        if (parts.length>1) correct = Number(parts[1]);
+                    }
+                }
+            } catch(e){}
+            selected = Number(selected);
+            correct = Number(correct);
+            const out = document.getElementById('puzzleResult');
+            const p = puzzles[currentPuzzle];
+            const selText = p && p.options && p.options[selected] ? p.options[selected] : '';
+            const corrText = p && p.options && p.options[correct] ? p.options[correct] : '';
+            const sim = similarityScore(selText, corrText);
+            if (selected === correct || sim >= 0.5) {
+                if (out) out.innerHTML = '<div class="alert alert-success">Correct! 🧩</div>';
+                score++;
+            } else {
+                if (out) out.innerHTML = '<div class="alert alert-danger">Incorrect. Try a hint or reveal.</div>';
+            }
+            setTimeout(() => { currentPuzzle++; renderInlineGame('Algorithm Puzzle', renderPuzzle); }, 700);
+        };
+
+        window.__gameFns.hintAlgo = function(idxArg) {
+            const idx = Array.isArray(idxArg) ? Number(idxArg[0]) : Number(idxArg);
+            const tips = [
+                'Do multiplication before addition.',
+                "Use split(''), reverse(), then join('') to reverse.",
+                'Use Math.max(...arr) to expand array to arguments'
+            ];
+            const out = document.getElementById('puzzleResult');
+            if (out) out.innerHTML = `<div class="alert alert-info">💡 Hint: ${tips[idx] || ''}</div>`;
+        };
+
+        window.__gameFns.revealAlgo = function(idxArg) {
+            const idx = Array.isArray(idxArg) ? Number(idxArg[0]) : Number(idxArg);
+            const reveals = [
+                'Result is 6 (2*2=4, then 2+4=6).',
+                '"abc".split("").reverse().join("")',
+                'Math.max(3,7,2,9,1)'
+            ];
+            const out = document.getElementById('puzzleResult');
+            if (out) out.innerHTML = `<div class="alert alert-secondary">👁️ Reveal: ${reveals[idx] || ''}</div>`;
+        };
+    } catch (e) { console.warn('Failed to register puzzle handlers', e); }
+
+    renderInlineGame('Algorithm Puzzle', renderPuzzle);
+}
+
+// Render a game's HTML inside the arena's question container (instead of a modal)
+function renderInlineGame(title, contentFunc) {
+    try {
+        const gameStart = document.getElementById('game-start');
+        const questionContainer = document.getElementById('question-container');
+        const gameStats = document.getElementById('game-stats');
+        const questionText = document.getElementById('question-text');
+        const answersContainer = document.getElementById('answers-container');
+
+        // If the arena layout is not available, fall back to modal behavior
+        if (!questionContainer || !answersContainer || !questionText) {
+            return showGameModal(title, contentFunc);
+        }
+
+        // Hide the start screen and show the arena panels
+        if (gameStart) gameStart.style.display = 'none';
+        questionContainer.style.display = 'block';
+        if (gameStats) gameStats.style.display = 'block';
+
+    // Populate the main title and inner content area using the caller's contentFunc
+    // Create a header bar matching API Galaxy style
+    questionText.textContent = '';
+    const header = document.createElement('div');
+    header.className = 'inline-game-header mb-3';
+    header.innerHTML = `<h4 class="text-center text-primary mb-0">${sanitizeHTML(title)}</h4>`;
+
+    // Wrap content in a consistent container so CSS spacing matches Galaxy
+    const wrapper = document.createElement('div');
+    wrapper.className = 'inline-game-wrapper p-3 bg-dark rounded';
+    wrapper.innerHTML = contentFunc();
+
+    // Clear and append header + wrapper to the answers container
+    answersContainer.innerHTML = '';
+    answersContainer.appendChild(header);
+    answersContainer.appendChild(wrapper);
+
+        // Append refresh and home controls consistent with the API Galaxy layout
+        try {
+            const controlRow = document.createElement('div');
+            controlRow.className = 'd-flex justify-content-center mt-3';
+
+            const refreshBtn = document.createElement('button');
+            refreshBtn.className = 'btn btn-secondary mx-2';
+            refreshBtn.type = 'button';
+            refreshBtn.textContent = '🔄 Refresh';
+            refreshBtn.addEventListener('click', (ev) => {
+                    // Re-render the current game's content (contentFunc closes over state)
+                    const newWrapper = document.createElement('div');
+                    newWrapper.className = 'inline-game-wrapper p-3 bg-dark rounded';
+                    newWrapper.innerHTML = contentFunc();
+                    // replace the existing wrapper if present
+                    const existing = answersContainer.querySelector('.inline-game-wrapper');
+                    if (existing && existing.parentNode) existing.parentNode.replaceChild(newWrapper, existing);
+                    else answersContainer.appendChild(newWrapper);
+                // focus first control after render
+                setTimeout(() => {
+                    const first = answersContainer.querySelector('input, textarea, button, [tabindex], a');
+                    if (first && typeof first.focus === 'function') try { first.focus(); } catch (e) {}
+                }, 30);
+                ev.stopPropagation();
+            });
+
+            const homeBtn = document.createElement('button');
+            homeBtn.className = 'btn btn-danger mx-2';
+            homeBtn.type = 'button';
+            homeBtn.textContent = '🏠 Home';
+            homeBtn.addEventListener('click', () => {
+                try {
+                    // Restore start screen visibility and hide game panels
+                    if (gameStart) gameStart.style.display = '';
+                    if (questionContainer) questionContainer.style.display = 'none';
+                    if (gameStats) gameStats.style.display = 'none';
+                    // Remove inline game content
+                    try {
+                        const existing = answersContainer.querySelector('.inline-game-wrapper');
+                        if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+                    } catch (e) {}
+                    // Remove header
+                    try { const h = answersContainer.querySelector('.inline-game-header'); if (h) h.remove(); } catch (e) {}
+
+                    // CLEANUP: remove any modal/backdrop/overlay remnants that could obscure the launcher
+                    try {
+                        document.querySelectorAll('.modal-backdrop, .game-overlay').forEach(el => el.remove());
+                        document.body.classList.remove('modal-open');
+                        document.body.style.overflow = '';
+                        document.body.style.paddingRight = '';
+                    } catch (e) { console.warn('cleanup overlays failed', e); }
+
+                    // Focus the first launcher (do not call closeActiveGames which hides lots of nodes)
+                    const firstLauncher = document.querySelector('[data-action="startGame"], [data-action="startGameSafe"]');
+                    if (firstLauncher && typeof firstLauncher.focus === 'function') try { firstLauncher.focus(); } catch (e) {}
+                } catch (e) { console.warn(e); }
+            });
+
+            controlRow.appendChild(refreshBtn);
+            controlRow.appendChild(homeBtn);
+
+            answersContainer.appendChild(controlRow);
+        } catch (e) {
+            console.debug('Failed to append inline game controls', e);
+        }
+
+        // Ensure any data-action elements we've inserted will be handled by the global delegator
+        // If the caller provided an attachListeners callback (third arg in contentFunc), call it
+        try {
+            if (typeof contentFunc === 'function' && contentFunc.length >= 2) {
+                // some contentFunc signatures accept (container, attachListeners)
+                try { contentFunc(answersContainer, true); } catch (e) { /* ignore */ }
+            }
+        } catch (e) {}
+
+        // Focus the first interactive element and scroll container to top
+        setTimeout(() => {
+            try {
+                answersContainer.scrollTop = 0;
+                const first = answersContainer.querySelector('input, textarea, button, [tabindex], a');
+                if (first && typeof first.focus === 'function') try { first.focus(); } catch (e) {}
+            } catch (e) { /* ignore */ }
+        }, 40);
+
+        // Optional: create the stars animation used by the galaxy game for consistent look
+        try { if (typeof createStarsAnimation === 'function') createStarsAnimation(); } catch (e) {}
+    } catch (err) {
+        console.warn('renderInlineGame failed, falling back to modal', err);
+        try { showGameModal(title, contentFunc); } catch (e) {}
+    }
 }
 
 function showGameModal(title, contentFunc, attachListeners) {
@@ -2647,8 +2963,113 @@ function showGameModal(title, contentFunc, attachListeners) {
     
     document.body.insertAdjacentHTML('beforeend', modalHtml);
     
-    const modal = new bootstrap.Modal(document.getElementById('gameModal'));
+    const modalEl = document.getElementById('gameModal');
+    const modal = new bootstrap.Modal(modalEl);
+    // Show the modal immediately and ensure focus lands on a logical control
+    try {
+        modal.show();
+        // Focus first focusable element inside the modal body (input, textarea, button, a)
+        setTimeout(() => {
+            try {
+                const body = document.getElementById('gameModalBody');
+                if (!body) return;
+                const first = body.querySelector('input, textarea, button, [tabindex], a');
+                if (first && typeof first.focus === 'function') {
+                    try { first.focus(); } catch (e) { /* ignore focus errors */ }
+                }
+            } catch (e) { console.debug('modal focus helper failed', e); }
+        }, 40);
+
+        // When the Bootstrap modal is hidden, clean up and restore home launchers
+        try {
+            modalEl.addEventListener('hidden.bs.modal', () => {
+                try {
+                    // Close any active game UI elements
+                    try { closeActiveGames(); } catch (e) { console.debug('closeActiveGames failed on modal hide', e); }
+
+                    // Remove modal element if still present
+                    const m = document.getElementById('gameModal'); if (m && m.parentNode) m.parentNode.removeChild(m);
+
+                    // Remove any modal-backdrop elements left behind
+                    const backdrops = Array.from(document.querySelectorAll('.modal-backdrop'));
+                    backdrops.forEach(b => b.parentNode && b.parentNode.removeChild(b));
+
+                    // Remove any custom game overlay backdrops
+                    const overlays = Array.from(document.querySelectorAll('.game-overlay'));
+                    overlays.forEach(o => o.parentNode && o.parentNode.removeChild(o));
+
+                    // Reset body modal state (Bootstrap normally handles this, but ensure cleanup)
+                    try {
+                        document.body.classList.remove('modal-open');
+                        document.body.style.overflow = '';
+                        document.body.style.paddingRight = '';
+                    } catch (e) { /* ignore */ }
+
+                    // Restore visibility of game launcher elements so the arena home is visible again
+                    const launchers = document.querySelectorAll('[data-action="startGame"], [data-action="startGameSafe"]');
+                    launchers.forEach(btn => {
+                        const parent = btn.closest('.mini-game, .game-board, .arena, #game-start');
+                        if (parent) parent.style.display = '';
+                    });
+
+                    // Focus first game launcher if possible
+                    const firstLauncher = document.querySelector('[data-action="startGame"], [data-action="startGameSafe"]');
+                    if (firstLauncher && typeof firstLauncher.focus === 'function') {
+                        try { firstLauncher.focus(); } catch (e) {}
+                    } else {
+                        try { document.body.focus(); } catch (e) {}
+                    }
+                } catch (err) {
+                    console.warn('modal hidden cleanup failed', err);
+                }
+            });
+        } catch (e) {
+            console.debug('Failed to attach hidden.bs.modal handler', e);
+        }
+    } catch (e) {
+        console.warn('Failed to show modal programmatically', e);
+    }
     const bodyEl = document.getElementById('gameModalBody');
+    // Attach programmatic listeners for any data-action elements in the modal so
+    // calls resolve reliably to actual functions in the page context.
+    try {
+        if (bodyEl) {
+            const actionable = Array.from(bodyEl.querySelectorAll('[data-action]'));
+            actionable.forEach(el => {
+                const act = el.getAttribute('data-action');
+                // skip invoke: prefixed actions (handled by global delegation)
+                if (!act || act.startsWith('invoke:')) return;
+                el.addEventListener('click', (ev) => {
+                    try {
+                        const name = act;
+                        const raw = el.getAttribute('data-arg') || '';
+                        const parts = raw.split(',').map(s => s.trim()).filter(Boolean);
+                        const fn = (window.__gameFns && window.__gameFns[name]) || window[name];
+                        if (typeof fn === 'function') {
+                            if (parts.length > 1) {
+                                const args = parts.map(p => { const n = Number(p); return isNaN(n) ? p : n; });
+                                fn.apply(null, args);
+                            } else if (parts.length === 1) {
+                                const n = Number(parts[0]);
+                                fn(isNaN(n) ? parts[0] : n);
+                            } else {
+                                fn();
+                            }
+                        } else if (typeof invokeNamedAction === 'function') {
+                            invokeNamedAction(name, parts.length > 1 ? parts : (parts[0] || undefined));
+                        } else {
+                            console.warn(name + ' not available');
+                        }
+                    } catch (e) {
+                        console.warn('modal action handler error', e);
+                    }
+                    ev.stopPropagation();
+                });
+            });
+        }
+    } catch (e) {
+        console.warn('Failed to attach modal action listeners', e);
+    }
     // If the calling game provided a #bugResult element and local hints/idx, show the contextual hint.
     try {
         const resultEl = document.getElementById('bugResult');
@@ -2703,6 +3124,48 @@ function revealSyntax(idx) {
     document.getElementById('syntaxResult').innerHTML = `<div class="alert alert-secondary">👁️ Reveal: ${ans[idx] || ''}</div>`;
 }
 
+// --- Text similarity helpers (used by game answer checking) ---
+function normalizeForCompare(s) {
+    if (!s) return '';
+    return String(s).toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function tokenSimilarity(a, b) {
+    const A = normalizeForCompare(a).split(' ').filter(Boolean);
+    const B = normalizeForCompare(b).split(' ').filter(Boolean);
+    if (A.length === 0 && B.length === 0) return 1;
+    if (A.length === 0 || B.length === 0) return 0;
+    const setA = new Set(A);
+    const setB = new Set(B);
+    let inter = 0;
+    setA.forEach(x => { if (setB.has(x)) inter++; });
+    return inter / Math.max(setA.size, setB.size);
+}
+
+function levenshtein(a, b) {
+    const A = String(a || '');
+    const B = String(b || '');
+    const m = A.length, n = B.length;
+    if (m === 0) return n;
+    if (n === 0) return m;
+    const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
+    for (let i=0;i<=m;i++) dp[i][0]=i;
+    for (let j=0;j<=n;j++) dp[0][j]=j;
+    for (let i=1;i<=m;i++) for (let j=1;j<=n;j++) {
+        const cost = A[i-1] === B[j-1] ? 0 : 1;
+        dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+cost);
+    }
+    return dp[m][n];
+}
+
+function similarityScore(a, b) {
+    // Combine token overlap and normalized levenshtein char similarity
+    const tok = tokenSimilarity(a, b);
+    const maxLen = Math.max(String(a || '').length, String(b || '').length);
+    const charSim = maxLen === 0 ? 1 : (1 - (levenshtein(a, b) / maxLen));
+    return Math.max(tok, charSim);
+}
+
 function checkPuzzle(selected, correct) {
     const el = document.getElementById('puzzleResult');
     if (Number(selected) === Number(correct)) {
@@ -2728,6 +3191,25 @@ function revealAlgo(idx) {
         'Math.max(3,7,2,9,1)'
     ];
     document.getElementById('puzzleResult').innerHTML = `<div class="alert alert-secondary">👁️ Reveal: ${reveals[idx] || ''}</div>`;
+}
+
+// Attach safe global wrappers so the delegated handler can call game actions without throwing
+try {
+    if (typeof window !== 'undefined') {
+        window.checkDebugAnswer = (typeof checkDebugAnswer === 'function') ? checkDebugAnswer : function() { console.warn('checkDebugAnswer not available'); };
+        window.hintDebug = (typeof hintDebug === 'function') ? hintDebug : function() { console.warn('hintDebug not available'); };
+        window.revealDebug = (typeof revealDebug === 'function') ? revealDebug : function() { console.warn('revealDebug not available'); };
+
+        window.checkSyntax = (typeof checkSyntax === 'function') ? checkSyntax : function() { console.warn('checkSyntax not available'); };
+        window.hintSyntax = (typeof hintSyntax === 'function') ? hintSyntax : function() { console.warn('hintSyntax not available'); };
+        window.revealSyntax = (typeof revealSyntax === 'function') ? revealSyntax : function() { console.warn('revealSyntax not available'); };
+
+        window.checkPuzzle = (typeof checkPuzzle === 'function') ? checkPuzzle : function() { console.warn('checkPuzzle not available'); };
+        window.hintAlgo = (typeof hintAlgo === 'function') ? hintAlgo : function() { console.warn('hintAlgo not available'); };
+        window.revealAlgo = (typeof revealAlgo === 'function') ? revealAlgo : function() { console.warn('revealAlgo not available'); };
+    }
+} catch (e) {
+    console.warn('Failed to attach game function wrappers to window', e);
 }
 
 // 🛠️ UTILITY FUNCTIONS
@@ -3698,6 +4180,35 @@ function setCommand(cmd) {
 }
 
 // Export functions to global scope for onclick handlers (legacy support)
+// Safe game function registry and invoker (ensures delegated handlers can call game actions)
+try {
+    if (typeof window !== 'undefined') {
+        window.__gameFns = window.__gameFns || {};
+        window.invokeNamedAction = function(name, arg) {
+            try {
+                const fn = window.__gameFns[name] || (typeof window[name] === 'function' ? window[name] : null);
+                if (!fn) return console.warn(`${name} not available`);
+                if (Array.isArray(arg)) return fn.apply(null, arg);
+                return fn(arg);
+            } catch (e) {
+                console.error('invokeNamedAction error', name, e);
+            }
+        };
+
+        const registerIf = (name, fn) => { if (typeof fn === 'function') window.__gameFns[name] = fn; };
+        registerIf('checkDebugAnswer', typeof checkDebugAnswer === 'function' ? checkDebugAnswer : null);
+        registerIf('hintDebug', typeof hintDebug === 'function' ? hintDebug : null);
+        registerIf('revealDebug', typeof revealDebug === 'function' ? revealDebug : null);
+        registerIf('checkSyntax', typeof checkSyntax === 'function' ? checkSyntax : null);
+        registerIf('hintSyntax', typeof hintSyntax === 'function' ? hintSyntax : null);
+        registerIf('revealSyntax', typeof revealSyntax === 'function' ? revealSyntax : null);
+        registerIf('checkPuzzle', typeof checkPuzzle === 'function' ? checkPuzzle : null);
+        registerIf('hintAlgo', typeof hintAlgo === 'function' ? hintAlgo : null);
+        registerIf('revealAlgo', typeof revealAlgo === 'function' ? revealAlgo : null);
+    }
+} catch (e) {
+    console.warn('Failed to initialize gameFn registry', e);
+}
 window.loadContracts = loadContracts;
 window.testAPI = testAPI;
 window.loadSampleContracts = loadSampleContracts;

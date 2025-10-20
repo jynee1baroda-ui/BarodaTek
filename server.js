@@ -20,6 +20,21 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+// Maintenance mode middleware: if MAINTENANCE=true, serve maintenance page for non-API requests
+app.use((req, res, next) => {
+    try {
+        const isApi = req.path && req.path.startsWith('/api');
+        const isWs = req.headers && (req.headers.upgrade && req.headers.upgrade.toLowerCase() === 'websocket');
+        if (process.env.MAINTENANCE === 'true' && !isApi && !isWs) {
+            // Serve a lightweight maintenance HTML
+            return res.sendFile(path.join(__dirname, 'public', 'maintenance.html'));
+        }
+    } catch (e) {
+        console.warn('Maintenance middleware error', e);
+    }
+    next();
+});
+
 // Ensure a safe default for realtime handler to avoid repeated "not defined" warnings
 if (typeof handleRealtimeMessage !== 'function') {
     // define a no-op placeholder that can be overridden later in the file
